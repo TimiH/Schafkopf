@@ -13,10 +13,22 @@ class Player:
         self.hand = cards
 
     def makeBid(self,validBids):
-        return random.choice(validBids)
 
-    def playCard(self,state):
-        pass
+        print(self.name,self.hand)
+        print(validBids)
+        for bid in validBids:
+            if bid[0] == 1:
+                return bid
+        return (None,None)
+        #return random.choice(validBids)
+
+    def playCard(self,validCards,state):
+        print("{} Hand:{}".format(self.name,self.hand))
+        print("{} Valid:{}".format(self.name,validCards))
+        card = random.choice(validCards)
+        print("{} ->:{}".format(self.name,card))
+        self.hand.remove(card)
+        return card
 
     def sortHand(self,state):
         pass

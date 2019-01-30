@@ -21,5 +21,14 @@ class Card:
         else:
              return False
 
+    def __ne__(self, other):
+        if self.suit != other.suit or self.rank != other.rank:
+            return True
+        else:
+             return False
+
+    def __hash__(self):
+        return hash((self.suit,self.rank))
+
     def __repr__(self):
         return "{}{}".format(self.rank,self.suit[0])

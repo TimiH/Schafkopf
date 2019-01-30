@@ -1,7 +1,8 @@
-import CardValues
-import GameModes
+from CardValues import SUITS
+from GameModes import MODES
 from operator import itemgetter
-
+from Card import Card
+from copy import deepcopy,copy
 class Bidding:
     def __init__(self, gameCopy):
         self.gameCopy = gameCopy
@@ -12,13 +13,15 @@ class Bidding:
     def biddingPhase(self):
         players = self.gameCopy.players
         for p in players:
-            bid = p.makeBid(getValidBidsForPlayer(p))
+            bid = p.makeBid(self.getValidBidsForPlayer(p))
             self.bids.append(bid)
-        self.winningBid, self.winninnIndex = getWinningBid()
+        winningTup= self.getWinningBid()
+        self.winningBid = winningTup[0]
+        self.winningIndex = winningTup[1]
 
     def getValidBidsForPlayer(self,player):
         hand = player.hand
-        possibleModes = MODES
+        possibleModes = copy(MODES)
         suits = ['Eichel','Gras','Schellen']
 
         #Check for suits if person has the Ace if not check if he has at least one card of that suit that is not O or U
@@ -34,13 +37,19 @@ class Bidding:
                 possibleModes.remove((1,SUITS[suit]))
 
         #Check to see if there are previous bids, if so remove all three Team games
-        for bid in bids:
+        for bid in self.bids:
             a,_ = bid
             if a in [1,2,3]:
-                possibleModes.remove(bid)
+                #filters out all tuples (1,_)
+                possibleModes = list(filter(lambda x: x[0]!=1,possibleModes))
+        # print("Hand:{}\nPossibleBids:{}".format(hand,possibleModes))
         return possibleModes
 
-        def getWinningBid(self):
-            highestBid = max(self.bids,key=itemgetter(0))
-            indexWinningIndex = self.bids.index[highestBid]
-            return (highestBid,indexWinningIndex)
+    def getWinningBid(self):
+        highestBid = max(self.bids,key=itemgetter(0))
+        winningIndex = self.bids.index(highestBid)
+        # print("Bid:{} \n HighestBid:{} \n Index: {}".format(self.bids,highestBid,winningIndex))
+        return (highestBid,winningIndex)
+
+    def getBids(self):
+        return self.bids
