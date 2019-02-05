@@ -3,6 +3,7 @@ from GameModes import MODES
 from operator import itemgetter
 from Card import Card
 from copy import deepcopy,copy
+
 class Bidding:
     def __init__(self, gameCopy):
         self.gameCopy = gameCopy

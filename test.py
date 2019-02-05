@@ -8,19 +8,10 @@ from Trick import Trick
 p1 = Player("Tim")
 p2 = Player("Paul")
 p3 = Player("Robin.H")
-p4 = Player("chrissi")
+p4 = Player("Chrissi")
 
 
 players = [p1,p2,p3,p4]
 game = Game(players)
-# print(getValidBidsForPlayer(p1))
 game.mainGame()
-print(game.gameMode)
-print(game.offensivePlayers)
-copy = game.copy()
-t = Trick(1,0,copy)
-t.playTrick()
-print(t.history)
-t.determineWinner()
-print(t.winningPlayer)
-print(t.score)
+print(game.history)

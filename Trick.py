@@ -21,10 +21,10 @@ class Trick:
         self.history.append(playedCard)
 
     def playTrick(self):
-        actionsMissing = 4 - len(self.history)
-        for n in range(actionsMissing):
+        while not self.isFinished():
             self.nextAction()
         self.sumScore()
+        self.determineWinner()
 
     #Sets the index of the winning card in the History
     def determineWinner(self):
@@ -37,14 +37,20 @@ class Trick:
         else:
             firstSuit = self.history[0].suit
             winningRankIndex = min([RANKS.index(card.rank) for card in self.history if card.suit == firstSuit])
-            winninnIndex = self.history.index(Card(firstSuit,RANKS[winningRankIndex]))
-            self.winningPlayer = winninnIndex
+            winningIndex = self.history.index(Card(firstSuit,RANKS[winningRankIndex]))
+            self.winningPlayer = winningIndex
 
     def sumScore(self):
         score = 0
         for card in self.history:
             score += card.value
-        self.score  = score
+        self.score = score
+
+    def isFinished(self):
+        if len(self.history) == 4:
+            return True
+        else:
+            return False
 
     #returns all suits from hand without trumps. If empty return hand
     def getSuitsInHand(self,suit,hand):
@@ -55,18 +61,22 @@ class Trick:
         else:
             return cards
 
-    #Adapted from Taschee Github
+    #Adapted from Taschee Github https://github.com/Taschee/schafkopf/blob/master/schafkopf/trick_game.py
     def getValidActionsForPlayerNew(self, player):
         hand = set(copy(player.hand))
         trumps = createTrumps(self.gameMode)
         reversed = dict(zip(SUITS.values(),SUITS.keys()))
         searchedSuit = reversed[self.gameMode[1]]
-        print("Search suit:",searchedSuit)
         possibleActions = []
+
+        #Speed up for last Trick
+        if len(hand) == 1:
+            return list(hand)
+
         #Player has Lead
         if not self.history:
-            if self.gameMode[0] == 1 and self.players.index(player) == self.gamestate.offensivePlayers[1]:
-                if self.gamestate.runAwayPossible:
+            if self.gameMode[0] == 1 and Card(searchedSuit,'A') in hand:
+                if self.gamestate.runAwayPossible and self.gamestate.searched:
                     possibleActions = list(hand)
                 else:
                     possibleActions = list(hand)
@@ -83,8 +93,6 @@ class Trick:
                 if not possibleActions:
                     possibleActions = list(hand)
                 else:
-                    print("not Lead and possibleActions not empty")
-                    print(possibleActions)
                     possibleActions = list(possibleActions)
             #Card is not Trump
             elif self.gameMode[0] == 1 and self.players.index(player) == self.gamestate.offensivePlayers[1] and card.suit == searchedSuit:
@@ -98,6 +106,6 @@ class Trick:
 
         if self.gameMode[0] == 1 and Card(searchedSuit,'A') in possibleActions:
             if not self.gamestate.ranAway and len(possibleActions) > 1:
-                    possibleActions.remove(Card(searchedSuit,'A'))
+                possibleActions.remove(Card(searchedSuit,'A'))
 
         return possibleActions

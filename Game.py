@@ -6,12 +6,14 @@ from copy import deepcopy
 from Player import Player
 from CardValues import SUITS, RANKS, VALUES
 from helper import canRunaway
+from Trick import Trick
+from Rewards import Rewards
 
 class Game:
     def __init__(self, players):
         self.players = players #List of players and Positons
-        self.scores = [None,None,None,None]
-        self.history = ""
+        self.scores = [0,0,0,0]
+        self.history = []
 
         self.gameMode = None
         self.bids = [(None,None)]
@@ -19,15 +21,18 @@ class Game:
         self.runAwayPossible = None
 
         self.currentTrick = None
-        self.Tricks = []
         self.ranAway = False
         self.searched = False
+        self.laufende = 0
 
         self.rewards = [0,0,0,0]
         self.trumpCards = ()
 
-    def playGame(self):
-        pass
+    def isFinished(self):
+        if len(self.history) == 8:
+            return True
+        else:
+            return False
 
     def playTrick(self):
         pass
@@ -45,12 +50,6 @@ class Game:
 
     def copy(self):
         return deepcopy(self)
-
-    def getPlayerForTurn():
-        pass
-
-    def setHistory(self):
-        pass
 
     #Sets the bids, gameModes and offensivePlayers
     def setGameMode(self,bidding):
@@ -90,7 +89,21 @@ class Game:
                 if c == ace:
                     self.searched = True
                     return
+    def removeCards(self,history):
+        count = 0
+        for player in self.players:
+            for c in history:
+                if c in player.hand:
+                    player.hand.remove(c)
+                    count += 1
 
+    #Creates a tuple ((Cards),leadingPlayer,winningPLayer)
+    def historyFromTrick(self,trick):
+        if not trick.isFinished():
+            "UNFINNISHED TRICK"
+            return
+        cards = tuple(trick.history)
+        self.history.append((cards,trick.leadingPlayer,trick.winningPlayer))
 
     def mainGame(self):
         self.setupGame()
@@ -100,3 +113,109 @@ class Game:
         print(bidding.winningIndex)
         self.setGameMode(bidding)
         self.setRunAwayPossible()
+
+        if not self.gameMode:
+            print("no game mode")
+            return
+        lead = 1
+        for n in range(8):
+            copy = self.copy()
+            trick = Trick(n,lead,copy)
+            self.currentTrick = trick
+            trick.playTrick()
+            self.scores[trick.winningPlayer] += trick.score
+            lead = trick.winningPlayer
+            # self.tricks.append(trick)
+            self.removeCards(trick.history)
+            self.historyFromTrick(trick)
+
+        print(self.offensivePlayers)
+        print(self.scores)
+
+
+    def continueGame(self):
+        if not self.currentTrick.isFinished():
+            self.currentTrick.playTrick()
+
+        while not self.isFinished():
+            copy = self.copy()
+            trick = Trick(len(self.history)+1,self.currentTrick.winningPlayer,copy)
+            self.currentTrick = trick
+            trick.playTrick()
+            self.scores[trick.winningPlayer] += trick.score
+            lead = trick.winningPlayer
+            self.removeCards(trick.history)
+            self.historyFromTrick(trick)
+
+    def offenceWon(self):
+        if not self.isFinished:
+            print("Game not Finished")
+        scoreOffense = 0
+        for p in self.offensivePlayers:
+            scoreOffense += self.scores[p]
+
+        if scoreOffense > 61:
+            return True
+        else:
+            return False
+
+    def setLaufende(self):
+        if self.gameMode == None:
+            print("No Bid in gamestate")
+
+        trumps = createTrumpsList(self.gameMode)
+        offensive = set()
+        defensive = set()
+
+        #create combined set trupms for both teams
+        for p in self.offensivePlayers:
+            offensive = offensive | set(p.hand)
+
+        defensive = set(trumps) - offensive
+
+        countOffense = 0
+        for card in trumps:
+            if card in offensive:
+                countOffense =+ 1
+            else:
+                break
+
+        countDefense = 0
+        for card in trumps:
+            if card in defensive:
+                countDefense =+ 1
+            else:
+                break
+
+        if self.gameMode[0] == 2:
+            if countDefense >= 2 or countOffense >= 2:
+                self.laufende = max([countDefense,countDefense])
+        else:
+            if countDefense >= 3 or countOffense >= 3:
+                self.laufende = max([countDefense,countDefense])
+
+    def setRewards(self):
+        schneider = False
+        schwarz = False
+        draw = False
+        scoreOffense = 0
+
+        for p in self.offensivePlayers:
+            scoreOffense += self.scores[p]
+
+        #check for Draw
+        if scoreOffense == 60:
+            draw = True
+            self.rewards[0,0,0,0]
+            return
+        #Check if schneider
+        elif scoreOffense > 90 or scoreOffense < 31:
+            schneider = True
+
+        #Check if one team scored all tricks
+        trickCount = 0
+        for t in self.history:
+            if t[2] in self.offensivePlayers:
+                trickCount += 1
+        if trickCount == 8 or trickCount == 0:
+            schwarz = True
