@@ -13,15 +13,15 @@ class Player:
         self.hand = cards
 
     def makeBid(self,validBids):
-        for bid in validBids:
-            if bid[0] == 1:
-                return bid
-        return (None,None)
-        #return random.choice(validBids)
+        # for bid in validBids:
+        #     if bid[0] == 1:
+        #         return bid
+        # return (None,None)
+        return random.choice(validBids)
 
     def playCard(self,validCards,state):
-        print("{} Hand:{}".format(self.name,self.hand))
-        print("{} Valid:{}".format(self.name,validCards))
+        # print("{} Hand:{}".format(self.name,self.hand))
+        # print("{} Valid:{}".format(self.name,validCards))
         card = random.choice(validCards)
         print("{} ->:{}".format(self.name,card))
         return card

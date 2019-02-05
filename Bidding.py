@@ -11,6 +11,7 @@ class Bidding:
         self.winningBid = None
         self.winningIndex = None
 
+    #fixLead
     def biddingPhase(self):
         players = self.gameCopy.players
         for p in players:

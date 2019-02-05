@@ -5,9 +5,9 @@ import random
 from copy import deepcopy
 from Player import Player
 from CardValues import SUITS, RANKS, VALUES
-from helper import canRunaway
+from helper import canRunaway,createTrumpsList
 from Trick import Trick
-from Rewards import Rewards
+from Rewards import REWARDS
 
 class Game:
     def __init__(self, players):
@@ -33,9 +33,6 @@ class Game:
             return True
         else:
             return False
-
-    def playTrick(self):
-        pass
 
     def setupGame(self):
         deck = Deck()
@@ -105,19 +102,19 @@ class Game:
         cards = tuple(trick.history)
         self.history.append((cards,trick.leadingPlayer,trick.winningPlayer))
 
-    def mainGame(self):
+    def mainGame(self,lead):
         self.setupGame()
         copy = self.copy()
         bidding = Bidding(copy)
         bidding.biddingPhase()
-        print(bidding.winningIndex)
         self.setGameMode(bidding)
         self.setRunAwayPossible()
+        self.setLaufende()
 
-        if not self.gameMode:
+        if self.gameMode == (None,None):
             print("no game mode")
             return
-        lead = 1
+        print("Gamemode: {},\n Offensive players: {}\n".format(self.gameMode,self.offensivePlayers))
         for n in range(8):
             copy = self.copy()
             trick = Trick(n,lead,copy)
@@ -128,7 +125,7 @@ class Game:
             # self.tricks.append(trick)
             self.removeCards(trick.history)
             self.historyFromTrick(trick)
-
+        self.setRewards()
         print(self.offensivePlayers)
         print(self.scores)
 
@@ -169,21 +166,20 @@ class Game:
 
         #create combined set trupms for both teams
         for p in self.offensivePlayers:
-            offensive = offensive | set(p.hand)
-
+            offensive = offensive | set(self.players[p].hand)
+        offensive = set(trumps) & offensive
         defensive = set(trumps) - offensive
-
         countOffense = 0
         for card in trumps:
             if card in offensive:
-                countOffense =+ 1
+                countOffense += 1
             else:
                 break
 
         countDefense = 0
         for card in trumps:
             if card in defensive:
-                countDefense =+ 1
+                countDefense += 1
             else:
                 break
 
@@ -197,21 +193,16 @@ class Game:
     def setRewards(self):
         schneider = False
         schwarz = False
-        draw = False
         scoreOffense = 0
-
         for p in self.offensivePlayers:
             scoreOffense += self.scores[p]
-
         #check for Draw
         if scoreOffense == 60:
-            draw = True
-            self.rewards[0,0,0,0]
+            self.rewards = [0,0,0,0]
             return
         #Check if schneider
         elif scoreOffense > 90 or scoreOffense < 31:
             schneider = True
-
         #Check if one team scored all tricks
         trickCount = 0
         for t in self.history:
@@ -219,3 +210,36 @@ class Game:
                 trickCount += 1
         if trickCount == 8 or trickCount == 0:
             schwarz = True
+        if self.gameMode[0] == 1:
+            baseReward = REWARDS['TEAM']
+        elif self.gameMode[0] == 2:
+            baseReward = REWARDS['WENZ']
+        elif self.gameMode[0] == 3:
+            baseReward = REWARDS['SOLO']
+
+        reward = baseReward + REWARDS['LAUFENDE']*self.laufende + REWARDS['SCHNEIDER']*schneider + REWARDS['SCHWARZ']*schwarz
+
+        if self.gameMode[0] == 1:
+            for s in range(0,4):
+                if self.offenceWon():
+                    if s in self.offensivePlayers:
+                        self.rewards[s] = reward
+                    else:
+                        self.rewards[s] = -1*reward
+                else:
+                    if s in self.offensivePlayers:
+                        self.rewards[s] = -1*reward
+                    else:
+                        self.rewards[s] = reward
+        else:
+            for s in range(0,4):
+                if self.offenceWon():
+                    if s in self.offensivePlayers:
+                        self.rewards[s] = 3*reward
+                    else:
+                        self.rewards[s] = -1*reward
+                else:
+                    if s in self.offensivePlayers:
+                        self.rewards[s] = -3*reward
+                    else:
+                        self.rewards[s] = 1*reward

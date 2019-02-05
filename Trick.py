@@ -66,7 +66,10 @@ class Trick:
         hand = set(copy(player.hand))
         trumps = createTrumps(self.gameMode)
         reversed = dict(zip(SUITS.values(),SUITS.keys()))
-        searchedSuit = reversed[self.gameMode[1]]
+
+        #hack because Wenz (2,NONE) returns key error #TODO
+        if self.gameMode[0] != 2:
+            searchedSuit = reversed[self.gameMode[1]]
         possibleActions = []
 
         #Speed up for last Trick
