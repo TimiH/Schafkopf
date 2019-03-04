@@ -10,9 +10,10 @@ from Trick import Trick
 from Rewards import REWARDS
 
 class Game:
-    def __init__(self, players):
+    def __init__(self, players,leadingPlayer):
         self.players = players #List of players and Positons
         self.scores = [0,0,0,0]
+        self.leadingPlayer = leadingPlayer
         self.history = []
 
         self.gameMode = None
@@ -66,8 +67,6 @@ class Game:
                             #self.offensivePlayers.append(playerIndex)
                             self.offensivePlayers.append(playerIndex)
 
-
-
     def setRunAwayPossible(self):
         if len(self.offensivePlayers) >1:
             player = self.players[self.offensivePlayers[1]]
@@ -102,10 +101,10 @@ class Game:
         cards = tuple(trick.history)
         self.history.append((cards,trick.leadingPlayer,trick.winningPlayer))
 
-    def mainGame(self,lead):
+    def mainGame(self):
         self.setupGame()
         copy = self.copy()
-        bidding = Bidding(copy)
+        bidding = Bidding(copy,self.leadingPlayer)
         bidding.biddingPhase()
         self.setGameMode(bidding)
         self.setRunAwayPossible()
@@ -114,7 +113,9 @@ class Game:
         if self.gameMode == (None,None):
             print("no game mode")
             return
-        print("Gamemode: {},\n Offensive players: {}\n".format(self.gameMode,self.offensivePlayers))
+        # print("Bids:",self.bids,"\nLeadingPlayer:",self.leadingPlayer)
+        # print("Gamemode: {},\nOffensive players: {}\n".format(self.gameMode,self.offensivePlayers))
+        lead = self.leadingPlayer
         for n in range(8):
             copy = self.copy()
             trick = Trick(n,lead,copy)
@@ -126,8 +127,8 @@ class Game:
             self.removeCards(trick.history)
             self.historyFromTrick(trick)
         self.setRewards()
-        print(self.offensivePlayers)
-        print(self.scores)
+        # print(self.offensivePlayers)
+        # print(self.scores)
 
 
     def continueGame(self):

@@ -5,21 +5,33 @@ from Card import Card
 from copy import deepcopy,copy
 
 class Bidding:
-    def __init__(self, gameCopy):
+    def __init__(self, gameCopy,lead):
         self.gameCopy = gameCopy
         self.bids =[]
         self.winningBid = None
         self.winningIndex = None
+        self.lead = self.gameCopy.leadingPlayer
 
     #fixLead
     def biddingPhase(self):
         players = self.gameCopy.players
-        for p in players:
+        while not self.isFinished():
+            currentPlayerIndex = (len(self.bids) + self.lead) % 4
+            p = players[currentPlayerIndex]
             bid = p.makeBid(self.getValidBidsForPlayer(p))
+            #print(currentPlayerIndex,bid)
+
             self.bids.append(bid)
+
         winningTup= self.getWinningBid()
         self.winningBid = winningTup[0]
         self.winningIndex = winningTup[1]
+
+    def isFinished(self):
+        if len(self.bids) == 4:
+            return True
+        else:
+            return False
 
     def getValidBidsForPlayer(self,player):
         hand = player.hand
@@ -40,17 +52,21 @@ class Bidding:
 
         #Check to see if there are previous bids, if so remove all three Team games
         for bid in self.bids:
-            a,_ = bid
+            if bid == (None,None):
+                continue
+            a = bid[0]
             if a in [1,2,3]:
                 #filters out all tuples (1,_)
                 possibleModes = list(filter(lambda x: x[0]!=1,possibleModes))
+                break
         # print("Hand:{}\nPossibleBids:{}".format(hand,possibleModes))
         return possibleModes
 
     def getWinningBid(self):
+        print ("WinningBid:",self.bids)
         highestBid = max(self.bids,key=itemgetter(0))
-        winningIndex = self.bids.index(highestBid)
-        # print("Bid:{} \n HighestBid:{} \n Index: {}".format(self.bids,highestBid,winningIndex))
+        winningBidIndex = self.bids.index(highestBid)
+        winningIndex = (winningBidIndex + self.lead)%4
         return (highestBid,winningIndex)
 
     def getBids(self):

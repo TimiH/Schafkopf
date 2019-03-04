@@ -3,13 +3,16 @@ from CardValues import SUITS,RANKS
 from Card import Card
 import random
 
-class Player:
-    def __init__(self,name):
+class Player(object):
+    def __init__(self,name,position):
         self.name = name
         self.hand = []
+        self.Position = p
+        return
+
     ##TODO __repr__ and __str__
 
-    def setHand(self,cards):
+    def setHand(self,cards)
         self.hand = cards
 
     def makeBid(self,validBids):
@@ -19,11 +22,11 @@ class Player:
         # return (None,None)
         return random.choice(validBids)
 
-    def playCard(self,validCards,state):
+    def playCard(self,validCards,state,trickHistory):
         # print("{} Hand:{}".format(self.name,self.hand))
         # print("{} Valid:{}".format(self.name,validCards))
         card = random.choice(validCards)
-        print("{} ->:{}".format(self.name,card))
+        #print("{} ->:{}".format(self.name,card))
         return card
 
     def sortHand(self,state):

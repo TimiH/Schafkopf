@@ -64,3 +64,15 @@ def canRunaway(player,gameMode):
         return True
     else:
         return False
+
+
+def recreateHandsfromHistory(history):
+    hands = [[],[],[],[]]
+
+    for trick in history:
+        lead = trick[1]
+        winner = trick[2]
+        for card in trick[0]:
+            hands[lead].append(card)
+            lead = (lead+1)%4
+    return hands

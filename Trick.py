@@ -14,10 +14,10 @@ class Trick:
         self.winningPlayer = None
 
     def nextAction(self):
-        print(self.history)
+        # print(self.history)
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
         validCards = self.getValidActionsForPlayerNew(self.players[currentPlayerIndex])
-        playedCard = self.players[currentPlayerIndex].playCard(validCards,self.gamestate)
+        playedCard = self.players[currentPlayerIndex].playCard(validCards,self.gamestate,self.history)
         self.history.append(playedCard)
 
     def playTrick(self):
@@ -29,15 +29,19 @@ class Trick:
     #Sets the index of the winning card in the History
     def determineWinner(self):
         trumps = createTrumpsList(self.gameMode)
-        trumpsPlayed = [card for card in self.history if card in trumps]
+        #trumpsPlayed = [card for card in self.history if card in trumps] #TODO use sets here
+        trumpsPlayed = list(set(self.history) & set(trumps))
         if trumpsPlayed:
-            winningTrumpIndex = min([trumpsPlayed.index(card) for card in trumpsPlayed])
-            winningCard = trumpsPlayed[winningTrumpIndex]
-            self.winningPlayer =  self.history.index(winningCard)
+            winningTrumpIndex = min([trumps.index(card) for card in trumpsPlayed])
+            winningCard = trumps[winningTrumpIndex]
+            winningCardIndex =  self.history.index(winningCard)
+            winningIndex = (winningCardIndex + self.leadingPlayer)%4
+            self.winningPlayer = winningIndex
         else:
             firstSuit = self.history[0].suit
             winningRankIndex = min([RANKS.index(card.rank) for card in self.history if card.suit == firstSuit])
-            winningIndex = self.history.index(Card(firstSuit,RANKS[winningRankIndex]))
+            winningCardIndex = self.history.index(Card(firstSuit,RANKS[winningRankIndex]))
+            winningIndex = (winningCardIndex + self.leadingPlayer)%4
             self.winningPlayer = winningIndex
 
     def sumScore(self):
