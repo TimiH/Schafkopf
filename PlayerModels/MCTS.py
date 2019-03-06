@@ -1,6 +1,6 @@
 from PlayerModels.RandomPlayer import RandomPlayer
 from Deck import Deck
-from random import random
+from random import sample
 
 class MCTS(object):
     def __init__(self,gamestate,validCards,hand,position):
@@ -21,6 +21,7 @@ class MCTS(object):
             self.players.append(p)
 
         self.gamestate.players = self.players
+
         self.gamestate.players[position].setHand(hand)
         for card in validCards:
             copy = self.gamestate.copy()
@@ -34,12 +35,13 @@ class MCTS(object):
         remainingcards = [x for x in remainingcards if x not in hand]
         for trick in self.gamestate.history:
             for card in trick:
-                remainingcards -= card
+                remainingcards.remove(card)
         return remainingcards
 
 class TreeNode(object):
     def __init__(self,gamestate,card,availableCards,lenHands,simRuns=100,simTime=2):
         self.rewards = [0,0,0,0]
+        self.card = card
         self.hashedHands = {}
         self.simRuns = simRuns
         self.simTime = simTime
@@ -47,20 +49,29 @@ class TreeNode(object):
         self.availableCards = availableCards
         self.gamestate = gamestate
         self.gamestate.currentTrick.history.append(card)
+        print("We are in: ", self.card,"with Players:",self.gamestate.players)
+        for p in self.gamestate.players:
+            print(p.hand)
 
-    def runSim():
+    def runSim(self):
         count = 0
         while count != self.simRuns:
-            copy = self.gamestate.copy()
-            self.distributeCards(copy)
-            copy.continueGame()
-            self.rewards = map(add,self.rewards,copy.rewards)
+            gamecopy = self.gamestate.copy()
+            self.distributeCards(gamecopy)
+            print(gamecopy.players)
+            gamecopy.currentTrick.updatePlayers(gamecopy.players)
+            gamecopy.currentTrick.setMembers()
+            for p in gamecopy.players:
+                print(p.hand)
+            gamecopy.continueGame()
+            self.rewards = map(add,self.rewards,gamecopy.rewards)
             count +=1
-            copy.clear()
+            gamecopy.clear()
 
-    def distributeCards(gamestate):
+    def distributeCards(self,gamestate):
         for p in range(4):
             if gamestate.players[p].hand:
                 continue
-            sampledCards = random.sample(self.lenHands[p],self.availableCards)
-            self.gamestate.players[p].setHand(sampledCards)
+            #print(self.availableCards,self.lenHands[p])
+            sampledCards = sample(self.availableCards,self.lenHands[p])
+            gamestate.players[p].setHand(sampledCards)

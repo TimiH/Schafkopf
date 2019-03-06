@@ -22,6 +22,8 @@ class MonteCarloPlayer(Player):
             position = self.getPosition(gamestate)
             print("hello",position)
             masternode = MCTS(gamestate,validCards,self.hand,position)
+            for child in masternode.children:
+                print("TreeNode:",child.card,child.rewards,masternode.playerPosition)
     #Somewhat adopted from https://github.com/Taschee/schafkopf/blob/master/schafkopf/players/heuristics_player.py
     def makeBid(self,validBids):
         teamGameChoice = self.choseTeamGame(validBids)

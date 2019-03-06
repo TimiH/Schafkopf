@@ -4,18 +4,27 @@ from helper import createTrumps, createTrumpsList
 from copy import deepcopy,copy
 
 class Trick:
-    def __init__(self, number,leadingPlayer,gameCopy):
+    def __init__(self, number,leadingPlayer,copy):
         self.leadingPlayer = leadingPlayer
-        self.gamestate = gameCopy
-        self.gameMode = gameCopy.gameMode
-        self.players = gameCopy.players
+        self.gamestate = None
+        self.gameMode = None
+        self.players = None
         self.history = []
         self.score = 0
         self.winningPlayer = None
 
+    #Somewhat hacky but necessary to avoid empty references in current trick
+    def setMembers(self):
+        self.gameMode = self.gamestate.gameMode
+        self.players = self.gamestate.players
+
+    def updatePlayers(self,players):
+        self.players = players
+
     def nextAction(self):
         # print(self.history)
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
+        print("hallo",self.players)
         validCards = self.getValidActionsForPlayerNew(self.players[currentPlayerIndex])
         playedCard = self.players[currentPlayerIndex].playCard(validCards,self.gamestate,self.history)
         self.history.append(playedCard)

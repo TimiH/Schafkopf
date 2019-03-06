@@ -117,10 +117,12 @@ class Game:
         # print("Gamemode: {},\nOffensive players: {}\n".format(self.gameMode,self.offensivePlayers))
         lead = self.leadingPlayer
         for n in range(8):
-            copy = self.copy()
             #TODO FIX THIS
-            trick = Trick(n,lead,copy)
+            trick = Trick(n,lead,None)
             self.currentTrick = trick
+            copy = self.copy()
+            trick.gamestate = copy
+            trick.setMembers()
             trick.playTrick()
             self.scores[trick.winningPlayer] += trick.score
             lead = trick.winningPlayer
@@ -137,9 +139,11 @@ class Game:
             self.currentTrick.playTrick()
 
         while not self.isFinished():
-            copy = self.copy()
-            trick = Trick(len(self.history)+1,self.currentTrick.winningPlayer,copy)
+            trick = Trick(len(self.history)+1,self.currentTrick.winningPlayer,None)
             self.currentTrick = trick
+            copy = self.copy()
+            trick.gamestate = copy
+            trick.setMembers()
             trick.playTrick()
             self.scores[trick.winningPlayer] += trick.score
             lead = trick.winningPlayer

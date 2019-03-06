@@ -7,7 +7,8 @@ import random
 __metaclass__ = type
 class RandomPlayer(Player):
     def __init__(self,name):
-        super(Player,self).__init__()
+        self.name = name
+        self.hand = []
 
     def setHand(self,cards):
         self.hand = cards
