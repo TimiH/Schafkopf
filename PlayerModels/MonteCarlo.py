@@ -26,12 +26,12 @@ class MonteCarloPlayer(Player):
             masternode = MCTS(gamestate,validCards,self.hand,position)
             scoreArray = []
             for child in masternode.children:
-                print("TreeNode:",child.card,child.rewards,masternode.playerPosition)
+                #print("TreeNode:",child.card,child.rewards,masternode.playerPosition)
                 scoreArray.append(child.rewards[position])
             best = max(scoreArray)
             bestIndex = scoreArray.index(best)
             card = masternode.children[bestIndex].card
-            print("Hand:{},Playing: {},validCards: {}".format(self.hand,card,validCards))
+            #print("Hand:{},Playing: {},validCards: {}".format(self.hand,card,validCards))
             self.hand.remove(card)
             return card
 
@@ -49,7 +49,7 @@ class MonteCarloPlayer(Player):
             max = wenzGameChoice
         if soloGameChoice[0]>max[0]:
             max = soloGameChoice
-        print("PLAYERCHOICES",max,teamGameChoice,wenzGameChoice,soloGameChoice)
+        #print("PLAYERCHOICES",max,teamGameChoice,wenzGameChoice,soloGameChoice)
         if max != (None,None):print(max,self.hand)
         return max
 

@@ -113,7 +113,7 @@ class Trick:
                 else:
                     possibleActions = list(possibleActions)
             #Card is not Trump
-            elif self.gameMode[0] == 1 and self.players.index(player) == self.gamestate.offensivePlayers[1] and card.suit == searchedSuit:
+            elif self.gameMode[0] == 1 and Card(searchedSuit,'A') in hand and card.suit == searchedSuit:
                 if not self.gamestate.ranAway:
                     possibleActions = [Card(searchedSuit,'A')]
                 else:

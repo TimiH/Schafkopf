@@ -20,6 +20,12 @@ def playTournament(players,rounds):
         #     print(game.history)
         #     print(game.rewards)
         #     break
+        hands = recreateHandsfromHistory(game.history)
+        print(game.bids,"Leading Player",game.leadingPlayer,"offensive",game.offensivePlayers)
+        print(hands)
+        print(game.scores)
+        print(game.history)
+        print(game.rewards)
         scores = map(add,scores,game.rewards)
     print(scores)
     print(playedGames)

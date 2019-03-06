@@ -24,8 +24,8 @@ class Player(object):
         #print("{} Hand:{}".format(self.name,self.hand))
         # print("{} Valid:{}".format(self.name,validCards))
         card = random.choice(validCards)
-        if "MCTS" in self.name:
-            print("Hand:{},Playing: {},validCards: {}".format(self.hand,card,validCards))
+        # if "MCTS" in self.name:
+        #     print("Hand:{},Playing: {},validCards: {}".format(self.hand,card,validCards))
         self.hand.remove(card)
         #print("{} ->:{}".format(self.name,card))
 
