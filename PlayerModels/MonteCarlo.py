@@ -16,6 +16,8 @@ class MonteCarloPlayer(Player):
         self.hand = cards
 
     def playCard(self,validCards,gamestate,trickHistory):
+        if len(validCards) == 0:
+            print("noValidCards")
         if len(validCards) == 1:
             return validCards[0]
         else:
@@ -29,9 +31,10 @@ class MonteCarloPlayer(Player):
             best = max(scoreArray)
             bestIndex = scoreArray.index(best)
             card = masternode.children[bestIndex].card
+            print("Hand:{},Playing: {},validCards: {}".format(self.hand,card,validCards))
             self.hand.remove(card)
             return card
-    
+
     #Somewhat adopted from https://github.com/Taschee/schafkopf/blob/master/schafkopf/players/heuristics_player.py
     def makeBid(self,validBids):
         teamGameChoice = self.choseTeamGame(validBids)

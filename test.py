@@ -10,13 +10,13 @@ from Trick import Trick
 from Tournament import playTournament
 import time
 
-p1 = MonteCarloPlayer("Tim")
+p1 = RandomPlayer("Tim")
 p2 = RandomPlayer("Paul")
 p3 = RandomPlayer("Robin.H")
 p4 = RandomPlayer("Chrissi")
 
 players = [p1,p2,p3,p4]
 start = time.time()
-playTournament(players,100)
+playTournament(players,15000)
 end = time.time()
 print("Time:", end-start)

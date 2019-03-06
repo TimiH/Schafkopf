@@ -15,7 +15,8 @@ class Game:
         self.scores = [0,0,0,0]
         self.leadingPlayer = leadingPlayer
         self.history = []
-
+        self.cardsPlayed = []
+        
         self.gameMode = None
         self.bids = [(None,None)]
         self.offensivePlayers = [] #Index 0 is the WinningBid, 1 is the other player
@@ -100,6 +101,7 @@ class Game:
             return
         cards = tuple(trick.history)
         self.history.append((cards,trick.leadingPlayer,trick.winningPlayer))
+        self.cardsPlayed += (trick.history)
 
     def mainGame(self):
         self.setupGame()

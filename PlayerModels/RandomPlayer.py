@@ -28,7 +28,7 @@ class RandomPlayer(Player):
             max = wenzGameChoice
         if soloGameChoice[0]>max[0]:
             max = soloGameChoice
-        print("PLAYERCHOICES",max,teamGameChoice,wenzGameChoice,soloGameChoice)
+        #print("PLAYERCHOICES",max,teamGameChoice,wenzGameChoice,soloGameChoice)
         if max != (None,None):print(max,self.hand)
         return max
 

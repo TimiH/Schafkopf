@@ -36,10 +36,9 @@ class MCTS(object):
     def getAvailableCards(self,hand):
         remainingcards = Deck().cards
         remainingcards = [x for x in remainingcards if x not in hand]
-        for trick in self.gamestate.history:
-            for card in trick: #TODO FIX
-                remainingcards.remove(card)
-        print("RemainingCards:", remainingcards)
+        remainingcards = [x for x in remainingcards if x not in  self.gamestate.cardsPlayed]
+        # for card in self.gamestate.cardsPlayed:
+        #     remainingcards.remove(card)
         return remainingcards
 
 class TreeNode(object):
