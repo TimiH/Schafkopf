@@ -127,7 +127,7 @@ class Game:
             self.scores[trick.winningPlayer] += trick.score
             lead = trick.winningPlayer
             # self.tricks.append(trick)
-            self.removeCards(trick.history)
+            #self.removeCards(trick.history)
             self.historyFromTrick(trick)
         self.setRewards()
         # print(self.offensivePlayers)
@@ -147,7 +147,7 @@ class Game:
             trick.playTrick()
             self.scores[trick.winningPlayer] += trick.score
             lead = trick.winningPlayer
-            self.removeCards(trick.history)
+            #self.removeCards(trick.history)
             self.historyFromTrick(trick)
 
     def offenceWon(self):

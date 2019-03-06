@@ -63,7 +63,7 @@ class Bidding:
         return possibleModes
 
     def getWinningBid(self):
-        print ("WinningBid:",self.bids)
+        #print ("WinningBid:",self.bids)
         highestBid = max(self.bids,key=itemgetter(0))
         winningBidIndex = self.bids.index(highestBid)
         winningIndex = (winningBidIndex + self.lead)%4

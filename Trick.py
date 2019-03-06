@@ -22,9 +22,8 @@ class Trick:
         self.players = players
 
     def nextAction(self):
-        # print(self.history)
+        #print(self.history)
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
-        print("hallo",self.players)
         validCards = self.getValidActionsForPlayerNew(self.players[currentPlayerIndex])
         playedCard = self.players[currentPlayerIndex].playCard(validCards,self.gamestate,self.history)
         self.history.append(playedCard)
@@ -77,6 +76,9 @@ class Trick:
     #Adapted from Taschee Github https://github.com/Taschee/schafkopf/blob/master/schafkopf/trick_game.py
     def getValidActionsForPlayerNew(self, player):
         hand = set(copy(player.hand))
+        # for p in self.players:
+        #     print(p.name,p.hand)
+        # print("getValidActionsForPlayerNew:",player.name,hand)
         trumps = createTrumps(self.gameMode)
         reversed = dict(zip(SUITS.values(),SUITS.keys()))
 

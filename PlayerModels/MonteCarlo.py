@@ -20,10 +20,18 @@ class MonteCarloPlayer(Player):
             return validCards[0]
         else:
             position = self.getPosition(gamestate)
-            print("hello",position)
+            print("MCTS Position",position)
             masternode = MCTS(gamestate,validCards,self.hand,position)
+            scoreArray = []
             for child in masternode.children:
                 print("TreeNode:",child.card,child.rewards,masternode.playerPosition)
+                scoreArray.append(child.rewards[position])
+            best = max(scoreArray)
+            bestIndex = scoreArray.index(best)
+            card = masternode.children[bestIndex].card
+            self.hand.remove(card)
+            return card
+    
     #Somewhat adopted from https://github.com/Taschee/schafkopf/blob/master/schafkopf/players/heuristics_player.py
     def makeBid(self,validBids):
         teamGameChoice = self.choseTeamGame(validBids)

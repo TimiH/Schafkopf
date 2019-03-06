@@ -1,6 +1,9 @@
 from PlayerModels.RandomPlayer import RandomPlayer
+from Player import Player
 from Deck import Deck
 from random import sample
+from operator import add
+
 
 class MCTS(object):
     def __init__(self,gamestate,validCards,hand,position):
@@ -17,7 +20,7 @@ class MCTS(object):
             self.lenHands.append(len(p.hand))
 
         for n in range(4):
-            p = RandomPlayer("MCTS "+str(n))
+            p = Player("MCTS"+str(n))
             self.players.append(p)
 
         self.gamestate.players = self.players
@@ -34,8 +37,9 @@ class MCTS(object):
         remainingcards = Deck().cards
         remainingcards = [x for x in remainingcards if x not in hand]
         for trick in self.gamestate.history:
-            for card in trick:
+            for card in trick: #TODO FIX
                 remainingcards.remove(card)
+        print("RemainingCards:", remainingcards)
         return remainingcards
 
 class TreeNode(object):
@@ -49,24 +53,27 @@ class TreeNode(object):
         self.availableCards = availableCards
         self.gamestate = gamestate
         self.gamestate.currentTrick.history.append(card)
-        print("We are in: ", self.card,"with Players:",self.gamestate.players)
-        for p in self.gamestate.players:
-            print(p.hand)
+        # print("We are in: ", self.card,"with Players:",self.gamestate.players)
+        # for p in self.gamestate.players:
+        #     print(p.hand)
 
     def runSim(self):
         count = 0
         while count != self.simRuns:
             gamecopy = self.gamestate.copy()
             self.distributeCards(gamecopy)
-            print(gamecopy.players)
+            #print(gamecopy.players)
+            gamecopy.currentTrick.gamestate = gamecopy
             gamecopy.currentTrick.updatePlayers(gamecopy.players)
             gamecopy.currentTrick.setMembers()
-            for p in gamecopy.players:
-                print(p.hand)
+
             gamecopy.continueGame()
+            gamecopy.setRewards()
+
             self.rewards = map(add,self.rewards,gamecopy.rewards)
+            #print(self.card,gamecopy.rewards)
             count +=1
-            gamecopy.clear()
+            #clear(gamecopy)
 
     def distributeCards(self,gamestate):
         for p in range(4):

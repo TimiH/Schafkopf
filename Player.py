@@ -21,9 +21,10 @@ class Player(object):
         return random.choice(validBids)
 
     def playCard(self,validCards,state,trickHistory):
-        # print("{} Hand:{}".format(self.name,self.hand))
+        #print("{} Hand:{}".format(self.name,self.hand))
         # print("{} Valid:{}".format(self.name,validCards))
         card = random.choice(validCards)
+        self.hand.remove(card)
         #print("{} ->:{}".format(self.name,card))
         return card
 
