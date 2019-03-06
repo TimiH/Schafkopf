@@ -118,6 +118,7 @@ class Game:
         lead = self.leadingPlayer
         for n in range(8):
             copy = self.copy()
+            #TODO FIX THIS
             trick = Trick(n,lead,copy)
             self.currentTrick = trick
             trick.playTrick()

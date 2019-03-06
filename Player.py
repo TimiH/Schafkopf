@@ -4,15 +4,13 @@ from Card import Card
 import random
 
 class Player(object):
-    def __init__(self,name,position):
+    def __init__(self,name):
         self.name = name
         self.hand = []
-        self.Position = p
-        return
 
     ##TODO __repr__ and __str__
 
-    def setHand(self,cards)
+    def setHand(self,cards):
         self.hand = cards
 
     def makeBid(self,validBids):
@@ -31,3 +29,8 @@ class Player(object):
 
     def sortHand(self,state):
         pass
+
+    def getPosition(self,gamestate):
+        for n in range(4):
+            if gamestate.players[n].name == self.name:
+                return n

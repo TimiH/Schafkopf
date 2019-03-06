@@ -3,30 +3,25 @@ from CardValues import RANKS, SUITS
 from operator import itemgetter
 from PlayerModels.RandomPlayer import RandomPlayer
 from Player import Player
+from PlayerModels.MCTS import MCTS
 import random
 __metaclass__ = type
 
 class MonteCarloPlayer(Player):
     def __init__(self,name):
-        super(Player,self).__init__()
+        self.name = name
+        self.hand = []
 
     def setHand(self,cards):
         self.hand = cards
 
-    def playCard(self,validCards,state,trickHistory):
+    def playCard(self,validCards,gamestate,trickHistory):
         if len(validCards) == 1:
             return validCards[0]
         else:
-            #Creating remainingCards
-            remainingcards = Deck().cards
-            remainingcards -= self.hand
-            for trick in state.histoy:
-                for card in trick:
-                    remainingcards -= card
-            #init Master MCTS node
-            for card in validCards:
-                pass
-
+            position = self.getPosition(gamestate)
+            print("hello",position)
+            masternode = MCTS(gamestate,validCards,self.hand,position)
     #Somewhat adopted from https://github.com/Taschee/schafkopf/blob/master/schafkopf/players/heuristics_player.py
     def makeBid(self,validBids):
         teamGameChoice = self.choseTeamGame(validBids)
