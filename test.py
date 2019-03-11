@@ -10,7 +10,7 @@ from Trick import Trick
 from Tournament import playTournament
 import time
 
-p1 = Player("Tim")
+p1 = RandomPlayer("Tim")
 p2 = RandomPlayer("Paul")
 p3 = RandomPlayer("Robin.H")
 p4 = RandomPlayer("Chrissi")

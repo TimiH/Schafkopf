@@ -26,7 +26,7 @@ class Player(object):
         card = random.choice(validCards)
         # if "MCTS" in self.name:
         #     print("Hand:{},Playing: {},validCards: {}".format(self.hand,card,validCards))
-        self.hand.remove(card)
+        #self.hand.remove(card)
         #print("{} ->:{}".format(self.name,card))
 
         return card

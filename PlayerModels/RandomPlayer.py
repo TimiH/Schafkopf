@@ -35,7 +35,7 @@ class RandomPlayer(Player):
     def playCard(self,validCards,state,trickHistory):
         card = random.choice(validCards)
         # print(self.name, validCards)
-        self.hand.remove(card)
+        #self.hand.remove(card)
         #print("{} plays {} and has left {}").format(self.name,card, self.hand)
         #print("{} ->:{}".format(self.name,card))
         return card

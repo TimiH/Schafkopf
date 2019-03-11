@@ -16,7 +16,7 @@ class Game:
         self.leadingPlayer = leadingPlayer
         self.history = []
         self.cardsPlayed = []
-        
+
         self.gameMode = None
         self.bids = [(None,None)]
         self.offensivePlayers = [] #Index 0 is the WinningBid, 1 is the other player
@@ -129,7 +129,7 @@ class Game:
             self.scores[trick.winningPlayer] += trick.score
             lead = trick.winningPlayer
             # self.tricks.append(trick)
-            #self.removeCards(trick.history)
+            self.removeCards(trick.history)
             self.historyFromTrick(trick)
         self.setRewards()
         # print(self.offensivePlayers)
@@ -149,7 +149,7 @@ class Game:
             trick.playTrick()
             self.scores[trick.winningPlayer] += trick.score
             lead = trick.winningPlayer
-            #self.removeCards(trick.history)
+            self.removeCards(trick.history)
             self.historyFromTrick(trick)
 
     def offenceWon(self):
