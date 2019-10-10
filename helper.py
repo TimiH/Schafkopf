@@ -65,7 +65,7 @@ def canRunaway(player,gameMode):
     else:
         return False
 
-
+#TODO testing requirements
 def recreateHandsfromHistory(history):
     hands = [[],[],[],[]]
 
@@ -76,3 +76,49 @@ def recreateHandsfromHistory(history):
             hands[lead].append(card)
             lead = (lead+1)%4
     return hands
+
+#allows using sort using Suit
+def bySuit(card):
+    return Card.suit
+
+#allows using sort Rank
+def byRank(card):
+    return Card.rank
+
+#Sorts hand using OUsuit
+def sortHand(hand):
+    print(hand)
+    sortedHand = []
+    #filter for O and U
+    oSorted = filter(lambda x: x.rank == 'O', hand)
+    uSorted = filter(lambda x: x.rank == 'U', hand)
+    otherCards = filter(lambda x: x.rank != 'U' and x.rank != 'O', hand)
+    print("unsorted: ",oSorted, uSorted, otherCards)
+    if oSorted:
+        oSorted = sorted(oSorted,key=bySuit)
+        [sortedHand.append(x) for x in oSorted]
+    if uSorted:
+        uSorted = sorted(uSorted,key=bySuit)
+        [sortedHand.append(x) for x in uSorted]
+    if otherCards:
+        otherCards = sorted(otherCards, key=bySuit)
+
+    print("sorted: ",oSorted, uSorted)
+    #otherCards = [x for x in hand if not oSorted]
+    # if oSorted:
+    #     sortedHand + oSorted
+    # if uSorted:
+    #     sortedHand + uSorted
+    # #sortedHand.append(otherCards.sort(key=bySuit))
+    print(sortedHand)
+    #find
+    return sortHand
+
+#Sorts hands for gamemode and returns hand to player
+#def sortHand(hand,gameMode):
+    #check for gameMode
+    #if None (0,0) sort hands standard
+    #if Team (1,) sort O U Hearts,Eichel,Gras, Schellen
+    #if Solo (4,) sort O U Color
+    #if Wenz (2,) sort U Color
+    #return hand

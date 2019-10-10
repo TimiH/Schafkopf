@@ -19,6 +19,10 @@ class Deck:
     def shuffle(self):
         random.shuffle(self.cards)
 
+    def shuffleYates(self):
+        ## TODO:
+        return
+
     def sort(self):
         self.cards.sort()
 
