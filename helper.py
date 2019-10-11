@@ -79,21 +79,21 @@ def recreateHandsfromHistory(history):
 
 #allows using sort using Suit
 def bySuit(card):
-    return Card.suit
+    return card.suit
 
 #allows using sort Rank
 def byRank(card):
-    return Card.rank
+    return card.rank
 
 #Sorts hand using OUsuit
 def sortHand(hand):
-    print(hand)
-    sortedHand = []
     #filter for O and U
     oSorted = filter(lambda x: x.rank == 'O', hand)
     uSorted = filter(lambda x: x.rank == 'U', hand)
     otherCards = filter(lambda x: x.rank != 'U' and x.rank != 'O', hand)
-    print("unsorted: ",oSorted, uSorted, otherCards)
+
+    #ugly if statements in case list empty
+    sortedHand = []
     if oSorted:
         oSorted = sorted(oSorted,key=bySuit)
         [sortedHand.append(x) for x in oSorted]
@@ -102,23 +102,6 @@ def sortHand(hand):
         [sortedHand.append(x) for x in uSorted]
     if otherCards:
         otherCards = sorted(otherCards, key=bySuit)
+        [sortedHand.append(x) for x in otherCards]
 
-    print("sorted: ",oSorted, uSorted)
-    #otherCards = [x for x in hand if not oSorted]
-    # if oSorted:
-    #     sortedHand + oSorted
-    # if uSorted:
-    #     sortedHand + uSorted
-    # #sortedHand.append(otherCards.sort(key=bySuit))
-    print(sortedHand)
-    #find
-    return sortHand
-
-#Sorts hands for gamemode and returns hand to player
-#def sortHand(hand,gameMode):
-    #check for gameMode
-    #if None (0,0) sort hands standard
-    #if Team (1,) sort O U Hearts,Eichel,Gras, Schellen
-    #if Solo (4,) sort O U Color
-    #if Wenz (2,) sort U Color
-    #return hand
+    return sortedHand

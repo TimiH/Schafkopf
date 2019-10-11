@@ -4,6 +4,7 @@ from operator import itemgetter
 from PlayerModels.RandomPlayer import RandomPlayer
 from Player import Player
 from PlayerModels.MCTS import MCTS
+from helper import sortHand
 import random
 __metaclass__ = type
 
@@ -13,7 +14,7 @@ class MonteCarloPlayer(Player):
         self.hand = []
 
     def setHand(self,cards):
-        self.hand = cards
+        self.hand = sortHand(cards)
 
     def playCard(self,validCards,gamestate,trickHistory):
         if len(validCards) == 0:

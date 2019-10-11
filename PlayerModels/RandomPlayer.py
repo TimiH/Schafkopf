@@ -2,6 +2,7 @@ from helper import createTrumps
 from CardValues import RANKS, SUITS
 from operator import itemgetter
 from Player import Player
+from helper import sortHand
 import random
 
 __metaclass__ = type
@@ -11,7 +12,7 @@ class RandomPlayer(Player):
         self.hand = []
 
     def setHand(self,cards):
-        self.hand = cards
+        self.hand = sortHand(cards)
 
 
     #Somewhat adopted from https://github.com/Taschee/schafkopf/blob/master/schafkopf/players/heuristics_player.py
