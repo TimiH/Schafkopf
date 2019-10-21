@@ -17,6 +17,6 @@ p4 = RandomPlayer("Chrissi")
 
 players = [p1,p2,p3,p4]
 start = time.time()
-playTournament(players,2000)
+playTournament(players,1)
 end = time.time()
 print("Time:", end-start)
