@@ -3,12 +3,12 @@ from CardValues import RANKS, SUITS
 from operator import itemgetter
 from PlayerModels.RandomPlayer import RandomPlayer
 from Player import Player
-from PlayerModels.MCTS import MCTS
+from PlayerModels.SampleMaster import SampleMaster
 from helper import sortHand
 import random
 __metaclass__ = type
 
-class MonteCarloPlayer(Player):
+class RandomSample(Player):
     def __init__(self,name):
         self.name = name
         self.hand = []
@@ -17,14 +17,15 @@ class MonteCarloPlayer(Player):
         self.hand = sortHand(cards)
 
     def playCard(self,validCards,gamestate,trickHistory):
+        #If no cards or 1 card
         if len(validCards) == 0:
             print("noValidCards")
         if len(validCards) == 1:
             return validCards[0]
         else:
             position = self.getPosition(gamestate)
-            print("MCTS Position",position)
-            masternode = MCTS(gamestate,validCards,self.hand,position)
+            print("SampleMaster Position",position)
+            masternode = SampleMaster(gamestate,validCards,self.hand,position)
             scoreArray = []
             for child in masternode.children:
                 #print("TreeNode:",child.card,child.rewards,masternode.playerPosition)

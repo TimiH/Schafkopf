@@ -86,6 +86,7 @@ class Game:
                 if c == ace:
                     self.searched = True
                     return
+
     def removeCards(self,history):
         count = 0
         for player in self.players:

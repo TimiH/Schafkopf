@@ -3,9 +3,9 @@ from Player import Player
 from Deck import Deck
 from random import sample
 from operator import add
+from helper import ringTest
 
-
-class MCTS(object):
+class SampleMaster(object):
     def __init__(self,gamestate,validCards,hand,position):
         self.gamestate = gamestate
         self.history = gamestate.history
@@ -15,12 +15,18 @@ class MCTS(object):
         self.lenHands = []
         self.children = []
 
-        #getting len hands
+        #getting len hands and finding all the players that played a card, since their card haven´t been removed from the main game yet
         for p in self.gamestate.players:
             self.lenHands.append(len(p.hand))
-
         for n in range(4):
-            p = Player("MCTS"+str(n))
+            lead = self.gamestate.currentTrick.leadingPlayer
+            numberCardsPlayed = len(self.gamestate.currentTrick.history)
+            if ringTest(lead,numberCardsPlayed, n):
+                self.lenHands[n] -=1
+        
+        #initialising Players
+        for n in range(4):
+            p = Player("SampleMaster"+str(n))
             self.players.append(p)
 
         self.gamestate.players = self.players
