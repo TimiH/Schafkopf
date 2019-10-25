@@ -5,7 +5,7 @@ import random
 from copy import deepcopy
 from Player import Player
 from CardValues import SUITS, RANKS, VALUES
-from helper import canRunaway,createTrumpsList
+from helper import canRunaway,createTrumpsList,sortHand
 from Trick import Trick
 from Rewards import REWARDS
 
@@ -42,7 +42,10 @@ class Game:
 
         #Dealing cards
         for p in self.players:
-            p.setHand(deck.deal(8))
+            cards = deck.deal(8)
+            cards = sortHand(cards)
+            p.setHand(cards)
+            print(cards)
 
     def shufflePositon(self):
         random.shuffle(self.players)

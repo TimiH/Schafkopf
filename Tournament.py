@@ -1,6 +1,6 @@
 from Game import Game
 from operator import add
-from helper import recreateHandsfromHistory
+from helper import recreateHandsfromHistory,sortHand
 
 def playTournament(players,rounds):
     scores = [0,0,0,0]
@@ -20,9 +20,11 @@ def playTournament(players,rounds):
         #     print(game.history)
         #     print(game.rewards)
         #     break
-        hands = recreateHandsfromHistory(game.history)
+        hands = recreateHandsfromHistory(game.history) 
+        for hand in hands:
+            hand = sortHand(hand)
+            print(hand)
         print(game.bids,"Leading Player",game.leadingPlayer,"offensive",game.offensivePlayers)
-        print(hands)
         print(game.scores)
         print(game.history)
         print(game.rewards)

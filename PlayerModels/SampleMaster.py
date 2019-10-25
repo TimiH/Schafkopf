@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from PlayerModels.RandomPlayer import RandomPlayer
 from Player import Player
 from Deck import Deck
@@ -16,14 +17,17 @@ class SampleMaster(object):
         self.children = []
 
         #getting len hands and finding all the players that played a card, since their card haven´t been removed from the main game yet
+
         for p in self.gamestate.players:
+            print(p.hand)
             self.lenHands.append(len(p.hand))
         for n in range(4):
             lead = self.gamestate.currentTrick.leadingPlayer
             numberCardsPlayed = len(self.gamestate.currentTrick.history)
             if ringTest(lead,numberCardsPlayed, n):
                 self.lenHands[n] -=1
-        
+        print(self.lenHands)
+
         #initialising Players
         for n in range(4):
             p = Player("SampleMaster"+str(n))
@@ -34,17 +38,22 @@ class SampleMaster(object):
         self.gamestate.players[position].setHand(hand)
         for card in validCards:
             copy = self.gamestate.copy()
-            copy.players[position].hand.remove(card)
-            child = TreeNode(copy,card,self.availableCards,self.lenHands,100,5)
+            #copy.players[position].hand.remove(card)
+            child = TreeNode(copy,card,self.availableCards,self.lenHands,10,5)
             self.children.append(child)
             child.runSim()
 
+    #Returns all the possible cards in the other´s players hands
     def getAvailableCards(self,hand):
         remainingcards = Deck().cards
         remainingcards = [x for x in remainingcards if x not in hand]
         remainingcards = [x for x in remainingcards if x not in  self.gamestate.cardsPlayed]
         # for card in self.gamestate.cardsPlayed:
         #     remainingcards.remove(card)
+
+        #Remove also all cards that have been played in the currentTrick
+        for card in self.gamestate.currentTrick.history:
+            removeCards.remove(card)
         return remainingcards
 
 class TreeNode(object):
@@ -58,11 +67,9 @@ class TreeNode(object):
         self.availableCards = availableCards
         self.gamestate = gamestate
         self.gamestate.currentTrick.history.append(card)
-        # print("We are in: ", self.card,"with Players:",self.gamestate.players)
-        # for p in self.gamestate.players:
-        #     print(p.hand)
 
     def runSim(self):
+        print("we Played: ", card)
         count = 0
         while count != self.simRuns:
             gamecopy = self.gamestate.copy()
