@@ -12,7 +12,7 @@ import time
 
 
 class Game:
-    def __init__(self, players, leadingPlayer, seed=time.time()):
+    def __init__(self, players, leadingPlayer, seed=None):
         self.players = players  # List of players and Positons
         self.scores = [0, 0, 0, 0]
         self.leadingPlayer = leadingPlayer
@@ -150,13 +150,11 @@ class Game:
             self.currentTrick.playTrick()
             self.removeCards(self.currentTrick.history)
             self.historyFromTrick(self.currentTrick)
+            self.scores[self.currentTrick.winningPlayer] += self.currentTrick.score
+            lead = self.currentTrick.winningPlayer
+            test=1
 
-            for p in self.players:
-                print(p.hand)
-            print('------------------')
-            for p in self.players:
-                print(p.hand)
-            print('------------------\nnextHand:')
+        # Loop Trick
         while not self.isFinished():
             trick = Trick(len(self.history) + 1, self.currentTrick.winningPlayer, None)
             self.currentTrick = trick
@@ -165,16 +163,8 @@ class Game:
             trick.setMembers()
             trick.playTrick()
             self.scores[trick.winningPlayer] += trick.score
-            lead = trick.winningPlayer
-            for p in self.players:
-                print(p.hand)
-            print('------------------')
             self.removeCards(trick.history)
-            for p in self.players:
-                print(p.hand)
-            print('------------------\nnextHand:')
             self.historyFromTrick(trick)
-            print(self.isFinished())
         self.setRewards()
 
 

@@ -23,7 +23,6 @@ class Trick:
         self.players = players
 
     def nextAction(self):
-        # print(self.history)
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
         validCards = self.getValidActionsForPlayerNew(self.players[currentPlayerIndex])
         playedCard = self.players[currentPlayerIndex].playCard(validCards, self.gamestate, self.history)

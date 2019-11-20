@@ -8,8 +8,9 @@ def playTournament(players, rounds):
     playedGames = [0, 0, 0, 0]
 
     for n in range(0, rounds):
+        print("-------------------\nRound:{}".format(n))
         lead = n % 4
-        game = Game(players, lead, 100)  # 100
+        game = Game(players, lead)  # 100
         game.mainGame()
         offensivePlayer = game.offensivePlayers[0]
         playedGames[offensivePlayer] += 1
