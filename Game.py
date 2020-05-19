@@ -16,6 +16,8 @@ class Game:
         self.players = players  # List of players and Positons
         self.scores = [0, 0, 0, 0]
         self.leadingPlayer = leadingPlayer
+        # Needed to control for DeckSeeds during Shuffling
+        self.seed = seed
         self.history = []
         self.cardsPlayed = []
 
@@ -32,8 +34,6 @@ class Game:
         self.rewards = [0, 0, 0, 0]
         self.trumpCards = ()
 
-        # Needed to control for DeckSeeds during Shuffling
-        self.seed = seed
 
     def isFinished(self):
         if len(self.history) == 8:
