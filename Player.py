@@ -18,14 +18,19 @@ class Player(object):
         #     if bid[0] == 1:
         #         return bid
         # return (None,None)
-        return random.choice(validBids)
+        card = random.choice(validBids)
+        l = []
+        return card
 
     def playCard(self,validCards,state,trickHistory):
         #print("{} Hand:{}".format(self.name,self.hand))
         # print("{} Valid:{}".format(self.name,validCards))
+        if not validCards:
+            print(self.name, "STOP NO VALID CARDS with Hand:",self.hand)
         card = random.choice(validCards)
-        # if "MCTS" in self.name:
-        #     print("Hand:{},Playing: {},validCards: {}".format(self.hand,card,validCards))
+        if "SampleMaster" in self.name:
+            print("{} ,Hand:{},History: {},Playing: {},validCards: {}".format(self.name,self.hand,trickHistory,card,validCards))
+
         #self.hand.remove(card)
         #print("{} ->:{}".format(self.name,card))
 

@@ -16,12 +16,9 @@ class Deck:
             ret +=","
         return ret
 
-    def shuffle(self):
+    def shuffle(self,seed):
+        random.seed(seed)
         random.shuffle(self.cards)
-
-    def shuffleYates(self):
-        ## TODO:
-        return
 
     def sort(self):
         self.cards.sort()
