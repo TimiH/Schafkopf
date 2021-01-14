@@ -12,28 +12,75 @@ import time
 
 
 class Game:
-    def __init__(self, players, leadingPlayer, seed=None):
-        self.players = players  # List of players and Positons
-        self.scores = [0, 0, 0, 0]
-        self.leadingPlayer = leadingPlayer
-        self.history = []
-        self.cardsPlayed = []
+    def __init__(self, players, leadingPlayer, seed=None, gameDict=None):
+        if gameDict is None:
+            self.players = players  # List of players and Positons via index
+            self.playersHands = []
+            self.scores = [0, 0, 0, 0]
+            self.leadingPlayer = leadingPlayer
+            self.history = []
+            self.cardsPlayed = []
 
-        self.gameMode = None
-        self.bids = [(None, None)]
-        self.offensivePlayers = []  # Index 0 is the WinningBid, 1 is the other player
-        self.runAwayPossible = None
+            self.gameMode = None
+            self.bids = [(None, None)]
+            self.offensivePlayers = []  # Index 0 is the WinningBid, Index 1 is the other player
+            self.runAwayPossible = None
 
-        self.currentTrick = None
-        self.ranAway = False
-        self.searched = False
-        self.laufende = 0
+            self.currentTrick = None
+            self.ranAway = False
+            self.searched = False
+            self.laufende = 0
 
-        self.rewards = [0, 0, 0, 0]
-        self.trumpCards = ()
+            self.rewards = [0, 0, 0, 0]
+            self.trumpCards = ()
 
-        # Needed to control for DeckSeeds during Shuffling
-        self.seed = seed
+            # Needed to control for DeckSeeds during Shuffling
+            self.seed = seed
+        # This allows initliasation from dircts
+        else:
+            self.players = gameDict['players']  # List of players and Positons via index
+            self.playersHands = gameDict['playersHand']
+            self.scores = gameDict['scores']
+            self.leadingPlayer = gameDict['leadingPlayer']
+            self.history = gameDict['history']
+            self.cardsPlayed = gameDict['cardsPlayed']
+
+            self.gameMode = gameDict['gameMode']
+            self.bids = gameDict['bids']
+            self.offensivePlayers = gameDict['offensivePlayers']
+            self.runAwayPossible = gameDict['runAwayPossible']
+
+            self.currentTrick = gameDict['currentTrick']
+            self.ranAway = gameDict['ranAway']
+            self.searched = gameDict['searched']
+            self.laufende = gameDict['laufende']
+
+            self.rewards = gameDict['rewards']
+            self.trumpCards = gameDict['trumpCards']
+
+            self.seed = gameDict['seed']
+
+    def getGameDict(self):
+        gameDict = {
+            'players': self.players,
+            'playersHands': self.playersHands,
+            'scores': self.scores,
+            'leadingPlayer': self.leadingPlayer,
+            'history': self.history,
+            'cards': self.cardsPlayed,
+            'gameMode': self.gameMode,
+            'runAwayPossible': self.runAwayPossible,
+            # Copy action for currentTrick
+            'currentTrick': self.currentTrick,
+            'ranAway': self.ranAway,
+            'searched': self.searched,
+            'laufende': self.laufende,
+            'rewards': self.rewards,
+            'trumpCards': self.trumpCards,
+            'seed': self.seed
+        }
+        return gameDict
+
 
     def isFinished(self):
         if len(self.history) == 8:
