@@ -2,21 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="35b2a6d3-8817-4cf0-8001-be94eb25019a" name="Default Changelist" comment="Sampling works after fixing distributingCards and isFinished">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/tim.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Schafkopf.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Schafkopf.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Deck.py" beforeDir="false" afterPath="$PROJECT_DIR$/Deck.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bidding.py" beforeDir="false" afterPath="$PROJECT_DIR$/Bidding.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Player.py" beforeDir="false" afterPath="$PROJECT_DIR$/Player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlayerModels/RandomSample.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlayerModels/RandomSample.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlayerModels/SampleMaster.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlayerModels/SampleMaster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tournament.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tournament.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trick.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trick.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,6 +20,10 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1SmhW0glcrXK6sEBAo3GT12nhrg" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -38,18 +31,6 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Python.test">
     <configuration name="Schafkopf" type="PythonConfigurationType" factoryName="Python">
@@ -128,6 +109,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -147,7 +129,14 @@
       <option name="project" value="LOCAL" />
       <updated>1574166690471</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="introduced gameDict to __init__">
+      <created>1610637304334</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1610637304334</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -161,18 +150,52 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Sampling works after fixing distributingCards and isFinished" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sampling works after fixing distributingCards and isFinished" />
+    <MESSAGE value="introduced gameDict to __init__" />
+    <option name="LAST_COMMIT_MESSAGE" value="introduced gameDict to __init__" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2597" y="404" width="544" height="285" key="#Updates" timestamp="1610702257230">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2597" y="404" width="544" height="285" key="#Updates/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610702257230" />
+    <state x="2425" y="77" width="900" height="932" key="CommitChangelistDialog2" timestamp="1610637304210">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2425" y="77" width="900" height="932" key="CommitChangelistDialog2/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610637304210" />
+    <state width="1897" height="209" key="GridCell.Tab.0.bottom" timestamp="1610661624355">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1897" height="209" key="GridCell.Tab.0.bottom/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610661624355" />
+    <state width="1897" height="209" key="GridCell.Tab.0.center" timestamp="1610661624355">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1897" height="209" key="GridCell.Tab.0.center/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610661624355" />
+    <state width="1897" height="209" key="GridCell.Tab.0.left" timestamp="1610661624355">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1897" height="209" key="GridCell.Tab.0.left/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610661624355" />
+    <state width="1897" height="209" key="GridCell.Tab.0.right" timestamp="1610661624355">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1897" height="209" key="GridCell.Tab.0.right/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610661624355" />
+    <state x="2702" y="212" width="345" height="662" key="RollbackChangesDialog" timestamp="1610550392349">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2702" y="212" width="345" height="662" key="RollbackChangesDialog/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610550392349" />
+    <state x="2713" y="324" width="878" height="513" key="refactoring.ChangeSignatureDialog" timestamp="1610532043186">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2713" y="324" width="878" height="513" key="refactoring.ChangeSignatureDialog/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610532043186" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -181,11 +204,6 @@
           <url>file://$PROJECT_DIR$/PlayerModels/RandomSample.py</url>
           <line>31</line>
           <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Game.py</url>
-          <line>166</line>
-          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

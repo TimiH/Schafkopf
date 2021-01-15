@@ -10,7 +10,6 @@ from Trick import Trick
 from Rewards import REWARDS
 import time
 
-
 class Game:
     def __init__(self, players, leadingPlayer, seed=None, gameDict=None):
         if gameDict is None:
@@ -61,7 +60,7 @@ class Game:
             self.seed = gameDict['seed']
 
     def getGameDict(self):
-        gameDict = {
+        gameDict = deepcopy({
             'players': self.players,
             'playersHands': self.playersHands,
             'scores': self.scores,
@@ -78,7 +77,7 @@ class Game:
             'rewards': self.rewards,
             'trumpCards': self.trumpCards,
             'seed': self.seed
-        }
+        })
         return gameDict
 
 
@@ -161,8 +160,11 @@ class Game:
 
     def mainGame(self):
         self.setupGame()
+        #TODO Remove
         copy = self.copy()
-        bidding = Bidding(copy, self.leadingPlayer)
+
+        gamedict = self.getGameDict()
+        bidding = Bidding(gamedict, self.leadingPlayer)
         bidding.biddingPhase()
         self.setGameMode(bidding)
         self.setRunAwayPossible()

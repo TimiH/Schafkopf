@@ -5,16 +5,16 @@ from Card import Card
 from copy import deepcopy,copy
 
 class Bidding:
-    def __init__(self, gameCopy,lead):
-        self.gameCopy = gameCopy
-        self.bids =[]
+    def __init__(self, gameDict, lead):
+        self.gameDict = gameDict
+        self.bids = []
         self.winningBid = None
         self.winningIndex = None
-        self.lead = self.gameCopy.leadingPlayer
+        self.lead = self.gameDict['leadingPlayer']
 
     #fixLead
     def biddingPhase(self):
-        players = self.gameCopy.players
+        players = self.gameDict['players']
         while not self.isFinished():
             currentPlayerIndex = (len(self.bids) + self.lead) % 4
             p = players[currentPlayerIndex]
