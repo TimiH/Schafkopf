@@ -77,7 +77,7 @@ class TreeNode(object):
             #print('Count: {} with {}'.format(count, self.card))
             gamecopy = self.gamestate.copy()
             self.distributeCards(gamecopy)
-            gamecopy.currentTrick.gamestate = gamecopy
+            gamecopy.currentTrick.gameDict = gamecopy
             gamecopy.currentTrick.updatePlayers(gamecopy.players)
             gamecopy.currentTrick.setMembers()
 

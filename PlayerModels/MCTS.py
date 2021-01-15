@@ -62,7 +62,7 @@ class TreeNode(object):
             gamecopy = self.gamestate.copy()
             self.distributeCards(gamecopy)
             #print(gamecopy.players)
-            gamecopy.currentTrick.gamestate = gamecopy
+            gamecopy.currentTrick.gameDict = gamecopy
             gamecopy.currentTrick.updatePlayers(gamecopy.players)
             gamecopy.currentTrick.setMembers()
 

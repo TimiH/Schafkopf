@@ -5,19 +5,21 @@ from copy import deepcopy, copy
 
 
 class Trick:
-    def __init__(self, number, leadingPlayer, copy):
+    def __init__(self, gameDict, number, leadingPlayer):
         self.leadingPlayer = leadingPlayer
-        self.gamestate = None
-        self.gameMode = None
-        self.players = None
+        self.gameDict = gameDict
+        self.gameMode = self.gameDict['gameMode']
+        self.players = self.gameDict['players']
         self.history = []
         self.score = 0
         self.winningPlayer = None
 
     # Somewhat hacky but necessary to avoid empty references in current trick
+    #TODO still needed?
     def setMembers(self):
-        self.gameMode = self.gamestate.gameMode
-        self.players = self.gamestate.players
+        pass
+        # self.gameMode = self.gameDict['gameMode']
+        # self.players = self.gameDict['players']
 
     def updatePlayers(self, players):
         self.players = players
@@ -25,7 +27,7 @@ class Trick:
     def nextAction(self):
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
         validCards = self.getValidActionsForPlayerNew(self.players[currentPlayerIndex])
-        playedCard = self.players[currentPlayerIndex].playCard(validCards, self.gamestate, self.history)
+        playedCard = self.players[currentPlayerIndex].playCard(validCards, self.gameDict, self.history)
         self.history.append(playedCard)
 
     def playTrick(self):
@@ -91,7 +93,7 @@ class Trick:
         # Player has Lead
         if not self.history:
             if self.gameMode[0] == 1 and Card(searchedSuit, 'A') in hand:
-                if self.gamestate.runAwayPossible and self.gamestate.searched:
+                if self.gameDict['runAwayPossible'] and self.gameDict['searched']:
                     possibleActions = list(hand)
                 else:
                     possibleActions = list(hand)
@@ -111,7 +113,7 @@ class Trick:
                     possibleActions = list(possibleActions)
             # Card is not Trump
             elif self.gameMode[0] == 1 and Card(searchedSuit, 'A') in hand and card.suit == searchedSuit:
-                if not self.gamestate.ranAway:
+                if not self.gameDict['ranAway']:
                     possibleActions = [Card(searchedSuit, 'A')]
                 else:
                     possibleActions = self.getSuitsInHand(card.suit, list(hand))
@@ -119,6 +121,6 @@ class Trick:
                 possibleActions = self.getSuitsInHand(card.suit, list(hand))
 
         if self.gameMode[0] == 1 and Card(searchedSuit, 'A') in possibleActions:
-            if not self.gamestate.ranAway and len(possibleActions) > 1:
+            if not self.gameDict['ranAway'] and len(possibleActions) > 1:
                 possibleActions.remove(Card(searchedSuit, 'A'))
         return possibleActions

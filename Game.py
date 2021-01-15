@@ -163,8 +163,8 @@ class Game:
         #TODO Remove
         copy = self.copy()
 
-        gamedict = self.getGameDict()
-        bidding = Bidding(gamedict, self.leadingPlayer)
+        gameDict = self.getGameDict()
+        bidding = Bidding(gameDict, self.leadingPlayer)
         bidding.biddingPhase()
         self.setGameMode(bidding)
         self.setRunAwayPossible()
@@ -177,11 +177,13 @@ class Game:
         # print("Gamemode: {},\nOffensive players: {}\n".format(self.gameMode,self.offensivePlayers))
         lead = self.leadingPlayer
         for n in range(8):
+            gameDict = self.getGameDict()
             # TODO FIX THIS using notFinishied
-            trick = Trick(n, lead, None)
+            trick = Trick(gameDict, n, lead)
             self.currentTrick = trick
-            copy = self.copy()
-            trick.gamestate = copy
+            gameDict = self.getGameDict()
+            trick.gameDict = gameDict
+            #TODO figure out if still needed
             trick.setMembers()
             trick.playTrick()
             self.scores[trick.winningPlayer] += trick.score
@@ -193,6 +195,7 @@ class Game:
         # print(self.offensivePlayers)
         # print(self.scores)
 
+    #update for hustling with random sample later
     def continueGame(self):
         # Finish current trick
         if not self.currentTrick.isFinished():
@@ -205,10 +208,10 @@ class Game:
 
         # Loop Trick
         while not self.isFinished():
-            trick = Trick(len(self.history) + 1, self.currentTrick.winningPlayer, None)
+            trick = Trick(None, len(self.history) + 1, self.currentTrick.winningPlayer)
             self.currentTrick = trick
             copy = self.copy()
-            trick.gamestate = copy
+            trick.gameDict = copy
             trick.setMembers()
             trick.playTrick()
             self.scores[trick.winningPlayer] += trick.score
