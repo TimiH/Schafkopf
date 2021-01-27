@@ -19,21 +19,14 @@ class Player(object):
         #         return bid
         # return (None,None)
         card = random.choice(validBids)
-        l = []
         return card
 
     def playCard(self,validCards,state,trickHistory):
-        #print("{} Hand:{}".format(self.name,self.hand))
-        # print("{} Valid:{}".format(self.name,validCards))
         if not validCards:
             print(self.name, "STOP NO VALID CARDS with Hand:",self.hand)
         card = random.choice(validCards)
-        if "SampleMaster" in self.name:
-            print("{} ,Hand:{},History: {},Playing: {},validCards: {}".format(self.name,self.hand,trickHistory,card,validCards))
-
-        #self.hand.remove(card)
-        #print("{} ->:{}".format(self.name,card))
-
+        # if "SampleMaster" in self.name:
+        #     print("{} ,Hand:{},History: {},Playing: {},validCards: {}".format(self.name,self.hand,trickHistory,card,validCards))
         return card
 
     def sortHand(self,state):

@@ -24,9 +24,9 @@ class RandomSample(Player):
             return validCards[0]
         else:
             position = self.getPosition(gamestate)
-            print("--------------------------------")
-            print("SampleMaster Position",position)
-            masternode = SampleMaster(gamestate,validCards,self.hand,position)
+            #print("--------------------------------")
+            #print("SampleMaster Position",position)
+            masternode = SampleMaster(gamestate,validCards,self.hand,position,trickHistory)
             scoreArray = []
             for child in masternode.children:
                 print("TreeNode:",child.card,child.rewards,masternode.playerPosition)
@@ -34,6 +34,7 @@ class RandomSample(Player):
             best = max(scoreArray)
             bestIndex = scoreArray.index(best)
             card = masternode.children[bestIndex].card
+            print("Playing:{}".format(card))
             #print("Hand:{},Playing: {},validCards: {}".format(self.hand,card,validCards))
             #self.hand.remove(card)
             return card
