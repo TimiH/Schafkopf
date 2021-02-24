@@ -34,3 +34,4 @@ def playTournament(players, rounds):
         scores = map(add, scores, game.rewards)
     print(scores)
     print(playedGames)
+
