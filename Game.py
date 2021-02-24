@@ -98,6 +98,7 @@ class Game:
             p.setHand(cards)
             print(cards)
 
+    #TODO:What is this? here or in Tournament?
     def shufflePositon(self):
         random.shuffle(self.players)
 
@@ -158,6 +159,7 @@ class Game:
         self.history.append((cards, trick.leadingPlayer, trick.winningPlayer))
         self.cardsPlayed += (trick.history)
 
+    #TODO Remove and just use continue game
     def mainGame(self):
         self.setupGame()
         #TODO Remove

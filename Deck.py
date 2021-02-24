@@ -20,6 +20,9 @@ class Deck:
         if seed != None:
             random.seed(seed)
         random.shuffle(self.cards)
+        # after shuffling we reset the state, as otherwise the agents run on the same state as the shuffler which
+        # leasds to repeated games
+        random.seed()
 
     def sort(self):
         self.cards.sort()
