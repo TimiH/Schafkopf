@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="35b2a6d3-8817-4cf0-8001-be94eb25019a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlayerModels/MCTS.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlayerModels/MCTS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlayerModels/SampleMaster.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlayerModels/SampleMaster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trick.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trick.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tournament.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tournament.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,11 +23,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1SmhW0glcrXK6sEBAo3GT12nhrg" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_MARK_IGNORED_FILES_AS_EXCLUDED" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT" />
@@ -35,21 +39,18 @@
   </component>
   <component name="RunManager" selected="Python.test">
     <configuration name="Schafkopf" type="PythonConfigurationType" factoryName="Python">
-      <module name="Schafkopf" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/.." />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="false" />
       <option name="ADD_SOURCE_ROOTS" value="false" />
+      <module name="" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Tournament.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -79,17 +80,17 @@
       <method v="2" />
     </configuration>
     <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Schafkopf" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="false" />
       <option name="ADD_SOURCE_ROOTS" value="false" />
+      <module name="" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
       <option name="PARAMETERS" value="" />
@@ -107,6 +108,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.Schafkopf" />
       </list>
     </recent_temporary>
   </component>
@@ -172,56 +174,6 @@
     <MESSAGE value="updated Bidding.py with gameDict and changed all relevant references in Game, Bidding" />
     <option name="LAST_COMMIT_MESSAGE" value="updated Bidding.py with gameDict and changed all relevant references in Game, Bidding" />
   </component>
-  <component name="WindowStateProjectService">
-    <state x="2597" y="404" width="544" height="285" key="#Updates" timestamp="1610702257230">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="2597" y="404" width="544" height="285" key="#Updates/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610702257230" />
-    <state x="2425" y="77" width="900" height="932" key="CommitChangelistDialog2" timestamp="1610702797139">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="2425" y="77" width="900" height="932" key="CommitChangelistDialog2/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610702797139" />
-    <state width="1897" height="599" key="GridCell.Tab.0.bottom" timestamp="1610703416235">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1897" height="599" key="GridCell.Tab.0.bottom/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610703416235" />
-    <state width="1897" height="599" key="GridCell.Tab.0.center" timestamp="1610703416235">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1897" height="599" key="GridCell.Tab.0.center/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610703416235" />
-    <state width="1897" height="599" key="GridCell.Tab.0.left" timestamp="1610703416235">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1897" height="599" key="GridCell.Tab.0.left/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610703416235" />
-    <state width="1897" height="599" key="GridCell.Tab.0.right" timestamp="1610703416235">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1897" height="599" key="GridCell.Tab.0.right/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610703416235" />
-    <state width="1897" height="351" key="GridCell.Tab.1.bottom" timestamp="1610703364144">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1897" height="351" key="GridCell.Tab.1.bottom/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610703364144" />
-    <state width="1897" height="351" key="GridCell.Tab.1.center" timestamp="1610703364144">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1897" height="351" key="GridCell.Tab.1.center/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610703364144" />
-    <state width="1897" height="351" key="GridCell.Tab.1.left" timestamp="1610703364143">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1897" height="351" key="GridCell.Tab.1.left/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610703364143" />
-    <state width="1897" height="351" key="GridCell.Tab.1.right" timestamp="1610703364144">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1897" height="351" key="GridCell.Tab.1.right/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610703364144" />
-    <state x="2702" y="212" width="345" height="662" key="RollbackChangesDialog" timestamp="1610550392349">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="2702" y="212" width="345" height="662" key="RollbackChangesDialog/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610550392349" />
-    <state x="2713" y="324" width="878" height="513" key="refactoring.ChangeSignatureDialog" timestamp="1610702927060">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="2713" y="324" width="878" height="513" key="refactoring.ChangeSignatureDialog/0.27.1920.1020/1920.0.1920.1080@1920.0.1920.1080" timestamp="1610702927060" />
-  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -229,11 +181,6 @@
           <url>file://$PROJECT_DIR$/PlayerModels/RandomSample.py</url>
           <line>31</line>
           <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Trick.py</url>
-          <line>8</line>
-          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -244,5 +191,10 @@
         </breakpoint>
       </default-breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="gamecopy.players" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
