@@ -16,7 +16,7 @@ class Deck:
             ret +=","
         return ret
 
-    def shuffle(self,seed):
+    def shuffle(self,seed=None):
         if seed != None:
             random.seed(seed)
         random.shuffle(self.cards)
