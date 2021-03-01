@@ -57,7 +57,7 @@ def choseSoloGame(validBids, hand):
             return chosenSolo
         elif len(trumpsInHand) == 5:
             reversed = dict(zip(SUITS.values(), SUITS.keys()))
-            if countSpatzenForTrump(hand, reversed[chosenSolo[1]]) >= 2:
+            if countSpatzenOfSuit(hand, reversed[chosenSolo[1]]) >= 2:
                 chosenSolo = (None, None)
 
     return chosenSolo
@@ -108,8 +108,7 @@ def countColoursInHand(hand, colour=None):
                 count += 1
         return count
 
-#TODO
-def countSpatzenForTrump(hand, suit):
+def countSpatzenOfSuit(hand, suit):
     count = 0
     for card in hand:
         if card.rank != 'A' and card.suit != suit:
