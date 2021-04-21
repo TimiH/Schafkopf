@@ -1,7 +1,7 @@
 from operator import itemgetter
 from Player import Player
 from helper import sortHand
-from staticBidding import choseSoloGame, choseTeamGame, choseWenzGame
+from staticBidding import choseSoloGame, choseTeamGame, choseWenzGame, choseWenzGameRevised
 import random
 
 __metaclass__ = type
