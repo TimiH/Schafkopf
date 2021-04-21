@@ -106,6 +106,32 @@ def sortHand(hand):
 
     return sortedHand
 
+def sortHandWenz(hand):
+    #filter U and colours
+    uSorted = filter(lambda x: x.rank == 'U', hand)
+    eSorted = filter(lambda x: x.suit == 'Eichel' and x.rank != 'U', hand)
+    gSorted = filter(lambda x: x.suit == 'Gras' and x.rank != 'U', hand)
+    hSorted = filter(lambda x: x.suit == 'Herz' and x.rank != 'U', hand)
+    sSorted = filter(lambda x: x.suit == 'Schellen' and x.rank != 'U', hand)
+
+    sortedHand = []
+    if uSorted:
+        uSorted = sorted(uSorted,key=bySuit)
+        sortedHand += uSorted
+    if eSorted:
+        eSorted = sorted(eSorted,key=byRank)
+        sortedHand += eSorted[::-1]
+    if gSorted:
+        gSorted = sorted(gSorted,key=byRank)
+        sortedHand += gSorted[::-1]
+    if hSorted:
+        hSorted = sorted(hSorted,key=byRank)
+        sortedHand += hSorted[::-1]
+    if sSorted:
+        sSorted = sorted(sSorted,key=byRank)
+        sortedHand += sSorted[::-1]
+    return sortedHand
+
 #modified mod function for ringTest
 def modRing(a,b):
     return(((a%b)+b)%b)
