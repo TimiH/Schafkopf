@@ -32,3 +32,9 @@ class Deck:
         for n in range(number):
             ret.append(self.cards.pop())
         return ret
+
+    #TODO deal specific?
+    def dealSpecificCard(self,suit,rank):
+        card = Card(suit,rank)
+        self.cards.remove(card)
+        return card
