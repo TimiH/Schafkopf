@@ -158,7 +158,7 @@ def choseWenzGameRevised(validBids, hand):
                             testAT = True
                             continue
                         # A+2
-                        if rankInHand(suit, 'A') and len(suit) >= 2:
+                        if rankInHand(suit, 'A') and len(suit) > 2:
                             testA2 = True
                         if testA2 and testAT:
                             validBid = (2, None)
