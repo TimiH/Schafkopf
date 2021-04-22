@@ -77,7 +77,7 @@ def choseSoloGame(validBids, hand):
 
 
 # Possibly look at 2U(top 2),2A
-def choseWenzGame(validBids, hand):
+def choseWenzGame(hand):
     uCount = countByRank(hand, 'U')
     aCount = countByRank(hand, 'A')
     validBid = (None, None)
@@ -93,51 +93,52 @@ def choseWenzGame(validBids, hand):
 
 
 # We are aiming for 6 Tricks and if U<4 UE is necessary
-def choseWenzGameRevised(validBids, hand):
+def choseWenzGameRevised(hand):
     uCount = countByRank(hand, 'U')
     aCount = countByRank(hand, 'A')
-    suitCount = countAllSuits(hand, ['U'])
     validBid = (None, None)
-    debug = None
     # 4 U with A+3 or AA or AT
     if uCount == 4:
         # AAXX
         if aCount >= 2:
             validBid = (2, None)
-            debug = "4UAA+"
         elif aCount == 1:
             ace = list(filter(lambda x: x.rank == 'A', hand))[0]
             aceSuitCount = countColourOfSuit(hand, ace.suit, ['U', 'A'])
             # ATXX
             if cardInHand(hand, ace.suit, 'T'):
                 validBid = (2, None)
-                debug = "4UAT+"
             # A2X
             elif aceSuitCount >= 2:
                 validBid = (2, None)
-                debug = "4UA+2"
     # 3U with UE
-    # TODO add 3UAAT
     elif uCount == 3:
         if cardInHand(hand, 'Eichel', 'U'):
-            # UUUAAAXX
+            # UUUAAA
             if aCount >= 3:
                 validBid = (2, None)
-                debug = "3UAAA+"
+            #UUUAAT
+            if aCount == 2:
+                aces = list(filter(lambda x: x.rank == 'A', hand))
+                if any(cardInHand(hand,ace.suit,'T') for ace in aces):
+                    validBid = (2, None)
+            #3UATK
+            if aCount == 1:
+                ace = getCardsOfRank(hand,'A')[0]
+                if cardInHand(hand,ace.suit,'T') and cardInHand(hand,ace.suit,'K'):
+                    validBid = (2, None)
     # 2U with UE
     elif uCount == 2:
-        if cardInHand(hand, 'Eichel', 'U'):
+        if cardInHand(hand, 'Eichel', 'U') and any(cardInHand(hand,x,'U') for x in ['Gras','Herz']):
             # AAAA
             if aCount == 4:
                 validBid = (2, None)
-                debug = "2UAAAA"
             # AAA+T|+3
             elif aCount == 3:
                 aces = list(filter(lambda x: x.rank == 'A', hand))
                 colours = countAllSuits(hand, ['U', 'A'])
                 if any(cardInHand(hand, x.suit, 'T') for x in aces) or any((colours[SUITS[x.suit]]) >= 3 for x in aces):
                     validBid = (2, None)
-                    debug = "2U+AAAT|AAA+3"
             # AA+TT|T+2 => UUATAT
             elif aCount == 2:
                 aces = list(filter(lambda x: x.rank == 'A', hand))
@@ -146,7 +147,6 @@ def choseWenzGameRevised(validBids, hand):
                 # ATAT
                 if sum(tens) >= 2:
                     validBid = (2, None)
-                    debug = "2UATAT"
                 # ATAss e.g UUATAKO
                 elif sum(tens) >= 1:
                     suitsInHand = [getCardsOfSuit(hand, s, ['U']) for s in SUITS]
@@ -162,16 +162,14 @@ def choseWenzGameRevised(validBids, hand):
                             testA2 = True
                         if testA2 and testAT:
                             validBid = (2, None)
-                            debug = "2U+AT+A2"
-            # UUATSSSQ
+            # UUAT+3
             elif aCount == 1:
                 aceInHand = getCardsOfRank(hand, 'A')
                 if cardInHand(hand, aceInHand[0].suit, 'T'):
-                    if countColourOfSuit(hand, aceInHand[0].suit,['U', 'A', 'T']) >= 2:
+                    if countColourOfSuit(hand, aceInHand[0].suit,['U', 'A', 'T']) > 2:
                         validBid = (2, None)
-                        debug = "2UUAT+2"
 
-    return (validBid, debug)
+    return validBid
 
 
 # Returns a set of Trumps in hand

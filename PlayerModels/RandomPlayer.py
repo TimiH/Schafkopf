@@ -17,7 +17,7 @@ class RandomPlayer(Player):
     # Somewhat adopted from https://github.com/Taschee/schafkopf/blob/master/schafkopf/players/heuristics_player.py
     def makeBid(self, validBids):
         teamGameChoice = choseTeamGame(validBids,self.hand)
-        wenzGameChoice = choseWenzGame(validBids,self.hand)
+        wenzGameChoice = choseWenzGameRevised(validBids,self.hand)
         soloGameChoice = choseSoloGame(validBids,self.hand)
         bids = []
 
