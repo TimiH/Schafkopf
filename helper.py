@@ -7,7 +7,7 @@ def createTrumps(gameMode):
     trumpCards = set()
     reversed = dict(zip(SUITS.values(),SUITS.keys()))
     mode = gameMode[0]
-    if mode ==  2:
+    if mode == 2:
         for suit in ['Eichel','Gras','Herz','Schellen']:
             trumpCards.add(Card(suit,'U'))
     elif mode == 1:

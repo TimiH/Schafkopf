@@ -53,16 +53,20 @@ def choseSoloGame(validBids, hand):
     uCount = countByRank(hand, 'U')
     oCount = countByRank(hand, 'O')
     chosenSolo = (None, None)
-    if (uCount + oCount) < 3:
+    if (uCount + oCount) < 4 or oCount < 2 or uCount < 1:
         return chosenSolo
     else:
-        # Find the solo with the most trumps or leave it
+        # Find the solo with the most trumps > 5 or leave it
         max = len(trumpsInHandByGamemode(hand, (3, 0)))
         for solo in validBids:
             if solo[0] == 3:
                 trumpsInHand = trumpsInHandByGamemode(hand, solo)
-                if len(trumpsInHand) >= 5 and len(trumpsInHand) > max:
-                    chosenSolo = solo
+                if len(trumpsInHand) >= 6 and len(trumpsInHand) > max:
+                    # Check for non Trump Suits ignore A
+                    cCount = countAllSuits(hand, ['O', 'U', 'A'])
+                    cCount = [cCount[x] for x in range(4) if x != solo[1]]
+                    if sum(cCount) <= 1:
+                        chosenSolo = solo
 
     if chosenSolo != (None, None):
         trumpsInHand = trumpsInHandByGamemode(hand, chosenSolo)
@@ -70,7 +74,8 @@ def choseSoloGame(validBids, hand):
             return chosenSolo
         elif len(trumpsInHand) == 5:
             reversedSuits = dict(zip(SUITS.values(), SUITS.keys()))
-            if countColourOfSuit(hand, reversedSuits[chosenSolo[1]]) >= 2:
+            #check if Colours are >=2 in order to Avoid UU6
+            if countColourOfSuit(hand, reversedSuits[chosenSolo[1]]) > 2:
                 chosenSolo = (None, None)
 
     return chosenSolo
