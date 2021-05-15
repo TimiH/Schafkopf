@@ -47,6 +47,7 @@ class Game:
             self.gameMode = gameDict['gameMode']
             self.bids = gameDict['bids']
             self.offensivePlayers = gameDict['offensivePlayers']
+            self.offensivePlayers = gameDict['TeamsPublic']
             self.runAwayPossible = gameDict['runAwayPossible']
 
             self.currentTrick = gameDict['currentTrick']
@@ -157,6 +158,7 @@ class Game:
             return
         cards = tuple(trick.history)
         self.history.append((cards, trick.leadingPlayer, trick.winningPlayer))
+
         self.cardsPlayed += (trick.history)
 
     #TODO Remove and just use continue game
@@ -169,6 +171,7 @@ class Game:
         bidding = Bidding(gameDict, self.leadingPlayer)
         bidding.biddingPhase()
         self.setGameMode(bidding)
+        self.
         self.setRunAwayPossible()
         self.setLaufende()
 
@@ -197,7 +200,8 @@ class Game:
         # print(self.offensivePlayers)
         # print(self.scores)
 
-    #update for hustling with random sample later
+    # update for hustling with random sample later
+    # TODO BIDDING
     def continueGame(self):
         # Finish current trick
         if not self.currentTrick.isFinished():
@@ -206,7 +210,7 @@ class Game:
             self.historyFromTrick(self.currentTrick)
             self.scores[self.currentTrick.winningPlayer] += self.currentTrick.score
             lead = self.currentTrick.winningPlayer
-            test=1
+            test = 1
 
         # Loop Trick
         while not self.isFinished():
