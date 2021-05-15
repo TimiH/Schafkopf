@@ -29,6 +29,12 @@ class Trick:
         validCards = self.getValidActionsForPlayerNew(self.players[currentPlayerIndex])
         playedCard = self.players[currentPlayerIndex].playCard(validCards, self.gameDict, self.history)
         self.history.append(playedCard)
+        # if searched A played and Gamemode == 1, update game dict to show it has been searched
+        if self.gameDict['gameMode'][0] == 1:
+            suit = self.gameDict['gameMode'][1]
+            reversed = dict(zip(SUITS.values(), SUITS.keys()))
+            if playedCard.rank == 'A' and playedCard.suit == reversed[suit]:
+                self.gameDict['searched'] = True
 
     def playTrick(self):
         while not self.isFinished():
