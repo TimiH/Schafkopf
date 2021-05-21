@@ -7,13 +7,6 @@ import random
 __metaclass__ = type
 
 class RandomPlayer(Player):
-    def __init__(self, name):
-        self.name = name
-        self.hand = []
-
-    def setHand(self, cards):
-        self.hand = sortHand(cards)
-
     # Somewhat adopted from https://github.com/Taschee/schafkopf/blob/master/schafkopf/players/heuristics_player.py
     def makeBid(self, validBids):
         teamGameChoice = choseTeamGame(validBids,self.hand)
@@ -32,10 +25,9 @@ class RandomPlayer(Player):
         if max != (None, None): print(max, self.hand)
         return max
 
-    def playCard(self, validCards, state, trickHistory):
+    # reateQstates(hand, validCards, playedCard, position, gameDict, trickhistory):
+    def playCard(self, validCards, gameDict, trickHistory):
         card = random.choice(validCards)
-        # print(self.name, validCards)
-        # self.hand.remove(card)
-        # print("{} plays {} and has left {}").format(self.name,card, self.hand)
-        # print("{} ->:{}".format(self.name,card))
+        if self.record:
+            self.recordQstate(self.hand, validCards, card, gameDict, trickHistory)
         return card
