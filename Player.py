@@ -4,6 +4,7 @@ from Card import Card
 import random
 from QstateHelper import createQstates, convertBitArraysInDictTo01
 import json
+import pickle
 import uuid
 import os
 
@@ -59,18 +60,16 @@ class Player(object):
         name = abs(len(hand) - 8)
         self.states['Round' + str(name)] = qstates
 
-    def saveRecords(self):
+    def saveRecordsJson(self):
         if self.record:
             id = str(uuid.uuid4())
             records = {id: self.states}
-            #     with open(self.target,'a') as out:
-            #         json.dump(records,out,indent=3,sort_keys=True)
-            if not os.path.exists(self.target):
-                with open(self.target, 'w') as out:
-                    json.dump(records, out, indent=3, sort_keys=True)
+            path = os.getcwd() + '/DataDump/json/' + id + '.json'
+            with open(path, 'wb') as out:
+                json.dump(records, out, sort_keys=True, indent=3)
 
-            with open(self.target, 'r+') as out:
-                data = json.load(out)
-                data.update(records)
-                out.seek(0)
-                json.dump(data, out, sort_keys=True, indent=3)
+    def saveRecordsPickle(self):
+        id = str(uuid.uuid4()) + '.p'
+        path = os.getcwd() + '/DataDump/pickle'
+        with open(path + id, 'wb') as out:
+            pickle.dump(self.record, out)
