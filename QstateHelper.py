@@ -1,10 +1,12 @@
 from bitarray import bitarray
 from CardValues import RANKS, SUITS
 
-def Qstates(hand, validCards, playedCard, position, gameDict, trickhistory):
+
+def createQstates(hand, validCards, playedCard, position, gameDict, trickhistory):
     qstateDict = {}
     trueVector = getTrueVector()
     # Card Related all are 32bit Array
+    qstateDict['uuid'] = gameDict['uuid']
     qstateDict['Hand'] = createBitArrayFromHand(hand)
     qstateDict['ValidCards'] = createBitArrayFromHand(validCards)
     qstateDict['playedCards'] = createBitArrayFromCard(playedCard)
@@ -19,19 +21,21 @@ def Qstates(hand, validCards, playedCard, position, gameDict, trickhistory):
     # qstateDict['CurrentWinnerPos'] = ''
     qstateDict['Lead'] = createPositionArrayFromIndex(gameDict['leadingPlayer'])
     # General Game
-    qstateDict['Score0'] = gameDict['Score'][0]
-    qstateDict['Score1'] = gameDict['Score'][1]
-    qstateDict['Score2'] = gameDict['Score'][2]
-    qstateDict['Score3'] = gameDict['Score'][3]
-    qstateDict['pointsLeftInGame'] = 120 - sum(gameDict('scores'))
+    qstateDict['Score0'] = gameDict['scores'][0]
+    qstateDict['Score1'] = gameDict['scores'][1]
+    qstateDict['Score2'] = gameDict['scores'][2]
+    qstateDict['Score3'] = gameDict['scores'][3]
+    qstateDict['pointsLeftInGame'] = 120 - sum(gameDict['scores'])
+    qstateDict['pointsInTrick'] = collectPointsInTrick(trickhistory)
     qstateDict['ranAway'] = gameDict['ranAway']
     qstateDict['searched'] = gameDict['searched']
     qstateDict['PostionMeTable'] = createPositionArrayFromIndex(position)
     qstateDict['GameMode'] = gameDict['gameMode']
     qstateDict['OwnTeam'] = createTeamArray(position, gameDict)
-    qstateDict['teamScores'] = createTeamScores(gameDict['Score'], [qstateDict['OwnTeam']])
+    qstateDict['teamScores'] = createTeamScores(gameDict['scores'], [qstateDict['OwnTeam']])
 
     return qstateDict
+
 
 def createBitArrayFromHand(hand):
     array = bitarray(32)
@@ -40,6 +44,7 @@ def createBitArrayFromHand(hand):
         index = SUITS[card.suit] * 8 + RANKS.index(card.rank)
         array[index] = 1
     return array
+
 
 def createBitArrayFromCard(card):
     array = createFalseArray(32)
@@ -119,3 +124,16 @@ def createTeamArray(position, gameDict):
             return array
         else:
             return ~array
+
+
+def collectPointsInTrick(trickhistory):
+    points = 0
+    for card in trickhistory:
+        points += card.value
+    return points
+
+
+def convertBitArraysInDictTo01(qstates):
+    for key in qstates.keys():
+        if isinstance(qstates[key], bitarray):
+            qstates[key] = qstates[key].to01()

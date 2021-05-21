@@ -8,11 +8,12 @@ from CardValues import SUITS, RANKS, VALUES
 from helper import canRunaway, createTrumpsList, sortHand
 from Trick import Trick
 from Rewards import REWARDS
-import time
+import uuid
 
 class Game:
     def __init__(self, players, leadingPlayer, seed=None, gameDict=None):
         if gameDict is None:
+            self.uuid = str(uuid.uuid4())
             self.players = players  # List of players and Positons via index
             self.playersHands = []
             self.scores = [0, 0, 0, 0]
@@ -31,12 +32,15 @@ class Game:
             self.laufende = 0
 
             self.rewards = [0, 0, 0, 0]
+            self.schneider = False
+            self.schwarz = False
             self.trumpCards = ()
 
             # Needed to control for DeckSeeds during Shuffling
             self.seed = seed
         # This allows initliasation from dircts
         else:
+            self.uuid = str(uuid.uuid4())
             self.players = gameDict['players']  # List of players and Positons via index
             self.playersHands = gameDict['playersHand']
             self.scores = gameDict['scores']
@@ -47,7 +51,6 @@ class Game:
             self.gameMode = gameDict['gameMode']
             self.bids = gameDict['bids']
             self.offensivePlayers = gameDict['offensivePlayers']
-            self.offensivePlayers = gameDict['TeamsPublic']
             self.runAwayPossible = gameDict['runAwayPossible']
 
             self.currentTrick = gameDict['currentTrick']
@@ -56,12 +59,15 @@ class Game:
             self.laufende = gameDict['laufende']
 
             self.rewards = gameDict['rewards']
+            self.schneider = gameDict['schneider']
+            self.schwarz = gameDict['schwarz']
             self.trumpCards = gameDict['trumpCards']
 
             self.seed = gameDict['seed']
 
     def getGameDict(self):
-        gameDict = deepcopy({
+        gameDict = {
+            'uuid': self.uuid,
             'players': self.players,
             'playersHands': self.playersHands,
             'scores': self.scores,
@@ -70,15 +76,19 @@ class Game:
             'cards': self.cardsPlayed,
             'gameMode': self.gameMode,
             'runAwayPossible': self.runAwayPossible,
+            'offensivePlayers': self.offensivePlayers,
+
             # Copy action for currentTrick
             'currentTrick': self.currentTrick,
             'ranAway': self.ranAway,
             'searched': self.searched,
             'laufende': self.laufende,
             'rewards': self.rewards,
+            'schneider': self.schneider,
+            'schwarz': self.schwarz,
             'trumpCards': self.trumpCards,
             'seed': self.seed
-        })
+        }
         return gameDict
 
 
@@ -93,10 +103,11 @@ class Game:
         deck.shuffle(self.seed)
 
         # Dealing cards
-        for p in self.players:
+        for position, player in enumerate(self.players):
             cards = deck.deal(8)
             cards = sortHand(cards)
-            p.setHand(cards)
+            player.setHand(cards)
+            player.setPosition(position)
             print(cards)
 
     #TODO:What is this? here or in Tournament?
@@ -171,7 +182,6 @@ class Game:
         bidding = Bidding(gameDict, self.leadingPlayer)
         bidding.biddingPhase()
         self.setGameMode(bidding)
-        self.
         self.setRunAwayPossible()
         self.setLaufende()
 
@@ -184,19 +194,23 @@ class Game:
         for n in range(8):
             gameDict = self.getGameDict()
             # TODO FIX THIS using notFinishied
-            trick = Trick(gameDict, n, lead)
+            trick = Trick(gameDict, n, self.leadingPlayer)
             self.currentTrick = trick
             gameDict = self.getGameDict()
             trick.gameDict = gameDict
-            #TODO figure out if still needed
+            # TODO figure out if still needed
             trick.setMembers()
             trick.playTrick()
             self.scores[trick.winningPlayer] += trick.score
-            lead = trick.winningPlayer
+            self.leadingPlayer = trick.winningPlayer
             # self.tricks.append(trick)
             self.removeCards(trick.history)
             self.historyFromTrick(trick)
         self.setRewards()
+        rewardsDict = self.rewardsDict()
+        for player in self.players:
+            player.setResults(rewardsDict)
+            player.saveRecords()
         # print(self.offensivePlayers)
         # print(self.scores)
 
@@ -285,6 +299,7 @@ class Game:
         # Check if schneider
         elif scoreOffense > 90 or scoreOffense < 31:
             schneider = True
+            self.schneider
         # Check if one team scored all tricks
         trickCount = 0
         for t in self.history:
@@ -326,3 +341,13 @@ class Game:
                         self.rewards[s] = -3 * reward
                     else:
                         self.rewards[s] = 1 * reward
+
+    def rewardsDict(self):
+        rewardsDict = {
+            'scores': self.scores,
+            'laufende': self.laufende,
+            'rewards': self.rewards,
+            'schneider': self.schneider,
+            'schwarz': self.schwarz
+        }
+        return rewardsDict
