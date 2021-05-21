@@ -122,7 +122,7 @@ class Game:
         self.bids = bidding.getBids()
         self.gameMode = bidding.winningBid
         self.offensivePlayers.append(bidding.winningIndex)
-
+        self.trumpCards = createTrumpsList(self.gameMode)
         # finds second offensive player in team mode
         reversed = dict(zip(SUITS.values(), SUITS.keys()))
         if self.gameMode[0] == 1:
@@ -210,7 +210,8 @@ class Game:
         rewardsDict = self.rewardsDict()
         for player in self.players:
             player.setResults(rewardsDict)
-            player.saveRecords()
+            # player.saveRecordsPickle()
+            player.saveRecordsJson()
         # print(self.offensivePlayers)
         # print(self.scores)
 
