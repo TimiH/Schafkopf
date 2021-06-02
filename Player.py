@@ -27,19 +27,10 @@ class Player(object):
         self.position = postion
 
     def makeBid(self, validBids):
-        # for bid in validBids:
-        #     if bid[0] == 1:
-        #         return bid
-        # return (None,None)
-        card = random.choice(validBids)
-        return card
+        pass
 
     def playCard(self, validCards, state, trickHistory):
-        if not validCards:
-            print(self.name, "STOP NO VALID CARDS with Hand:", self.hand)
-        card = random.choice(validCards)
-
-        return card
+        pass
 
     def sortHand(self, state):
         pass
@@ -72,4 +63,4 @@ class Player(object):
         id = str(uuid.uuid4()) + '.p'
         path = os.getcwd() + '/DataDump/pickle'
         with open(path + id, 'wb') as out:
-            pickle.dump(self.record, out)
+            pickle.dump(self.record, out, protocol=2)

@@ -130,3 +130,5 @@ class Trick:
             if not self.gameDict['ranAway'] and len(possibleActions) > 1:
                 possibleActions.remove(Card(searchedSuit, 'A'))
         return possibleActions
+
+    def __copy__(self):

@@ -65,6 +65,7 @@ class Game:
 
             self.seed = gameDict['seed']
 
+    # TODO deepcopy?
     def getGameDict(self):
         gameDict = {
             'uuid': self.uuid,
@@ -79,7 +80,7 @@ class Game:
             'offensivePlayers': self.offensivePlayers,
 
             # Copy action for currentTrick
-            'currentTrick': self.currentTrick,
+            'currentTrick': self.currentTrick.copy(),
             'ranAway': self.ranAway,
             'searched': self.searched,
             'laufende': self.laufende,
@@ -114,6 +115,7 @@ class Game:
     def shufflePositon(self):
         random.shuffle(self.players)
 
+    # still needed since Dict?
     def copy(self):
         return deepcopy(self)
 
@@ -172,10 +174,23 @@ class Game:
 
         self.cardsPlayed += (trick.history)
 
-    #TODO Remove and just use continue game
+    def playGame(self):
+        # Check for Bids
+        if self.bids == [(None, None)]:
+            gameDict = self.getGameDict()
+            bidding = Bidding(gameDict, self.leadingPlayer)
+            bidding.biddingPhase()
+            self.setGameMode(bidding)
+            self.setRunAwayPossible()
+            self.setLaufende()
+        if self.gameMode == (None, None):
+            print("No Game came Together")
+            return
+
+    # TODO Remove and just use continue game
     def mainGame(self):
         self.setupGame()
-        #TODO Remove
+        # TODO Remove
         copy = self.copy()
 
         gameDict = self.getGameDict()
@@ -210,8 +225,8 @@ class Game:
         rewardsDict = self.rewardsDict()
         for player in self.players:
             player.setResults(rewardsDict)
-            # player.saveRecordsPickle()
-            player.saveRecordsJson()
+            player.saveRecordsPickle()
+            # player.saveRecordsJson()
         # print(self.offensivePlayers)
         # print(self.scores)
 

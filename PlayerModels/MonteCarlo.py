@@ -1,11 +1,9 @@
 from helper import createTrumps
-from CardValues import RANKS, SUITS
-from operator import itemgetter
-from PlayerModels.RandomPlayer import RandomPlayer
+from CardValues import SUITS
 from Player import Player
 from PlayerModels.MCTS import MCTS
 from helper import sortHand
-import random
+
 __metaclass__ = type
 
 class MonteCarloPlayer(Player):
