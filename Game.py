@@ -22,7 +22,7 @@ class Game:
             self.cardsPlayed = []
 
             self.gameMode = None
-            self.bids = [(None, None)]
+            self.bids = [(0, 0)]
             self.offensivePlayers = []  # Index 0 is the WinningBid, Index 1 is the other player
             self.runAwayPossible = None
 
@@ -126,7 +126,7 @@ class Game:
         self.offensivePlayers.append(bidding.winningIndex)
         self.trumpCards = createTrumpsList(self.gameMode)
         # finds second offensive player in team mode
-        reversed = dict(zip(SUITS.values(), SUITS.keys()))
+        reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
         if self.gameMode[0] == 1:
             suit = self.gameMode[1]
             for p in self.players:
@@ -149,7 +149,7 @@ class Game:
         if mode != 1:
             return
         else:
-            reversed = dict(zip(SUITS.values(), SUITS.keys()))
+            reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
             ace = Card(reversed[suit], 'A')
             for c in trick.history:
                 if c == ace:
@@ -200,7 +200,7 @@ class Game:
         self.setRunAwayPossible()
         self.setLaufende()
 
-        if self.gameMode == (None, None):
+        if self.gameMode == (0, 0):
             print("no game mode")
             return
         # print("Bids:",self.bids,"\nLeadingPlayer:",self.leadingPlayer)

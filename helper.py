@@ -5,7 +5,7 @@ from copy import copy
 
 def createTrumps(gameMode):
     trumpCards = set()
-    reversed = dict(zip(SUITS.values(),SUITS.keys()))
+    reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
     mode = gameMode[0]
     if mode == 2:
         for suit in ['Eichel','Gras','Herz','Schellen']:
@@ -18,18 +18,18 @@ def createTrumps(gameMode):
         for rank in ['A','T','K','9','8','7']:
             trumpCards.add(Card('Herz',rank))
     elif mode == 3:
-        _,colour = gameMode
-        for suit in ['Eichel','Gras','Herz','Schellen']:
-            trumpCards.add(Card(suit,'O'))
-        for suit in SUITS.keys():
-            trumpCards.add(Card(suit,'U'))
-        for rank in ['A','T','K','9','8','7']:
-            trumpCards.add(Card(reversed[colour],rank))
+        _, colour = gameMode
+        for suit in ['Eichel', 'Gras', 'Herz', 'Schellen']:
+            trumpCards.add(Card(suit, 'O'))
+        for suit in list(SUITS.keys()):
+            trumpCards.add(Card(suit, 'U'))
+        for rank in ['A', 'T', 'K', '9', '8', '7']:
+            trumpCards.add(Card(reversed[colour], rank))
     return trumpCards
 
 def createTrumpsList(gameMode):
     trumpCards = []
-    reversed = dict(zip(SUITS.values(),SUITS.keys()))
+    reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
     mode = gameMode[0]
     if mode ==  2:
         for suit in ['Eichel','Gras','Herz','Schellen']:
@@ -57,9 +57,9 @@ def canRunaway(player,gameMode):
     trumps = createTrumps(gameMode)
     #Only leave colours
     hand -= trumps
-    reversed = dict(zip(SUITS.values(),SUITS.keys()))
+    reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
     suit = reversed[gameMode[1]]
-    hand = list(filter(lambda x: x.suit == suit,hand))
+    hand = list([x for x in hand if x.suit == suit])
     if len(hand) >= 4:
         return True
     else:
@@ -87,18 +87,18 @@ def byRank(card):
 
 #Sorts hand using OUsuit
 def sortHand(hand):
-    #filter for O and U
-    oSorted = filter(lambda x: x.rank == 'O', hand)
-    uSorted = filter(lambda x: x.rank == 'U', hand)
-    otherCards = filter(lambda x: x.rank != 'U' and x.rank != 'O', hand)
+    # filter for O and U
+    oSorted = [x for x in hand if x.rank == 'O']
+    uSorted = [x for x in hand if x.rank == 'U']
+    otherCards = [x for x in hand if x.rank != 'U' and x.rank != 'O']
 
-    #ugly if statements in case list empty
+    # ugly if statements in case list empty
     sortedHand = []
     if oSorted:
-        oSorted = sorted(oSorted,key=bySuit)
+        oSorted = sorted(oSorted, key=bySuit)
         [sortedHand.append(x) for x in oSorted]
     if uSorted:
-        uSorted = sorted(uSorted,key=bySuit)
+        uSorted = sorted(uSorted, key=bySuit)
         [sortedHand.append(x) for x in uSorted]
     if otherCards:
         otherCards = sorted(otherCards, key=bySuit)
@@ -106,23 +106,24 @@ def sortHand(hand):
 
     return sortedHand
 
+
 def sortHandWenz(hand):
-    #filter U and colours
-    uSorted = filter(lambda x: x.rank == 'U', hand)
-    eSorted = filter(lambda x: x.suit == 'Eichel' and x.rank != 'U', hand)
-    gSorted = filter(lambda x: x.suit == 'Gras' and x.rank != 'U', hand)
-    hSorted = filter(lambda x: x.suit == 'Herz' and x.rank != 'U', hand)
-    sSorted = filter(lambda x: x.suit == 'Schellen' and x.rank != 'U', hand)
+    # filter U and colours
+    uSorted = [x for x in hand if x.rank == 'U']
+    eSorted = [x for x in hand if x.suit == 'Eichel' and x.rank != 'U']
+    gSorted = [x for x in hand if x.suit == 'Gras' and x.rank != 'U']
+    hSorted = [x for x in hand if x.suit == 'Herz' and x.rank != 'U']
+    sSorted = [x for x in hand if x.suit == 'Schellen' and x.rank != 'U']
 
     sortedHand = []
     if uSorted:
-        uSorted = sorted(uSorted,key=bySuit)
+        uSorted = sorted(uSorted, key=bySuit)
         sortedHand += uSorted
     if eSorted:
-        eSorted = sorted(eSorted,key=byRank)
+        eSorted = sorted(eSorted, key=byRank)
         sortedHand += eSorted[::-1]
     if gSorted:
-        gSorted = sorted(gSorted,key=byRank)
+        gSorted = sorted(gSorted, key=byRank)
         sortedHand += gSorted[::-1]
     if hSorted:
         hSorted = sorted(hSorted,key=byRank)

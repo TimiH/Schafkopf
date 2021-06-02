@@ -5,9 +5,9 @@ import random
 class Deck:
     def __init__(self):
         self.cards = []
-        for s in SUITS.keys():
+        for s in list(SUITS.keys()):
             for r in RANKS:
-                self.cards.append(Card(s,r))
+                self.cards.append(Card(s, r))
 
     def __str__(self):
         ret = ""

@@ -32,7 +32,7 @@ class Trick:
         # if searched A played and Gamemode == 1, update game dict to show it has been searched
         if self.gameDict['gameMode'][0] == 1:
             suit = self.gameDict['gameMode'][1]
-            reversed = dict(zip(SUITS.values(), SUITS.keys()))
+            reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
             if playedCard.rank == 'A' and playedCard.suit == reversed[suit]:
                 self.gameDict['searched'] = True
 
@@ -75,7 +75,7 @@ class Trick:
     # returns all suits from hand without trumps. If empty return hand
     def getSuitsInHand(self, suit, hand):
         trumps = createTrumps(self.gameMode)
-        cards = list(filter(lambda x: x.suit == suit and x not in trumps, hand))
+        cards = list([x for x in hand if x.suit == suit and x not in trumps])
         if not cards:
             return hand
         else:
@@ -85,7 +85,7 @@ class Trick:
     def getValidActionsForPlayerNew(self, player):
         hand = set(copy(player.hand))
         trumps = createTrumps(self.gameMode)
-        reversed = dict(zip(SUITS.values(), SUITS.keys()))
+        reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
 
         # hack because Wenz (2,NONE) returns key error #TODO
         if self.gameMode[0] != 2:

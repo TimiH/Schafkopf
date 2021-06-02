@@ -57,7 +57,7 @@ class Bidding:
             a = bid[0]
             if a in [1,2,3]:
                 #filters out all tuples (1,_)
-                possibleModes = list(filter(lambda x: x[0]!=1,possibleModes))
+                possibleModes = list([x for x in possibleModes if x[0] != 1])
                 break
         # print("Hand:{}\nPossibleBids:{}".format(hand,possibleModes))
         return possibleModes
