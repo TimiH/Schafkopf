@@ -134,6 +134,6 @@ def collectPointsInTrick(trickhistory):
 
 
 def convertBitArraysInDictTo01(qstates):
-    for key in qstates.keys():
+    for key in list(qstates.keys()):
         if isinstance(qstates[key], bitarray):
             qstates[key] = qstates[key].to01()

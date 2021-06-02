@@ -23,7 +23,7 @@ class MonteCarloPlayer(Player):
             return validCards[0]
         else:
             position = self.getPosition(gamestate)
-            print("MCTS Position",position)
+            print(("MCTS Position", position))
             masternode = MCTS(gamestate,validCards,self.hand,position)
             scoreArray = []
             for child in masternode.children:
@@ -51,15 +51,15 @@ class MonteCarloPlayer(Player):
         if soloGameChoice[0]>max[0]:
             max = soloGameChoice
         #print("PLAYERCHOICES",max,teamGameChoice,wenzGameChoice,soloGameChoice)
-        if max != (None,None):print(max,self.hand)
+        if max != (None, None): print((max, self.hand))
         return max
 
     def sortHand(self,state):
         pass
 
     def choseTeamGame(self, validBids):
-        possibleTeam = list(filter(lambda x: x[0]==1,validBids))
-        ret = (None,None)
+        possibleTeam = list([x for x in validBids if x[0] == 1])
+        ret = (None, None)
         if not possibleTeam:
             return (None,None)
 
@@ -110,7 +110,7 @@ class MonteCarloPlayer(Player):
             if len(trumpsInHand) >= 6:
                 return chosenSolo
             elif len(trumpsInHand) == 5:
-                reversed = dict(zip(SUITS.values(),SUITS.keys()))
+                reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
                 if self.countSpatzenForTrump(reversed[chosenSolo[1]]) >=2:
                     chosenSolo = (None, None)
 
@@ -125,7 +125,7 @@ class MonteCarloPlayer(Player):
             if aCount >=2:
                 ret = (2,None)
             elif aCount == 1:
-                ace = list(filter(lambda x: x.rank == 'A', self.hand))[0]
+                ace = list([x for x in self.hand if x.rank == 'A'])[0]
                 aceSuitsInHand = self.countColoursInHand(ace.suit)
                 if aceSuitsInHand >=3:
                     ret = (2,None)

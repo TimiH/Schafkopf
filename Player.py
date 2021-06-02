@@ -36,7 +36,7 @@ class Player(object):
 
     def playCard(self, validCards, state, trickHistory):
         if not validCards:
-            print(self.name, "STOP NO VALID CARDS with Hand:", self.hand)
+            print((self.name, "STOP NO VALID CARDS with Hand:", self.hand))
         card = random.choice(validCards)
 
         return card
@@ -51,7 +51,7 @@ class Player(object):
 
     def setResults(self, resultsDict):
         if self.record:
-            for i in self.states.keys():
+            for i in list(self.states.keys()):
                 self.states[i].update(resultsDict)
 
     def recordQstate(self, hand, validCards, playedCard, gameDict, trickHistory):

@@ -124,7 +124,7 @@ class Game:
         self.offensivePlayers.append(bidding.winningIndex)
         self.trumpCards = createTrumpsList(self.gameMode)
         # finds second offensive player in team mode
-        reversed = dict(zip(SUITS.values(), SUITS.keys()))
+        reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
         if self.gameMode[0] == 1:
             suit = self.gameMode[1]
             for p in self.players:
@@ -147,7 +147,7 @@ class Game:
         if mode != 1:
             return
         else:
-            reversed = dict(zip(SUITS.values(), SUITS.keys()))
+            reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
             ace = Card(reversed[suit], 'A')
             for c in trick.history:
                 if c == ace:

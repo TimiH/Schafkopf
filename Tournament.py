@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 from Game import Game
 from operator import add
 from helper import recreateHandsfromHistory, sortHand
@@ -29,7 +29,7 @@ def playFairTournament(players, rounds):
             print("Round: " + str(i) + '.' + str(n))
             print(*players, sep=',')
             print('Rewards', gamecopy.rewards)
-            scores = map(add, scores, rotatePlayersBackwards(gamecopy.rewards, n))
+            scores = list(map(add, scores, rotatePlayersBackwards(gamecopy.rewards, n)))
         print('Scores after Round', scores)
     print('Scores after Tournament', scores)
 
@@ -62,6 +62,6 @@ def playTournament(players, rounds):
         print(game.scores)
         print(game.history)
         print(game.rewards)
-        scores = map(add, scores, game.rewards)
+        scores = list(map(add, scores, game.rewards))
     print(scores)
     print(playedGames)

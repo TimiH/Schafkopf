@@ -69,7 +69,7 @@ class TreeNode(object):
             gamecopy.continueGame()
             gamecopy.setRewards()
 
-            self.rewards = map(add,self.rewards,gamecopy.rewards)
+            self.rewards = list(map(add, self.rewards, gamecopy.rewards))
             #print(self.card,gamecopy.rewards)
             count +=1
             #clear(gamecopy)
