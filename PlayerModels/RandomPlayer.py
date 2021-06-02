@@ -14,7 +14,7 @@ class RandomPlayer(Player):
         soloGameChoice = choseSoloGame(validBids,self.hand)
         bids = []
 
-        max = (None, None)
+        max = (0, 0)
         if teamGameChoice[0] > max[0]:
             max = teamGameChoice
         if wenzGameChoice[0] > max[0]:
@@ -22,7 +22,8 @@ class RandomPlayer(Player):
         if soloGameChoice[0] > max[0]:
             max = soloGameChoice
         # print("PLAYERCHOICES",max,teamGameChoice,wenzGameChoice,soloGameChoice)
-        if max != (None, None): print((max, self.hand))
+        if max != (0, 0):
+            print((max, self.hand))
         return max
 
     # reateQstates(hand, validCards, playedCard, position, gameDict, trickhistory):

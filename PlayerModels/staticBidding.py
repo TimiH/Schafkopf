@@ -6,9 +6,9 @@ from Card import Card
 # Returns best TeamGame or (None,None) if no gamemode possible or sensible
 def choseTeamGame(validBids, hand):
     possibleTeam = list([x for x in validBids if x[0] == 1])
-    ret = (None, None)
+    ret = (0, 0)
     if not possibleTeam:
-        return (None, None)
+        return (0, 0)
 
     # Counting U,O,T,A and
     uCount = countByRank(hand, 'U')
@@ -52,7 +52,7 @@ def choseTeamGame(validBids, hand):
 def choseSoloGame(validBids, hand):
     uCount = countByRank(hand, 'U')
     oCount = countByRank(hand, 'O')
-    chosenSolo = (None, None)
+    chosenSolo = (0, 0)
     if (uCount + oCount) < 4 or oCount < 2 or uCount < 1:
         return chosenSolo
     else:
@@ -68,15 +68,15 @@ def choseSoloGame(validBids, hand):
                     if sum(cCount) <= 1:
                         chosenSolo = solo
 
-    if chosenSolo != (None, None):
+    if chosenSolo != (0, 0):
         trumpsInHand = trumpsInHandByGamemode(hand, chosenSolo)
         if len(trumpsInHand) >= 6:
             return chosenSolo
         elif len(trumpsInHand) == 5:
             reversedSuits = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
-            #check if Colours are >=2 in order to Avoid UU6
+            # check if Colours are >=2 in order to Avoid UU6
             if countColourOfSuit(hand, reversedSuits[chosenSolo[1]]) > 2:
-                chosenSolo = (None, None)
+                chosenSolo = (0, 0)
 
     return chosenSolo
 
@@ -85,7 +85,7 @@ def choseSoloGame(validBids, hand):
 def choseWenzGame(hand):
     uCount = countByRank(hand, 'U')
     aCount = countByRank(hand, 'A')
-    validBid = (None, None)
+    validBid = (0, 0)
     if uCount >= 3:
         if aCount >= 2:
             validBid = (2, None)
@@ -101,7 +101,7 @@ def choseWenzGame(hand):
 def choseWenzGameRevised(hand):
     uCount = countByRank(hand, 'U')
     aCount = countByRank(hand, 'A')
-    validBid = (None, None)
+    validBid = (0, 0)
     # 4 U with A+3 or AA or AT
     if uCount == 4:
         # AAXX

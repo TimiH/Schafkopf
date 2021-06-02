@@ -22,7 +22,7 @@ class Game:
             self.cardsPlayed = []
 
             self.gameMode = None
-            self.bids = [(None, None)]
+            self.bids = [(0, 0)]
             self.offensivePlayers = []  # Index 0 is the WinningBid, Index 1 is the other player
             self.runAwayPossible = None
 
@@ -185,7 +185,7 @@ class Game:
         self.setRunAwayPossible()
         self.setLaufende()
 
-        if self.gameMode == (None, None):
+        if self.gameMode == (0, 0):
             print("no game mode")
             return
         # print("Bids:",self.bids,"\nLeadingPlayer:",self.leadingPlayer)

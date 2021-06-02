@@ -27,7 +27,7 @@ def playFairTournament(players, rounds):
             gamecopy.players = rotatePlayersForward(gamecopy.players, n)
             gamecopy.mainGame()
             print("Round: " + str(i) + '.' + str(n))
-            print(*players, sep=',')
+            # print(*players, sep=',')
             print('Rewards', gamecopy.rewards)
             scores = list(map(add, scores, rotatePlayersBackwards(gamecopy.rewards, n)))
         print('Scores after Round', scores)

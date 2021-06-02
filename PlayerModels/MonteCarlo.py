@@ -51,7 +51,7 @@ class MonteCarloPlayer(Player):
         if soloGameChoice[0]>max[0]:
             max = soloGameChoice
         #print("PLAYERCHOICES",max,teamGameChoice,wenzGameChoice,soloGameChoice)
-        if max != (None, None): print((max, self.hand))
+        if max != (0, 0): print((max, self.hand))
         return max
 
     def sortHand(self,state):
@@ -59,7 +59,7 @@ class MonteCarloPlayer(Player):
 
     def choseTeamGame(self, validBids):
         possibleTeam = list([x for x in validBids if x[0] == 1])
-        ret = (None, None)
+        ret = (0, 0)
         if not possibleTeam:
             return (None,None)
 
@@ -93,7 +93,7 @@ class MonteCarloPlayer(Player):
     def choseSoloGame(self, validBids):
         uCount = self.countCardInHand('U')
         oCount = self.countCardInHand('O')
-        chosenSolo = (None, None)
+        chosenSolo = (0, 0)
         if (uCount + oCount) <3:
             return chosenSolo
         else:
@@ -112,7 +112,7 @@ class MonteCarloPlayer(Player):
             elif len(trumpsInHand) == 5:
                 reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
                 if self.countSpatzenForTrump(reversed[chosenSolo[1]]) >=2:
-                    chosenSolo = (None, None)
+                    chosenSolo = (0, 0)
 
         return chosenSolo
 
