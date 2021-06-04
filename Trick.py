@@ -5,7 +5,7 @@ from copy import deepcopy, copy
 
 
 class Trick:
-    def __init__(self, gameDict, number, leadingPlayer):
+    def __init__(self, gameDict, leadingPlayer):
         self.leadingPlayer = leadingPlayer
         self.gameDict = gameDict
         self.gameMode = self.gameDict['gameMode']
@@ -26,10 +26,14 @@ class Trick:
 
     def nextAction(self):
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
-        validCards = self.getValidActionsForPlayerNew(self.players[currentPlayerIndex])
+        playerHand = self.gameDict['playersHands'][currentPlayerIndex]
+        validCards = self.getValidActionsForHand(playerHand)
+
+        self.players[currentPlayerIndex].setHand(playerHand)
         playedCard = self.players[currentPlayerIndex].playCard(validCards, self.gameDict, self.history)
         self.history.append(playedCard)
-        # if searched A played and Gamemode == 1, update game dict to show it has been searched
+
+        # if searched A played and Gamemode == 1, update game dict to show it has been searched,since gameDict is then passed to players
         if self.gameDict['gameMode'][0] == 1:
             suit = self.gameDict['gameMode'][1]
             reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
@@ -82,8 +86,8 @@ class Trick:
             return cards
 
     # Adapted from Taschee Github https://github.com/Taschee/schafkopf/blob/master/schafkopf/trick_game.py
-    def getValidActionsForPlayerNew(self, player):
-        hand = set(copy(player.hand))
+    def getValidActionsForHand(self, playerHand):
+        hand = set(playerHand)
         trumps = createTrumps(self.gameMode)
         reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
 
@@ -131,4 +135,6 @@ class Trick:
                 possibleActions.remove(Card(searchedSuit, 'A'))
         return possibleActions
 
-    def __copy__(self):
+    def copy(self):
+        trick = Trick(self.gameDict, self.leadingPlayer)
+        return trick

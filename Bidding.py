@@ -17,7 +17,9 @@ class Bidding:
         players = self.gameDict['players']
         while not self.isFinished():
             currentPlayerIndex = (len(self.bids) + self.lead) % 4
+            playerhand = self.gameDict['playersHands'][currentPlayerIndex]
             p = players[currentPlayerIndex]
+            p.setHand(playerhand)
             bid = p.makeBid(self.getValidBidsForPlayer(p))
             #print(currentPlayerIndex,bid)
 

@@ -2,7 +2,7 @@ from Card import Card
 from Deck import Deck
 from Bidding import Bidding
 import random
-from copy import deepcopy
+from copy import copy, deepcopy
 from Player import Player
 from CardValues import SUITS, RANKS, VALUES
 from helper import canRunaway, createTrumpsList, sortHand
@@ -80,7 +80,7 @@ class Game:
             'offensivePlayers': self.offensivePlayers,
 
             # Copy action for currentTrick
-            'currentTrick': self.currentTrick.copy(),
+            'currentTrick': copy(self.currentTrick),
             'ranAway': self.ranAway,
             'searched': self.searched,
             'laufende': self.laufende,
@@ -107,6 +107,7 @@ class Game:
         for position, player in enumerate(self.players):
             cards = deck.deal(8)
             cards = sortHand(cards)
+            self.playersHands.append(cards)
             player.setHand(cards)
             player.setPosition(position)
             print(cards)
@@ -163,6 +164,10 @@ class Game:
                 if c in player.hand:
                     player.hand.remove(c)
                     count += 1
+        for hand in self.playersHands:
+            if c in history:
+                if c in hand:
+                    hand.remove(c)
 
     # Creates a tuple ((Cards),leadingPlayer,winningPLayer)
     def historyFromTrick(self, trick):
@@ -176,16 +181,17 @@ class Game:
 
     def playGame(self):
         # Check for Bids
-        if self.bids == [(None, None)]:
+        if self.bids == [(0, 0)]:
             gameDict = self.getGameDict()
             bidding = Bidding(gameDict, self.leadingPlayer)
             bidding.biddingPhase()
             self.setGameMode(bidding)
             self.setRunAwayPossible()
             self.setLaufende()
-        if self.gameMode == (None, None):
+        if self.gameMode == (0, 0):
             print("No Game came Together")
             return
+
 
     # TODO Remove and just use continue game
     def mainGame(self):
@@ -209,7 +215,7 @@ class Game:
         for n in range(8):
             gameDict = self.getGameDict()
             # TODO FIX THIS using notFinishied
-            trick = Trick(gameDict, n, self.leadingPlayer)
+            trick = Trick(gameDict, self.leadingPlayer)
             self.currentTrick = trick
             gameDict = self.getGameDict()
             trick.gameDict = gameDict
@@ -244,7 +250,7 @@ class Game:
 
         # Loop Trick
         while not self.isFinished():
-            trick = Trick(None, len(self.history) + 1, self.currentTrick.winningPlayer)
+            trick = Trick(None, self.currentTrick.winningPlayer)
             self.currentTrick = trick
             copy = self.copy()
             trick.gameDict = copy
