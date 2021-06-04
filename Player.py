@@ -21,6 +21,7 @@ class Player(object):
     ##TODO __repr__ and __str__
 
     def setHand(self, cards):
+        self.hand = []
         self.hand = cards
 
     def setPosition(self, postion):
