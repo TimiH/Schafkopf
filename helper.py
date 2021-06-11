@@ -67,25 +67,29 @@ def canRunaway(player,gameMode):
 
 #TODO testing requirements
 def recreateHandsfromHistory(history):
-    hands = [[],[],[],[]]
+    hands = [[], [], [], []]
 
     for trick in history:
         lead = trick[1]
         winner = trick[2]
         for card in trick[0]:
             hands[lead].append(card)
-            lead = (lead+1)%4
+            lead = (lead + 1) % 4
     return hands
 
-#allows using sort using Suit
+
+# allows using sort using Suit
 def bySuit(card):
     return card.suit
 
-#allows using sort Rank
+
+# allows using sort Rank
 def byRank(card):
     return card.rank
 
-#Sorts hand using OUsuit
+
+# TODO SORT by trump as Herz is at the end
+# Sorts hand using OUsuit
 def sortHand(hand):
     # filter for O and U
     oSorted = [x for x in hand if x.rank == 'O']
@@ -104,6 +108,43 @@ def sortHand(hand):
         otherCards = sorted(otherCards, key=bySuit)
         [sortedHand.append(x) for x in otherCards]
 
+    return sortedHand
+
+
+def sortHandByGameMode(hand, gameMode):
+    if gameMode[0] == 2:
+        return sortHandWenz(hand)
+    oSorted = [x for x in hand if x.rank == 'O']
+    uSorted = [x for x in hand if x.rank == 'U']
+    eSorted = [x for x in hand if x.suit == 'Eichel' and x.rank != 'U' and x.rank != 'O']
+    gSorted = [x for x in hand if x.suit == 'Gras' and x.rank != 'U' and x.rank != 'O']
+    hSorted = [x for x in hand if x.suit == 'Herz' and x.rank != 'U' and x.rank != 'O']
+    sSorted = [x for x in hand if x.suit == 'Schellen' and x.rank != 'U' and x.rank != 'O']
+    colors = {}
+    if eSorted:
+        eSorted = sorted(eSorted, key=byRank, reverse=True)
+        colors[0] = eSorted
+    if gSorted:
+        gSorted = sorted(gSorted, key=byRank, reverse=True)
+        colors[1] = gSorted
+    if hSorted:
+        hSorted = sorted(hSorted, key=byRank, reverse=True)
+        colors[2] = hSorted
+    if sSorted:
+        sSorted = sorted(sSorted, key=byRank, reverse=True)
+        colors[3] = sSorted
+    sortedHand = [] + oSorted + uSorted
+    if gameMode[0] == 1:
+        sortedHand = [] + oSorted + uSorted + hSorted
+        for i in [0, 1, 3]:
+            if i in colors:
+                sortedHand += colors[i]
+    if gameMode[0] == 3:
+        order = [0, 1, 2, 3]
+        order.remove(gameMode[1])
+        sortedHand += colors[gameMode[1]]
+        for i in order:
+            sortedHand += colors[i]
     return sortedHand
 
 
