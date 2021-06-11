@@ -3,7 +3,7 @@ from CardValues import SUITS
 NONE = 0
 TEAM = 1
 WENZ = 2
-SOLO = 4
+SOLO = 3
 #NoGame,3 Team games(Hearts Not allowed), Wenz, 4 Solo
 MODES = [(NONE, NONE),
          (TEAM, SUITS['Eichel']), (TEAM, SUITS['Gras']), (TEAM, SUITS['Schellen']),

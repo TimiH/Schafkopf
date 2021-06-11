@@ -196,8 +196,6 @@ class Game:
     # TODO Remove and just use continue game
     def mainGame(self):
         self.setupGame()
-        # TODO Remove
-        copy = self.copy()
 
         gameDict = self.getGameDict()
         bidding = Bidding(gameDict, self.leadingPlayer)
@@ -373,3 +371,5 @@ class Game:
             'schwarz': self.schwarz
         }
         return rewardsDict
+
+

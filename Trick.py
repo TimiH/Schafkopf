@@ -24,6 +24,7 @@ class Trick:
     def updatePlayers(self, players):
         self.players = players
 
+
     def nextAction(self):
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
         playerHand = self.gameDict['playersHands'][currentPlayerIndex]
@@ -138,3 +139,8 @@ class Trick:
     def copy(self):
         trick = Trick(self.gameDict, self.leadingPlayer)
         return trick
+
+    #OpenAI stuff
+    def addCard(self,card):
+        self.history.append(card)
+
