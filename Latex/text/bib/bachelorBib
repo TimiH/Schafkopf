@@ -1,0 +1,10 @@
+% Encoding: UTF-8
+@misc{charlesworth2018application,
+      title={Application of Self-Play Reinforcement Learning to a Four-Player Game of Imperfect Information}, 
+      author={Henry Charlesworth},
+      year={2018},
+      eprint={1808.10442},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+@Comment{jabref-meta: databaseType:bibtex;}

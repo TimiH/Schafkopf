@@ -1,0 +1,11 @@
+Title:asdasdasd
+Reinforcement Learning for imperfect information games using the trick card game Schafkopf as a case study
+Reinforcement Learning für Spiele mit imperfekter Information. Das Stichkartenspiel Schafkopf in der Fallstudie
+Abstract:
+In recent years reinforcement learning(RL) showed substantial improvement in perfect information games such as Chess or Go compared to traditional heuristic based approaches.
+The aim of this study was to explore the capabilities of RL in games that do not feature perfect information.
+As a case study we chose the bavarian card game Schafkopf, which is a 4 player trick game that features contract bidding, including solo and team play.
+I outlined the implementation for Schafkopf using Python and range of Computer players that use varying strategies for move Selection.
+Reinforcement learning was then applied to all game phases such as bidding and consequent move selection.
+Computer strength was compared for a bootstrapping approach, using a collection of human games, versus as a zero knowledge approach.
+Furthermore a GUI allowed playing the Computer.
