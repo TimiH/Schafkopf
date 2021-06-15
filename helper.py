@@ -1,4 +1,4 @@
-from CardValues import SUITS,RANKS,VALUES
+from CardValues import SUITS, RANKS, VALUES, COMPARERANKS
 from Card import Card
 # from Game import Game
 from copy import copy
@@ -85,7 +85,9 @@ def bySuit(card):
 
 # allows using sort Rank
 def byRank(card):
-    return card.rank
+    rank = card.rank
+    cmp = COMPARERANKS[rank]
+    return cmp
 
 
 # TODO SORT by trump as Herz is at the end
@@ -122,16 +124,16 @@ def sortHandByGameMode(hand, gameMode):
     sSorted = [x for x in hand if x.suit == 'Schellen' and x.rank != 'U' and x.rank != 'O']
     colors = {}
     if eSorted:
-        eSorted = sorted(eSorted, key=byRank, reverse=True)
+        eSorted = sorted(eSorted, key=byRank)
         colors[0] = eSorted
     if gSorted:
-        gSorted = sorted(gSorted, key=byRank, reverse=True)
+        gSorted = sorted(gSorted, key=byRank)
         colors[1] = gSorted
     if hSorted:
-        hSorted = sorted(hSorted, key=byRank, reverse=True)
+        hSorted = sorted(hSorted, key=byRank)
         colors[2] = hSorted
     if sSorted:
-        sSorted = sorted(sSorted, key=byRank, reverse=True)
+        sSorted = sorted(sSorted, key=byRank)
         colors[3] = sSorted
     sortedHand = [] + oSorted + uSorted
     if gameMode[0] == 1:
