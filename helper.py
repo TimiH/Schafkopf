@@ -117,7 +117,10 @@ def sortHandByGameMode(hand, gameMode):
     if gameMode[0] == 2:
         return sortHandWenz(hand)
     oSorted = [x for x in hand if x.rank == 'O']
+    oSorted = sorted(oSorted,key=bySuit)
     uSorted = [x for x in hand if x.rank == 'U']
+    uSorted = sorted(uSorted,key=bySuit)
+
     eSorted = [x for x in hand if x.suit == 'Eichel' and x.rank != 'U' and x.rank != 'O']
     gSorted = [x for x in hand if x.suit == 'Gras' and x.rank != 'U' and x.rank != 'O']
     hSorted = [x for x in hand if x.suit == 'Herz' and x.rank != 'U' and x.rank != 'O']
