@@ -1,7 +1,6 @@
 from bitarray import bitarray
 from CardValues import RANKS, SUITS
 
-
 def createQstates(hand, validCards, playedCard, position, gameDict, trickhistory):
     qstateDict = {}
     trueVector = getTrueVector()
@@ -31,6 +30,7 @@ def createQstates(hand, validCards, playedCard, position, gameDict, trickhistory
     qstateDict['searched'] = gameDict['searched']
     qstateDict['PostionMeTable'] = createPositionArrayFromIndex(position)
     qstateDict['GameMode'] = gameDict['gameMode']
+    qstateDict['BidWinner'] = createPositionArrayFromIndex(gameDict['offensivePlayers'][0])
     qstateDict['OwnTeam'] = createTeamArray(position, gameDict)
     qstateDict['teamScores'] = createTeamScores(gameDict['scores'], [qstateDict['OwnTeam']])
 
