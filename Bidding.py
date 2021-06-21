@@ -12,22 +12,23 @@ class Bidding:
         self.winningIndex = None
         self.lead = self.gameDict['leadingPlayer']
 
-    #fixLead
+    # fixLead
     def biddingPhase(self):
         players = self.gameDict['players']
         while not self.isFinished():
-            currentPlayerIndex = (len(self.bids) + self.lead) % 4
-            playerhand = self.gameDict['playersHands'][currentPlayerIndex]
-            p = players[currentPlayerIndex]
-            p.setHand(playerhand)
-            bid = p.makeBid(self.getValidBidsForPlayer(p))
-            #print(currentPlayerIndex,bid)
-
-            self.bids.append(bid)
-
-        winningTup= self.getWinningBid()
+            self.nextAction()
+        winningTup = self.getWinningBid()
         self.winningBid = winningTup[0]
         self.winningIndex = winningTup[1]
+
+    def nextAction(self):
+        players = self.gameDict['players']
+        currentPlayerIndex = (len(self.bids) + self.lead) % 4
+        playerhand = self.gameDict['playersHands'][currentPlayerIndex]
+        p = players[currentPlayerIndex]
+        p.setHand(playerhand)
+        bid = p.makeBid(self.getValidBidsForPlayer(p))
+        self.bids.append(bid)
 
     def isFinished(self):
         if len(self.bids) == 4:
@@ -35,7 +36,7 @@ class Bidding:
         else:
             return False
 
-    def getValidBidsForPlayer(self,player):
+    def getValidBidsForPlayer(self, player):
         hand = player.hand
         possibleModes = copy(MODES)
         suits = ['Eichel','Gras','Schellen']
