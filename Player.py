@@ -61,7 +61,8 @@ class Player(object):
                 json.dump(records, out, sort_keys=True, indent=3)
 
     def saveRecordsPickle(self):
-        id = str(uuid.uuid4()) + '.p'
-        path = os.getcwd() + '/DataDump/pickle'
-        with open(path + id, 'wb') as out:
-            pickle.dump(self.record, out, protocol=2)
+        if self.record:
+            id = str(uuid.uuid4()) + '.p'
+            path = os.getcwd() + '/DataDump/pickle'
+            with open(path + id, 'wb') as out:
+                pickle.dump(self.states, out, pickle.HIGHEST_PROTOCOL)
