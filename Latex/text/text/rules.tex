@@ -2,39 +2,45 @@
 Schafkopf is a traditional four player trump card game that is played in the south of Germany.
 The game is widely popular for being easy to learn but allowing for deep strategies.
 Often it is played for small money stakes.
-A game of Schafkopf normally consists of multiple rounds of four hands, where the intial dealer position rotates clockwise around the table.
+A game of Schafkopf normally consists of multiple rounds of four hands, where the intial dealer position rotates
+clockwise around the table.
 In Order to play a hand players will bid between themselves for a game contract, creating either two teams of two or
 two teams of one and three, and then play 8 tricks with differing rules sets that depend on the winning bid.
-\section{Cards}
+
+
+\section{Cards}\label{sec:cards}
 The Game of Schafkopf uses a 32 card bavarian deck, containing 4 suits with 8 ranks each.
-Since the bavarian deck is comparable with a 52 french deck, where all ranks 2-6 are excluded, we also included the corresponding English names for each suit and rank in the following tables.
-The  following tables is ordered descendingly by strength.
+Since the bavarian deck is comparable with a 52 french deck, where all ranks 2-6 are excluded, we also included the
+corresponding English names for each suit and rank in the following tables.
+The following tables is ordered descendingly by strength.
 \begin{table}[]
-\begin{tabular}{lll}
-Suit     & Short Hand & Corresponding French Suit \\
-Eichel   & E          & Clubs                     \\
-Gras     & G          & Spades                    \\
-Herz     & H          & Hearts                    \\
-Schellen & S          & Diamonds
-\end{tabular}\label{tab:table}
+    \begin{tabular}{lll}
+        Suit     & Short Hand & Corresponding French Suit \\
+        Eichel   & E          & Clubs                     \\
+        Gras     & G          & Spades                    \\
+        Herz     & H          & Hearts                    \\
+        Schellen & S          & Diamonds
+    \end{tabular}\label{tab:table2}
 \end{table}
 Regardless of the contract each rank has a corresponding point value ranging from 11 to 0 points in discrete steps.
 The total value of all 32 cards is therefore 120.
 \begin{table}[]
-\begin{tabular}{llll}
-Rank  & Point Value & Short Hand & Corresponding French Rank \\
-Ass   & 11          & A          & Ace                       \\
-Zehn  & 10          & T          & Ten                       \\
-König & 4           & K          & King                      \\
-Ober  & 3           & O          & Queen                     \\
-Unter & 2           & U          & Jack                      \\
-9     & 0           & 9          & Nine                      \\
-8     & 0           & 8          & Eight                     \\
-7     & 0           & 7          & Seven
-\end{tabular}\label{tab:table2}
+    \begin{tabular}{llll}
+        Rank  & Point Value & Short Hand & Corresponding French Rank \\
+        Ass   & 11          & A          & Ace                       \\
+        Zehn  & 10          & T          & Ten                       \\
+        König & 4           & K          & King                      \\
+        Ober  & 3           & O          & Queen                     \\
+        Unter & 2           & U          & Jack                      \\
+        9     & 0           & 9          & Nine                      \\
+        8     & 0           & 8          & Eight                     \\
+        7     & 0           & 7          & Seven
+    \end{tabular}\label{tab:table}
 \end{table}
-In order to refer to cards in the future we also included a short hand way of expressing suit and rank. For example
-the Ten of Herz is TH and the Ober of Gras is OG.
+In order to refer to cards in the future we also included a short hand way of expressing suit and rank.
+For example the Ten of Herz is TH and the Ober of Gras is OG.
+
+
 \section{Goal and Rules}
 \subsubsection{Goal}
 The goal is to score points by taking tricks, of which there are eight.
@@ -138,9 +144,48 @@ For this implementation we considered only the three classic contracts:
     \item Color Solo
 \end{itemize}
 Team mode is a two vs two variant and most, whilst WENZ and COLOR SOLO both pit the bid winner against the other three.
-\subsection{Team}
-The bid winner can The team contract allies the contract winner with the player that holds the
-\subsection{Solos}
-\subsubsection{Suit Solo}
-\subsubsection{Wenz Solo}
 
+\subsection{Team}
+In the Team game there are 14 Trumps, four Ober, four Unter and all Herz.
+\newline
+The bid winner calls a color ace that she does not hold herself, but she must hold at least one card of that color
+that is not trump.
+The player that holds the ace, being called the partner, will be allied for with the bid winner, whilst the remaining
+players form the opposition team.
+\newline
+\begin{figure}
+    \includegraphics[scale=0.5]{partnerBiddingExample}\label{fig:figure}
+\end{figure}
+At the beginning of the hand only the partner knows the full team compositions, but in normal play this becomes
+apparent fairly soon, can sometimes however last until the last trick.
+If a trick starts with the searched color, the Partner has to play the ace.
+This process is called Searching and reveals the team composition.
+The partner may play the Ace at the beginning of a trick himself if he has the lead.
+If no one searches the ace may only be played in the last trick.
+If the partner has a four cards of the searched suit,including the ace, he may run away by playing a different card of
+that suit, if and only if he has the lead.
+Once runaway he may play the ace at any point.
+This is due to the fact that if he holds 4 cards of the suit, the bid winner one, there is only one remaining cards
+with the opposition.
+This would guarantee a lost trick if the opposition searches and holds trump.
+
+\subsection{Solos}
+The Solos require a much stronger hand in general in order to win.
+
+\subsubsection{Suit Solo}
+The bid winner calls which color is trump.
+As with the Team game there are 14 Trumps, four Ober, four Unter and six cards of the chosen color.
+The team composition is obvious after the bid winner announces his game.
+
+\subsubsection{Wenz Solo}
+In the Wenz Solo the only trumps are the four Unter.
+The Ober are now considered color and slot in after the King in terms of card ranking.
+
+
+\section{Basic Strategy}
+Schafkopf is a game with a lot of subtle and deep strategies that can take a many hands to master, yet most beginners
+are given a set of base rules to follow.
+Most of these rules are role dependent and will be outlined shortly below.
+
+\subsection{Bidder plays Trump,oppositon plays color}
+This rule refers to the decision when a player has the lead.
