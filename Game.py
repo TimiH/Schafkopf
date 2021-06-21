@@ -372,4 +372,69 @@ class Game:
         }
         return rewardsDict
 
+    # TODO:What is this? here or in Tournament?
+    def shufflePositon(self):
+        random.shuffle(self.players)
 
+    # still needed since Dict?
+    def copy(self):
+        return deepcopy(self)
+
+    # Sets the bids, gameModes and offensivePlayers
+    def setGameMode(self, bidding):
+        self.bids = bidding.getBids()
+        self.gameMode = bidding.winningBid
+        self.offensivePlayers.append(bidding.winningIndex)
+        self.trumpCards = createTrumpsList(self.gameMode)
+        # finds second offensive player in team mode
+        reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
+        if self.gameMode[0] == 1:
+            suit = self.gameMode[1]
+            for p in self.players:
+                for card in p.hand:
+                    if card.rank == 'A':
+                        if card.suit == reversed[suit]:
+                            playerIndex = self.players.index(p)
+                            # self.offensivePlayers.append(playerIndex)
+                            self.offensivePlayers.append(playerIndex)
+
+    def setRunAwayPossible(self):
+        if len(self.offensivePlayers) > 1:
+            player = self.players[self.offensivePlayers[1]]
+            self.runAwayPossible = canRunaway(player, self.gameMode)
+        else:
+            self.runAwayPossible = False
+
+    def setSearched(self, trick):
+        mode, suit = self.gameMode
+        if mode != 1:
+            return
+        else:
+            reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
+            ace = Card(reversed[suit], 'A')
+            for c in trick.history:
+                if c == ace:
+                    self.searched = True
+                    return
+
+    def removeCards(self, history):
+        count = 0
+        for player in self.players:
+            for c in history:
+                if c in player.hand:
+                    player.hand.remove(c)
+                    count += 1
+        for hand in self.playersHands:
+            if c in history:
+                if c in hand:
+                    hand.remove(c)
+
+    # Creates a tuple ((Cards),leadingPlayer,winningPLayer)
+    def historyFromTrick(self, trick):
+        if not trick.isFinished():
+            "UNFINNISHED TRICK"
+            return
+        cards = tuple(trick.history)
+        self.history.append((cards, trick.leadingPlayer, trick.winningPlayer))
+
+        self.cardsPlayed += (trick.history)
