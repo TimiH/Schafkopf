@@ -10,7 +10,7 @@ def getCardImg(card):
     return image
 
 
-def handoToJpgStacked(hand):
+def handoToJpgStackedH(hand):
     if not hand:
         return None
     images = []
@@ -31,7 +31,28 @@ def handoToJpgStacked(hand):
     return new
 
 
-def handToJpg(hand):
+def handoToJpgStackedV(hand):
+    if not hand:
+        return None
+    images = []
+    for card in hand:
+        img = getCardImg(card)
+        images.append(img)
+
+    height = images[0].height
+    width = images[0].width
+    numImg = len(hand)
+
+    new = Image.new('RGB', (width, int(height * 0.5) + int(height * (numImg) * 0.5)))
+    new.paste(images[0], (0, 0))
+    # new.show()
+    for key, img in enumerate(images[1::]):
+        new.paste(img, (0, int((key + 1) * height * 0.5)))
+        # new.show()
+    return new
+
+
+def handToJpgH(hand):
     if not hand:
         return None
     images = []
@@ -49,6 +70,24 @@ def handToJpg(hand):
     return new
 
 
+def handToJpgV(hand):
+    if not hand:
+        return None
+    images = []
+    for card in hand:
+        img = getCardImg(card)
+        images.append(img)
+
+    height = images[0].height
+    width = images[0].width
+    numImg = len(hand)
+
+    new = Image.new('RGB', (width, height * numImg,))
+    for key, img in enumerate(images):
+        new.paste(img, (0, key * height))
+    return new
+
+
 from Deck import Deck
 
 d = Deck()
@@ -57,6 +96,6 @@ hand = d.deal(8)
 gameMode = (1, 2)
 hand = sortHandByGameMode(hand, gameMode)
 # handjpg = handToJpg(hand)
-handjpg = handoToJpgStacked(hand)
+handjpg = handoToJpgStackedV(hand)
 # handjpg.show()
 handjpg.save('handexample.jpg')
