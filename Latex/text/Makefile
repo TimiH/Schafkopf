@@ -8,7 +8,7 @@
 #      Creation Date:         30. Mai 2010
 #
 # --------------------------------------------------------
-TARGET=main
+TARGET=mainmake
 
 all:
 	pdflatex $(TARGET).tex
