@@ -10,6 +10,7 @@ from Trick import Trick
 from Rewards import REWARDS
 import uuid
 
+
 class Game:
     def __init__(self, players, leadingPlayer, seed=None, gameDict=None):
         if gameDict is None:
@@ -79,8 +80,8 @@ class Game:
             'runAwayPossible': self.runAwayPossible,
             'offensivePlayers': self.offensivePlayers,
 
-            # Copy action for currentTrick
-            'currentTrick': copy(self.currentTrick),
+            # TODO Copy action for currentTrick is needed
+            # 'currentTrick': copy(self.currentTrick),
             'ranAway': self.ranAway,
             'searched': self.searched,
             'laufende': self.laufende,
@@ -91,7 +92,6 @@ class Game:
             'seed': self.seed
         }
         return gameDict
-
 
     def isFinished(self):
         if len(self.history) == 8:
@@ -110,105 +110,69 @@ class Game:
             self.playersHands.append(cards)
             player.setHand(cards)
             player.setPosition(position)
-            print(cards)
+            # print(cards)
 
-    #TODO:What is this? here or in Tournament?
-    def shufflePositon(self):
-        random.shuffle(self.players)
-
-    # still needed since Dict?
-    def copy(self):
-        return deepcopy(self)
-
-    # Sets the bids, gameModes and offensivePlayers
-    def setGameMode(self, bidding):
-        self.bids = bidding.getBids()
-        self.gameMode = bidding.winningBid
-        self.offensivePlayers.append(bidding.winningIndex)
-        self.trumpCards = createTrumpsList(self.gameMode)
-        # finds second offensive player in team mode
-        reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
-        if self.gameMode[0] == 1:
-            suit = self.gameMode[1]
-            for p in self.players:
-                for card in p.hand:
-                    if card.rank == 'A':
-                        if card.suit == reversed[suit]:
-                            playerIndex = self.players.index(p)
-                            # self.offensivePlayers.append(playerIndex)
-                            self.offensivePlayers.append(playerIndex)
-
-    def setRunAwayPossible(self):
-        if len(self.offensivePlayers) > 1:
-            player = self.players[self.offensivePlayers[1]]
-            self.runAwayPossible = canRunaway(player, self.gameMode)
-        else:
-            self.runAwayPossible = False
-
-    def setSearched(self, trick):
-        mode, suit = self.gameMode
-        if mode != 1:
-            return
-        else:
-            reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
-            ace = Card(reversed[suit], 'A')
-            for c in trick.history:
-                if c == ace:
-                    self.searched = True
-                    return
-
-    def removeCards(self, history):
-        count = 0
-        for player in self.players:
-            for c in history:
-                if c in player.hand:
-                    player.hand.remove(c)
-                    count += 1
-        for hand in self.playersHands:
-            if c in history:
-                if c in hand:
-                    hand.remove(c)
-
-    # Creates a tuple ((Cards),leadingPlayer,winningPLayer)
-    def historyFromTrick(self, trick):
-        if not trick.isFinished():
-            "UNFINNISHED TRICK"
-            return
-        cards = tuple(trick.history)
-        self.history.append((cards, trick.leadingPlayer, trick.winningPlayer))
-
-        self.cardsPlayed += (trick.history)
-
-    def playGame(self):
-        # Check for Bids
-        if self.bids == [(0, 0)]:
-            gameDict = self.getGameDict()
-            bidding = Bidding(gameDict, self.leadingPlayer)
-            bidding.biddingPhase()
-            self.setGameMode(bidding)
-            self.setRunAwayPossible()
-            self.setLaufende()
-        if self.gameMode == (0, 0):
-            print("No Game came Together")
-            return
-
-
-    # TODO Remove and just use continue game
-    def mainGame(self):
-        self.setupGame()
-
+    # Bidding phase
+    def playBidding(self):
         gameDict = self.getGameDict()
         bidding = Bidding(gameDict, self.leadingPlayer)
         bidding.biddingPhase()
         self.setGameMode(bidding)
         self.setRunAwayPossible()
         self.setLaufende()
-
         if self.gameMode == (0, 0):
+            return False
+        else:
+            return True
+
+    # used in env
+    def step(self, card):
+        self.currentTrick.appendCard(card)
+        if self.isFinished():
+            self.setRewards()
+            state = {}
+            return state, self.rewards, True
+        else:
+            self.continueTillNextAction()
+            actions, playerIndex, playerHand = self.currentTrick.getNextValidAction()
+            rewards = [0, 0, 0, 0]
+            state = {
+                'gameDict': self.currentTrick.gameDict,
+                'actions': actions,
+                'playerHand': playerHand,
+                'playerIndex': playerIndex
+            }
+            return state, rewards, False
+
+    # continues the game until an action is necessary
+    def continueTillNextAction(self):
+        if self.currentTrick is None:
+            gameDict = self.getGameDict()
+            self.currentTrick = Trick(gameDict, self.leadingPlayer)
+            return
+        if self.currentTrick.isFinished():
+            self.currentTrick.sumScore()
+            self.currentTrick.determineWinner()
+            self.scores[self.currentTrick.winningPlayer] += self.currentTrick.score
+            self.leadingPlayer = self.currentTrick.winningPlayer
+            # self.tricks.append(trick)
+            self.removeCards(self.currentTrick.history)
+            self.historyFromTrick(self.currentTrick)
+            # new Trick
+            if not self.isFinished():
+                gameDict = self.getGameDict()
+                trick = Trick(gameDict, self.leadingPlayer)
+            return
+
+    # TODO Remove and just use continue game
+    def mainGame(self):
+        self.setupGame()
+        gameDict = self.getGameDict()
+        ret = self.playBidding()
+        if not ret:
             print("no game mode")
             return
-        # print("Bids:",self.bids,"\nLeadingPlayer:",self.leadingPlayer)
-        # print("Gamemode: {},\nOffensive players: {}\n".format(self.gameMode,self.offensivePlayers))
+
         lead = self.leadingPlayer
         for n in range(8):
             gameDict = self.getGameDict()
@@ -234,9 +198,13 @@ class Game:
         # print(self.offensivePlayers)
         # print(self.scores)
 
-    # update for hustling with random sample later
-    # TODO BIDDING
     def continueGame(self):
+        if self.bids == [(0, 0)]:
+            gameDict = self.getGameDict()
+            bidding = Bidding(gameDict, self.leadingPlayer)
+            while not bidding.isFinished():
+                bidding.nextAction()
+
         # Finish current trick
         if not self.currentTrick.isFinished():
             self.currentTrick.playTrick()
@@ -258,7 +226,6 @@ class Game:
             self.removeCards(trick.history)
             self.historyFromTrick(trick)
         self.setRewards()
-
 
     def offenceWon(self):
         if not self.isFinished:

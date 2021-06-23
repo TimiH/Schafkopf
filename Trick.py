@@ -1,6 +1,7 @@
 from Card import Card
 from CardValues import RANKS, VALUES, SUITS
 from helper import createTrumps, createTrumpsList
+from PlayerModels.staticBidding import getCardsOfSuit
 from copy import deepcopy, copy
 
 
@@ -15,7 +16,7 @@ class Trick:
         self.winningPlayer = None
 
     # Somewhat hacky but necessary to avoid empty references in current trick
-    #TODO still needed?
+    # TODO still needed?
     def setMembers(self):
         pass
         # self.gameMode = self.gameDict['gameMode']
@@ -24,6 +25,19 @@ class Trick:
     def updatePlayers(self, players):
         self.players = players
 
+    def appendCard(self, card):
+        self.history.append(card)
+        if self.gameDict['gameMode'][0] == 1:
+            suit = self.gameDict['gameMode'][1]
+            reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
+            if card.rank == 'A' and card.suit == reversed[suit]:
+                self.gameDict['searched'] = True
+
+    def getNextValidAction(self):
+        currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
+        playerHand = self.gameDict['playersHands'][currentPlayerIndex]
+        validCards = self.getValidActionsForHand(playerHand)
+        return validCards, currentPlayerIndex, playerHand, self.history
 
     def nextAction(self):
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
@@ -103,12 +117,15 @@ class Trick:
 
         # Player has Lead
         if not self.history:
+            #Lead and player is partner
             if self.gameMode[0] == 1 and Card(searchedSuit, 'A') in hand:
-                if self.gameDict['runAwayPossible'] and self.gameDict['searched']:
+                if self.gameDict['runAwayPossible'] or self.gameDict['searched']:
                     possibleActions = list(hand)
                 else:
-                    possibleActions = list(hand)
-                    possibleActions.remove(Card(searchedSuit, 'A'))
+                    # Partner may not search himself, but lead the A
+                    notPlayable = getCardsOfSuit(list(hand), searchedSuit, ['U', 'O', 'A'])
+                    possibleActions = list(hand - set(notPlayable))
+            # Lead and not partner
             else:
                 possibleActions = list(hand)
 
