@@ -21,7 +21,7 @@ def playFairTournament(players, rounds):
     # TODO implenment games played to once different agents exist
     # playedGames = [0, 0, 0, 0]
     for i in range(rounds):
-        game = Game(players, rounds, seed=randint(0, 1000000000))
+        game = Game(players, 0, seed=randint(0, 1000000000))
         for n in range(4):
             gamecopy = deepcopy(game)
             gamecopy.players = rotatePlayersForward(gamecopy.players, n)
