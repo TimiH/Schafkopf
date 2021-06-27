@@ -2,6 +2,7 @@ from Deck import Deck
 from Card import Card
 from Player import Player
 from PlayerModels.RandomPlayer import RandomPlayer
+from PlayerModels.HeuristicPlayer import HeuristicPlayer
 # from PlayerModels.RandomSample import RandomSample
 
 from Game import Game
@@ -10,15 +11,14 @@ from Trick import Trick
 from Tournament import playTournament, playFairTournament
 import time
 
-
 # p1 = RandomSample("Tim")
-p1 = RandomPlayer("1")
-p2 = RandomPlayer("2")
-p3 = RandomPlayer("3")
-p4 = RandomPlayer("4")
+p1 = HeuristicPlayer("1")
+p2 = HeuristicPlayer("2")
+p3 = HeuristicPlayer("3")
+p4 = HeuristicPlayer("4")
 
 players = [p1, p2, p3, p4]
 start = time.time()
-playFairTournament(players, 10)
+playFairTournament(players, 10000)
 end = time.time()
 print(("Time:", end - start))

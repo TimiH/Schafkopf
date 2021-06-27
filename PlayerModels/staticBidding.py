@@ -241,3 +241,4 @@ def getCardsOfSuit(hand, suit, ignore=None):
 def getCardsOfRank(hand, rank):
     cards = list([x for x in hand if x.rank == rank])
     return cards
+

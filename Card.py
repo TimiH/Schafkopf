@@ -13,7 +13,7 @@ class Card:
         return "{}{}".format(self.rank,self.suit[0])
 
     def __lt__(self,other):
-        return (self.suit,self.rank,) < (other.suit,other.rank)
+        return (self.suit, self.rank) < (other.suit, other.rank)
 
     def __eq__(self, other):
         if self.suit == other.suit and self.rank == other.rank:
