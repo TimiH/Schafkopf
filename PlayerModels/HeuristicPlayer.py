@@ -2,7 +2,7 @@ import random
 
 from Player import Player
 from PlayerModels.staticBidding import choseSoloGame, choseWenzGameRevised, choseTeamGame
-from PlayerModels.staticBidding import getCardsOfRank
+from PlayerModels.staticBidding import getCardsOfRank, cardInHand, rankInHand, getCardOfSuitRank
 from helper import createTrumpsList, byRank, getTrickWinnerIndex, sumTrickHistory
 from copy import copy
 
@@ -25,20 +25,20 @@ class HeuristicPlayer(Player):
             max = soloGameChoice
         # print("PLAYERCHOICES",max,teamGameChoice,wenzGameChoice,soloGameChoice)
         if max != (0, 0):
-            # print((max, self.hand))
-            return max
+            print((max, self.hand))
+        return max
 
     def playCard(self, validCards, gameDict, trickHistory):
         if len(validCards) == 1:
             return validCards[0]
-        mode, _ = gameDict['GameMode']
+        mode, _ = gameDict['gameMode']
         card = None
         if mode == 1:
-            card = playTeamCard(validCards, gameDict, trickHistory)
+            card = self.playTeamCard(validCards, gameDict, trickHistory)
         if mode == 2:
-            card = playWenzCard(validCards, gameDict, trickHistory)
+            card = self.playWenzCard(validCards, gameDict, trickHistory)
         if mode == 3:
-            card = playSoloCard(validCards, gameDict, trickHistory)
+            card = self.playSoloCard(validCards, gameDict, trickHistory)
         return card
 
     def playTeamCard(self, validCards, gameDict, trickHistory):
@@ -55,7 +55,7 @@ class HeuristicPlayer(Player):
             if len(trickHistory) == 0:
                 # Play U until we have superiority
                 playedU = getCardsOfRank(gameDict['cardsPlayed'], 'U')
-                uHand = getCardsOfRank(validCards)
+                uHand = getCardsOfRank(validCards, 'U')
                 trumplist = createTrumpsList((2, 0))
                 oppositionU = set(trumplist) - set(playedU) - set(uHand)
                 if len(oppositionU) != 0 and len(uHand) > 0:
@@ -65,7 +65,7 @@ class HeuristicPlayer(Player):
                     # playhighest Rank
                     validNoU = [x for x in validCards if x.rank != 'U']
                     if validNoU:
-                        card = min(validCards)
+                        card = min(validCards, key=byRank)
                 if not card:
                     return random.choice(validCards)
             # noLead
@@ -77,12 +77,14 @@ class HeuristicPlayer(Player):
                 for c in validCards:
                     testTrickHistory = copy(trickHistory)
                     testTrickHistory.append(c)
-                    winningIndex = getTrickWinnerIndex(trickHistory, (2, 0))
+                    winningIndex = getTrickWinnerIndex(testTrickHistory, (2, 0))
                     if winningIndex == trickPosIndex:
                         winningCards.append((c, sumTrickHistory(testTrickHistory)))
                 if winningCards:
                     # choose card that max scores
                     card = max(winningCards, key=lambda x: x[1])[0]
+                    if card.rank == 'U':
+                        card = max(getCardsOfRank(validCards, 'U'))
                 else:
                     # use card with least value and not U
                     validNoU = [x for x in validCards if x.rank != 'U']
@@ -109,45 +111,65 @@ class HeuristicPlayer(Player):
                         # trynotplay naked T
                         validNoUT = [x for x in validCards if x.rank != 'U' and x.rank != 'T']
                         if validNoUT:
-                            card = random.choice(aces)
+                            card = random.choice(validNoUT)
                         else:
                             card = random.choice(validCards)
             # No Lead
             else:
                 # Who owns the trick
-                currentWinnerTrickPos = getTrickWinnerIndex(trickHistory, (2, 0))
-                winningTableIndex = (currentWinnerTrickPos + trickLead) % 4
-                # bidWinner owns trick
-                if bidWinnerTablePos == winningTableIndex:
-                    # test cards if winning and append (card,trickscore)
-                    trickPosIndex = len(trickHistory)
-                    winningCards = []
-                    for c in validCards:
-                        testTrickHistory = copy(trickHistory)
-                        testTrickHistory.append(c)
-                        winningIndex = getTrickWinnerIndex(trickHistory, (2, 0))
-                        if winningIndex == trickPosIndex:
-                            winningCards.append((c, sumTrickHistory(testTrickHistory)))
-                    if winningCards:
-                        card = max(winningCards, key=lambda x: x[1])[0]
-                    else:
-                        # choose lowest card by value not U
-                        validNoU = [x for x in validCards if x.rank != 'U']
-                        if validNoU:
-                            card = min(validNoU, key=lambda x: x.value)
+                trickpos = len(trickHistory)
+                # bidwinner already played
+                if bidWinnerTablePos < trickpos:
+                    currentWinnerTrickPos = getTrickWinnerIndex(trickHistory, (2, 0))
+                    winningTableIndex = (currentWinnerTrickPos + trickLead) % 4
+                    # bidWinner owns trick
+                    if bidWinnerTablePos == winningTableIndex:
+                        # test cards if winning and append (card,trickscore)
+                        trickPosIndex = len(trickHistory)
+                        winningCards = []
+                        for c in validCards:
+                            testTrickHistory = copy(trickHistory)
+                            testTrickHistory.append(c)
+                            winningIndex = getTrickWinnerIndex(trickHistory, (2, 0))
+                            if winningIndex == trickPosIndex:
+                                winningCards.append((c, sumTrickHistory(testTrickHistory)))
+                        if winningCards:
+                            card = max(winningCards, key=lambda x: x[1])[0]
                         else:
-                            card = random.choice(validCards)
-                # opposition owns trick
+                            # choose lowest card by value not U
+                            validNoU = [x for x in validCards if x.rank != 'U']
+                            if validNoU:
+                                card = min(validNoU, key=lambda x: x.value)
+                            else:
+                                card = random.choice(validCards)
+                    # opposition owns trick -> maximise points if U
+                    else:
+                        # see which cards maximises current score
+                        scoringCards = []
+                        for c in validCards:
+                            testTrickHistory = copy(trickHistory)
+                            testTrickHistory.append(c)
+                            scoringCards.append((c, sumTrickHistory(testTrickHistory)))
+                        card = max(scoringCards, key=lambda x: x[1])[0]
+                # bidwinner still to play
                 else:
-                    # see which cards maximises current score
-                    scoringCards = []
-                    for c in validCards:
-                        testTrickHistory = copy(trickHistory)
-                        testTrickHistory.append(c)
-                        scoringCards.append((c, sumTrickHistory(testTrickHistory)))
-                    card = max(scoringCards, key=lambda x: x.value)[0]
+                    # Play Ace if possible, if played -> points
+                    playedSuit = trickHistory[0].suit
+                    # test if Ace of suit is played
+                    if cardInHand(trickHistory, playedSuit, 'A'):
+                        scoringCards = []
+                        for c in validCards:
+                            testTrickHistory = copy(trickHistory)
+                            testTrickHistory.append(c)
+                            scoringCards.append((c, sumTrickHistory(testTrickHistory)))
+                        card = max(scoringCards, key=lambda x: x[1])[0]
+                    if cardInHand(validCards, playedSuit, 'A'):
+                        card = getCardOfSuitRank(validCards)
+                    else:
+                        card = min(validCards, key=lambda x: x.value)
         if card not in validCards:
             print(f'ERROR{card=},{validCards=}')
             return random.choice(validCards)
         else:
+            print(validCards, card)
             return card

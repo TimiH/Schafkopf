@@ -88,12 +88,12 @@ def choseWenzGame(hand):
     validBid = (0, 0)
     if uCount >= 3:
         if aCount >= 2:
-            validBid = (2, None)
+            validBid = (2, 0)
         elif aCount == 1:
             ace = list([x for x in hand if x.rank == 'A'])[0]
             aceSuitsInHand = countAllSuits(hand)
             if aceSuitsInHand >= 3:
-                validBid = (2, None)
+                validBid = (2, 0)
     return validBid
 
 
@@ -106,44 +106,44 @@ def choseWenzGameRevised(hand):
     if uCount == 4:
         # AAXX
         if aCount >= 2:
-            validBid = (2, None)
+            validBid = (2, 0)
         elif aCount == 1:
             ace = list([x for x in hand if x.rank == 'A'])[0]
             aceSuitCount = countColourOfSuit(hand, ace.suit, ['U', 'A'])
             # ATXX
             if cardInHand(hand, ace.suit, 'T'):
-                validBid = (2, None)
+                validBid = (2, 0)
             # A2X
             elif aceSuitCount >= 2:
-                validBid = (2, None)
+                validBid = (2, 0)
     # 3U with UE
     elif uCount == 3:
         if cardInHand(hand, 'Eichel', 'U'):
             # UUUAAA
             if aCount >= 3:
-                validBid = (2, None)
+                validBid = (2, 0)
             #UUUAAT
             if aCount == 2:
                 aces = list([x for x in hand if x.rank == 'A'])
                 if any(cardInHand(hand,ace.suit,'T') for ace in aces):
-                    validBid = (2, None)
+                    validBid = (2, 0)
             #3UATK
             if aCount == 1:
                 ace = getCardsOfRank(hand,'A')[0]
                 if cardInHand(hand,ace.suit,'T') and cardInHand(hand,ace.suit,'K'):
-                    validBid = (2, None)
+                    validBid = (2, 0)
     # 2U with UE
     elif uCount == 2:
         if cardInHand(hand, 'Eichel', 'U') and any(cardInHand(hand,x,'U') for x in ['Gras','Herz']):
             # AAAA
             if aCount == 4:
-                validBid = (2, None)
+                validBid = (2, 0)
             # AAA+T|+3
             elif aCount == 3:
                 aces = list([x for x in hand if x.rank == 'A'])
                 colours = countAllSuits(hand, ['U', 'A'])
                 if any(cardInHand(hand, x.suit, 'T') for x in aces) or any((colours[SUITS[x.suit]]) >= 3 for x in aces):
-                    validBid = (2, None)
+                    validBid = (2, 0)
             # AA+TT|T+2 => UUATAT
             elif aCount == 2:
                 aces = list([x for x in hand if x.rank == 'A'])
@@ -151,7 +151,7 @@ def choseWenzGameRevised(hand):
                 colours = countAllSuits(hand, ['U', 'A'])
                 # ATAT
                 if sum(tens) >= 2:
-                    validBid = (2, None)
+                    validBid = (2, 0)
                 # ATAss e.g UUATAKO
                 elif sum(tens) >= 1:
                     suitsInHand = [getCardsOfSuit(hand, s, ['U']) for s in SUITS]
@@ -166,13 +166,13 @@ def choseWenzGameRevised(hand):
                         if rankInHand(suit, 'A') and len(suit) > 2:
                             testA2 = True
                         if testA2 and testAT:
-                            validBid = (2, None)
+                            validBid = (2, 0)
             # UUAT+3
             elif aCount == 1:
                 aceInHand = getCardsOfRank(hand, 'A')
                 if cardInHand(hand, aceInHand[0].suit, 'T'):
                     if countColourOfSuit(hand, aceInHand[0].suit,['U', 'A', 'T']) > 2:
-                        validBid = (2, None)
+                        validBid = (2, 0)
 
     return validBid
 
@@ -242,3 +242,11 @@ def getCardsOfRank(hand, rank):
     cards = list([x for x in hand if x.rank == rank])
     return cards
 
+
+# Returns card or None
+def getCardOfSuitRank(hand, suit, rank):
+    card = [x for x in hand if x.suit == suit and x.rank == rank]
+    if card:
+        return card[0]
+    else:
+        return None
