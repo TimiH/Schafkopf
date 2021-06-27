@@ -55,7 +55,7 @@ class Bidding:
 
         #Check to see if there are previous bids, if so remove all three Team games
         for bid in self.bids:
-            if bid == (None,None):
+            if bid == (0, 0):
                 continue
             a = bid[0]
             if a in [1,2,3]:
