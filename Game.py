@@ -162,6 +162,7 @@ class Game:
             if not self.isFinished():
                 gameDict = self.getGameDict()
                 trick = Trick(gameDict, self.leadingPlayer)
+                self.currentTrick = trick
             return
 
     # TODO Remove and just use continue game
