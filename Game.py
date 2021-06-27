@@ -75,7 +75,7 @@ class Game:
             'scores': self.scores,
             'leadingPlayer': self.leadingPlayer,
             'history': self.history,
-            'cards': self.cardsPlayed,
+            'cardsPlayed': self.cardsPlayed,
             'gameMode': self.gameMode,
             'runAwayPossible': self.runAwayPossible,
             'offensivePlayers': self.offensivePlayers,
