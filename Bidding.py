@@ -70,7 +70,7 @@ class Bidding:
         highestBid = max(self.bids,key=itemgetter(0))
         winningBidIndex = self.bids.index(highestBid)
         winningIndex = (winningBidIndex + self.lead)%4
-        return (highestBid,winningIndex)
+        return highestBid, winningIndex
 
     def getBids(self):
         return self.bids

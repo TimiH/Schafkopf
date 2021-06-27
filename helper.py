@@ -180,12 +180,37 @@ def sortHandWenz(hand):
     return sortedHand
 
 #modified mod function for ringTest
-def modRing(a,b):
-    return(((a%b)+b)%b)
+def modRing(a, b):
+    return (((a % b) + b) % b)
 
-#Checks if for position if player has already played a card in currentTrick. used it SampleMaster
-def ringTest(lead, cardsPlayed,testPos):
-    end = (lead+cardsPlayed)%4
-    a = modRing((testPos - lead),4)
-    b = modRing((end - lead),4)
-    return a<b
+
+# Checks if for position if player has already played a card in currentTrick. used it SampleMaster
+def ringTest(lead, cardsPlayed, testPos):
+    end = (lead + cardsPlayed) % 4
+    a = modRing((testPos - lead), 4)
+    b = modRing((end - lead), 4)
+    return a < b
+
+
+# gets trick history and and gameMode and determines the winner
+def getTrickWinnerIndex(trickHistory, gameMode):
+    trumps = createTrumpsList(gameMode)
+    # trumpsPlayed = [card for card in trickHistory if card in trumps] #TODO use sets here
+    trumpsPlayed = list(set(trickHistory) & set(trumps))
+    if trumpsPlayed:
+        winningTrumpIndex = min([trumps.index(card) for card in trumpsPlayed])
+        winningCard = trumps[winningTrumpIndex]
+        winningCardIndex = trickHistory.index(winningCard)
+        return winningCardIndex
+    else:
+        firstSuit = trickHistory[0].suit
+        winningRankIndex = min([RANKS.index(card.rank) for card in trickHistory if card.suit == firstSuit])
+        winningCardIndex = trickHistory.index(Card(firstSuit, RANKS[winningRankIndex]))
+        return winningCardIndex
+
+
+def sumTrickHistory(trickHistory):
+    score = 0
+    for card in trickHistory:
+        score += card.value
+    return score
