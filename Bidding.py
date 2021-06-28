@@ -62,7 +62,6 @@ class Bidding:
                 #filters out all tuples (1,_)
                 possibleModes = list([x for x in possibleModes if x[0] != 1])
                 break
-        # print("Hand:{}\nPossibleBids:{}".format(hand,possibleModes))
         return possibleModes
 
     def getWinningBid(self):

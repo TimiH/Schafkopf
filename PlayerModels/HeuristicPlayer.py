@@ -2,8 +2,8 @@ import random
 
 from Player import Player
 from PlayerModels.staticBidding import choseSoloGame, choseWenzGameRevised, choseTeamGame, choseWenzGame
-from PlayerModels.staticBidding import getCardsOfRank, cardInHand, rankInHand, getCardOfSuitRank
-from helper import createTrumpsList, byRank, getTrickWinnerIndex, sumTrickHistory, ringTest
+from PlayerModels.staticBidding import getCardsOfRank, cardInHand, rankInHand, getCardOfSuitRank, trumpsInHandByGamemode
+from helper import createTrumpsList, byRank, getTrickWinnerIndex, sumTrickHistory, ringTest, sortTrump
 from copy import copy
 
 __metaclass__ = type
@@ -30,7 +30,7 @@ class HeuristicPlayer(Player):
 
     def playCard(self, validCards, gameDict, trickHistory):
         if len(validCards) == 1:
-            # print(f'Only:{self.position, validCards, trickHistory, validCards[0]}')
+            print(f'Only:{self.position, validCards, trickHistory, validCards[0]}')
             return validCards[0]
         mode, _ = gameDict['gameMode']
         card = None
@@ -40,15 +40,135 @@ class HeuristicPlayer(Player):
             card = self.playWenzCard(validCards, gameDict, trickHistory)
         if mode == 3:
             card = self.playSoloCard(validCards, gameDict, trickHistory)
-        # print('---------------')
-        # print(f'{self.position},{validCards},{trickHistory=},{card}')
+        print(f'{self.position},{validCards},{trickHistory=},{card}')
         return card
 
     def playTeamCard(self, validCards, gameDict, trickHistory):
         pass
 
     def playSoloCard(self, validCards, gameDict, trickHistory):
-        pass
+        card = None
+        gameMode = gameDict['gameMode']
+        trumplist = createTrumpsList(gameMode)
+        trumpInHand = trumpsInHandByGamemode(validCards, gameMode)
+        # Decide Player or Opposition
+        if self.position == gameDict['offensivePlayers'][0]:
+            # Lead
+            if len(trickHistory) == 0:
+                playedTrump = trumpsInHandByGamemode(gameDict['cardsPlayed'], gameMode)
+                oppositionU = set(trumplist) - set(playedTrump) - set(trumpInHand)
+                # while opposition has trump play trump
+                if len(oppositionU) != 0 and len(trumpInHand) > 0:
+                    orderedTrump = sortTrump(trumpInHand)
+                    card = orderedTrump[0]
+                else:
+                    # we have trump control or no trump
+                    validCardsNoTrump = list(set(validCards) - set(trumpInHand))
+                    if validCardsNoTrump:
+                        card = min(validCardsNoTrump, key=byRank)
+                    else:
+                        card = random.choice(validCards)
+            # noLead
+            else:
+                # can we trick
+                winningCards = []
+                trickPosIndex = len(trickHistory)
+                # test cards if winning and append (card,trickscore)
+                for c in validCards:
+                    testTrickHistory = copy(trickHistory)
+                    testTrickHistory.append(c)
+                    winningIndex = getTrickWinnerIndex(testTrickHistory, gameMode)
+                    if winningIndex == trickPosIndex:
+                        winningCards.append((c, sumTrickHistory(testTrickHistory)))
+                # we can trick
+                if winningCards:
+                    # choose card that max scores
+                    card = max(winningCards, key=lambda x: x[1])[0]
+                    # chose lowest suit O
+                    if card.rank == 'O':
+                        card = max(getCardsOfRank(validCards, 'O'))
+                else:
+                    card = min(validCards, key=lambda x: x.value)
+        # Opposition
+        else:
+            # Lead
+            bidWinnerTablePos = gameDict['offensivePlayers'][0]
+            trickLead = gameDict['leadingPlayer']
+            if len(trickHistory) == 0:
+                # avoid Trump
+                validNoTrump = list(set(validCards) - set(trumpInHand))
+                if not validNoTrump:
+                    card = random.choice(validCards)
+                # play Aces if possible
+                aces = getCardsOfRank(validNoTrump, 'A')
+                if aces:
+                    card = random.choice(aces)
+                else:
+                    validNoTrumpNoT = [x for x in validNoTrump if x.rank != 'T']
+                    if validNoTrumpNoT:
+                        card = random.choice(validNoTrumpNoT)
+                    else:
+                        card = random.choice(validCards)
+            # no Lead
+            else:
+                trickpos = len(trickHistory)
+                # bidwinner already played
+                if ringTest(trickLead, trickpos, bidWinnerTablePos):
+                    currentWinnerTrickPos = getTrickWinnerIndex(trickHistory, gameMode)
+                    winningTableIndex = (currentWinnerTrickPos + trickLead) % 4
+                    # bidwinner currently winning
+                    if bidWinnerTablePos == winningTableIndex:
+                        # test cards if winning and append (card,trickscore)
+                        winningCards = []
+                        trickPosIndex = len(trickHistory)
+                        for c in validCards:
+                            testTrickHistory = copy(trickHistory)
+                            testTrickHistory.append(c)
+                            winningIndex = getTrickWinnerIndex(trickHistory, gameMode)
+                            if winningIndex == trickPosIndex:
+                                winningCards.append((c, sumTrickHistory(testTrickHistory)))
+                        if winningCards:
+                            card = max(winningCards, key=lambda x: x[1])[0]
+                        # cant win
+                        else:
+                            if trickHistory[0] in trumplist and trumpInHand:
+                                card = sortTrump(trumpInHand)[-1]
+                            else:
+                                validNoTrump = list(set(validCards) - set(trumpInHand))
+                                if validNoTrump:
+                                    card = min(validNoTrump, key=lambda x: x.value)
+                                else:
+                                    card = random.choice(validCards)
+                    # opposition winning
+                    else:
+                        scoringCards = []
+                        for c in validCards:
+                            testTrickHistory = copy(trickHistory)
+                            testTrickHistory.append(c)
+                            scoringCards.append((c, sumTrickHistory(testTrickHistory)))
+                        card = max(scoringCards, key=lambda x: x[1])[0]
+                # bidwinner yet to play
+                else:
+                    # Play Ace if possible, if played -> points
+                    playedSuit = trickHistory[0].suit
+                    # test if Ace of suit is played
+                    if cardInHand(trickHistory, playedSuit, 'A'):
+                        scoringCards = []
+                        for c in validCards:
+                            testTrickHistory = copy(trickHistory)
+                            testTrickHistory.append(c)
+                            scoringCards.append((c, sumTrickHistory(testTrickHistory)))
+                        card = max(scoringCards, key=lambda x: x[1])[0]
+                    elif cardInHand(validCards, playedSuit, 'A'):
+                        card = getCardOfSuitRank(validCards, playedSuit, 'A')
+                    else:
+                        card = min(validCards, key=lambda x: x.value)
+        if card not in validCards:
+            print(f'ERROR{card=},{validCards=}')
+            return random.choice(validCards)
+        else:
+            # print(validCards, card)
+            return card
 
     def playWenzCard(self, validCards, gameDict, trickHistory):
         # Decide Player or Opposition
@@ -70,7 +190,7 @@ class HeuristicPlayer(Player):
                     if validNoU:
                         card = min(validCards, key=byRank)
                 if not card:
-                    return random.choice(validCards)
+                    card = random.choice(validCards)
             # noLead
             else:
                 trickPosIndex = len(trickHistory)

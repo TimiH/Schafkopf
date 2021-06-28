@@ -90,7 +90,7 @@ def choseWenzGame(hand):
         if aCount >= 2:
             validBid = (2, 0)
         elif aCount == 1:
-            ace = list([x for x in hand if x.rank == 'A'])[0]
+            ace = [x for x in hand if x.rank == 'A'][0]
             aceSuitsInHand = countAllSuits(hand)
             if aceSuitsInHand >= 3:
                 validBid = (2, 0)
@@ -181,7 +181,7 @@ def choseWenzGameRevised(hand):
 def trumpsInHandByGamemode(hand, gameMode):
     trumps = createTrumps(gameMode)
     trumpsInHand = set(hand) & trumps
-    return trumpsInHand
+    return list(trumpsInHand)
 
 
 # Returns count of Rank
