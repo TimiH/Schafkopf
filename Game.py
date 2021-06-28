@@ -235,7 +235,7 @@ class Game:
         for p in self.offensivePlayers:
             scoreOffense += self.scores[p]
 
-        if scoreOffense > 61:
+        if scoreOffense > 60:
             return True
         else:
             return False
@@ -280,12 +280,8 @@ class Game:
         scoreOffense = 0
         for p in self.offensivePlayers:
             scoreOffense += self.scores[p]
-        # check for Draw
-        if scoreOffense == 60:
-            self.rewards = [0, 0, 0, 0]
-            return
         # Check if schneider
-        elif scoreOffense > 90 or scoreOffense < 31:
+        if scoreOffense > 90 or scoreOffense < 31:
             schneider = True
             self.schneider
         # Check if one team scored all tricks
