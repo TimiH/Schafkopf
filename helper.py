@@ -117,15 +117,20 @@ def sortHandByGameMode(hand, gameMode):
     if gameMode[0] == 2:
         return sortHandWenz(hand)
     oSorted = [x for x in hand if x.rank == 'O']
-    oSorted = sorted(oSorted,key=bySuit)
+    oSorted = sorted(oSorted, key=bySuit)
     uSorted = [x for x in hand if x.rank == 'U']
-    uSorted = sorted(uSorted,key=bySuit)
+    uSorted = sorted(uSorted, key=bySuit)
 
     eSorted = [x for x in hand if x.suit == 'Eichel' and x.rank != 'U' and x.rank != 'O']
     gSorted = [x for x in hand if x.suit == 'Gras' and x.rank != 'U' and x.rank != 'O']
     hSorted = [x for x in hand if x.suit == 'Herz' and x.rank != 'U' and x.rank != 'O']
     sSorted = [x for x in hand if x.suit == 'Schellen' and x.rank != 'U' and x.rank != 'O']
-    colors = {}
+    colors = {
+        0: [],
+        1: [],
+        2: [],
+        3: []
+    }
     if eSorted:
         eSorted = sorted(eSorted, key=byRank)
         colors[0] = eSorted
@@ -152,6 +157,16 @@ def sortHandByGameMode(hand, gameMode):
             sortedHand += colors[i]
     return sortedHand
 
+
+def sortTrump(hand):
+    oSorted = [x for x in hand if x.rank == 'O']
+    oSorted = sorted(oSorted, key=bySuit)
+    uSorted = [x for x in hand if x.rank == 'U']
+    uSorted = sorted(uSorted, key=bySuit)
+    color = [x for x in hand if x.rank not in ['U', 'O']]
+    color = sorted(color, key=byRank)
+    hand = oSorted + uSorted + color
+    return hand
 
 def sortHandWenz(hand):
     # filter U and colours
