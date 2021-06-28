@@ -1,9 +1,9 @@
 import random
 
 from Player import Player
-from PlayerModels.staticBidding import choseSoloGame, choseWenzGameRevised, choseTeamGame
+from PlayerModels.staticBidding import choseSoloGame, choseWenzGameRevised, choseTeamGame, choseWenzGame
 from PlayerModels.staticBidding import getCardsOfRank, cardInHand, rankInHand, getCardOfSuitRank
-from helper import createTrumpsList, byRank, getTrickWinnerIndex, sumTrickHistory
+from helper import createTrumpsList, byRank, getTrickWinnerIndex, sumTrickHistory, ringTest
 from copy import copy
 
 __metaclass__ = type
@@ -30,6 +30,7 @@ class HeuristicPlayer(Player):
 
     def playCard(self, validCards, gameDict, trickHistory):
         if len(validCards) == 1:
+            # print(f'Only:{self.position, validCards, trickHistory, validCards[0]}')
             return validCards[0]
         mode, _ = gameDict['gameMode']
         card = None
@@ -39,6 +40,8 @@ class HeuristicPlayer(Player):
             card = self.playWenzCard(validCards, gameDict, trickHistory)
         if mode == 3:
             card = self.playSoloCard(validCards, gameDict, trickHistory)
+        # print('---------------')
+        # print(f'{self.position},{validCards},{trickHistory=},{card}')
         return card
 
     def playTeamCard(self, validCards, gameDict, trickHistory):
@@ -119,7 +122,7 @@ class HeuristicPlayer(Player):
                 # Who owns the trick
                 trickpos = len(trickHistory)
                 # bidwinner already played
-                if bidWinnerTablePos < trickpos:
+                if ringTest(trickLead, trickpos, bidWinnerTablePos):
                     currentWinnerTrickPos = getTrickWinnerIndex(trickHistory, (2, 0))
                     winningTableIndex = (currentWinnerTrickPos + trickLead) % 4
                     # bidWinner owns trick
@@ -163,13 +166,13 @@ class HeuristicPlayer(Player):
                             testTrickHistory.append(c)
                             scoringCards.append((c, sumTrickHistory(testTrickHistory)))
                         card = max(scoringCards, key=lambda x: x[1])[0]
-                    if cardInHand(validCards, playedSuit, 'A'):
-                        card = getCardOfSuitRank(validCards)
+                    elif cardInHand(validCards, playedSuit, 'A'):
+                        card = getCardOfSuitRank(validCards, playedSuit, 'A')
                     else:
                         card = min(validCards, key=lambda x: x.value)
         if card not in validCards:
             print(f'ERROR{card=},{validCards=}')
             return random.choice(validCards)
         else:
-            print(validCards, card)
+            #print(validCards, card)
             return card
