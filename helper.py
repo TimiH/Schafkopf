@@ -209,7 +209,6 @@ def ringTest(lead, cardsPlayed, testPos):
 # gets trick history and and gameMode and determines the winner
 def getTrickWinnerIndex(trickHistory, gameMode):
     trumps = createTrumpsList(gameMode)
-    # trumpsPlayed = [card for card in trickHistory if card in trumps] #TODO use sets here
     trumpsPlayed = list(set(trickHistory) & set(trumps))
     if trumpsPlayed:
         winningTrumpIndex = min([trumps.index(card) for card in trumpsPlayed])

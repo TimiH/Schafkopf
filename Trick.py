@@ -1,5 +1,5 @@
 from Card import Card
-from CardValues import RANKS, VALUES, SUITS
+from CardValues import RANKS, VALUES, SUITS, REVERSEDSUITS
 from helper import createTrumps, createTrumpsList
 from PlayerModels.staticBidding import getCardsOfSuit, cardInHand
 from copy import deepcopy, copy
@@ -22,9 +22,7 @@ class Trick:
         self.history.append(card)
         if self.gameDict['gameMode'][0] == 1:
             suit = self.gameDict['gameMode'][1]
-            # TODO reversed
-            reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
-            searchedSuit = reversed[suit]
+            searchedSuit = REVERSEDSUITS[suit]
             if len(self.history) == 4 and not self.gameDict['ranAway'] and not self.gameDict['searched']:
                 if self.history[0].suit == searchedSuit and not cardInHand(self.history, searchedSuit, 'A'):
                     self.gameDict['ranAway'] = True
@@ -95,11 +93,9 @@ class Trick:
     def getValidActionsForHand(self, playerHand):
         hand = set(playerHand)
         trumps = createTrumps(self.gameMode)
-        reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
-
         # hack because Wenz (2,NONE) returns key error #TODO
         if self.gameMode[0] != 2:
-            searchedSuit = reversed[self.gameMode[1]]
+            searchedSuit = REVERSEDSUITS[self.gameMode[1]]
         possibleActions = []
 
         # Speed up for last Trick

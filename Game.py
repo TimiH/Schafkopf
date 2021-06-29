@@ -2,7 +2,7 @@ from Card import Card
 from Deck import Deck
 from Bidding import Bidding
 from copy import copy, deepcopy
-from CardValues import SUITS, RANKS, VALUES
+from CardValues import SUITS, RANKS, VALUES, REVERSEDSUITS
 from helper import canRunaway, createTrumpsList, sortHand
 from Trick import Trick
 from Rewards import REWARDS
@@ -349,13 +349,12 @@ class Game:
         self.offensivePlayers.append(bidding.winningIndex)
         self.trumpCards = createTrumpsList(self.gameMode)
         # finds second offensive player in team mode
-        reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
         if self.gameMode[0] == 1:
             suit = self.gameMode[1]
             for p in self.players:
                 for card in p.hand:
                     if card.rank == 'A':
-                        if card.suit == reversed[suit]:
+                        if card.suit == REVERSEDSUITS[suit]:
                             playerIndex = self.players.index(p)
                             # self.offensivePlayers.append(playerIndex)
                             self.offensivePlayers.append(playerIndex)
