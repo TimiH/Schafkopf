@@ -1,7 +1,7 @@
 from Card import Card
 from CardValues import RANKS, VALUES, SUITS
 from helper import createTrumps, createTrumpsList
-from PlayerModels.staticBidding import getCardsOfSuit
+from PlayerModels.staticBidding import getCardsOfSuit, cardInHand
 from copy import deepcopy, copy
 
 
@@ -15,13 +15,6 @@ class Trick:
         self.score = 0
         self.winningPlayer = None
 
-    # Somewhat hacky but necessary to avoid empty references in current trick
-    # TODO still needed?
-    def setMembers(self):
-        pass
-        # self.gameMode = self.gameDict['gameMode']
-        # self.players = self.gameDict['players']
-
     def updatePlayers(self, players):
         self.players = players
 
@@ -29,7 +22,12 @@ class Trick:
         self.history.append(card)
         if self.gameDict['gameMode'][0] == 1:
             suit = self.gameDict['gameMode'][1]
+            # TODO reversed
             reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
+            searchedSuit = reversed[suit]
+            if len(self.history) == 4 and not self.gameDict['ranAway'] and not self.gameDict['searched']:
+                if self.history[0].suit == searchedSuit and not cardInHand(self.history, searchedSuit, 'A'):
+                    self.gameDict['ranAway'] = True
             if card.rank == 'A' and card.suit == reversed[suit]:
                 self.gameDict['searched'] = True
 
@@ -47,13 +45,6 @@ class Trick:
         self.players[currentPlayerIndex].setHand(playerHand)
         playedCard = self.players[currentPlayerIndex].playCard(validCards, self.gameDict, self.history)
         self.history.append(playedCard)
-
-        # if searched A played and Gamemode == 1, update game dict to show it has been searched,since gameDict is then passed to players
-        if self.gameDict['gameMode'][0] == 1:
-            suit = self.gameDict['gameMode'][1]
-            reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
-            if playedCard.rank == 'A' and playedCard.suit == reversed[suit]:
-                self.gameDict['searched'] = True
 
     def playTrick(self):
         while not self.isFinished():

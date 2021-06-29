@@ -65,7 +65,6 @@ def canRunaway(player,gameMode):
     else:
         return False
 
-#TODO testing requirements
 def recreateHandsfromHistory(history):
     hands = [[], [], [], []]
 
@@ -229,3 +228,14 @@ def sumTrickHistory(trickHistory):
     for card in trickHistory:
         score += card.value
     return score
+
+
+def getParnterPos(position, offensivePlayers):
+    if position in offensivePlayers:
+        if position == offensivePlayers[0]:
+            return offensivePlayers[1]
+        else:
+            return offensivePlayers[0]
+    else:
+        partner = [x for x in range(4) if x not in offensivePlayers and x != position]
+        return partner[0]

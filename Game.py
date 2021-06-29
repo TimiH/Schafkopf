@@ -1,14 +1,13 @@
 from Card import Card
 from Deck import Deck
 from Bidding import Bidding
-import random
 from copy import copy, deepcopy
-from Player import Player
 from CardValues import SUITS, RANKS, VALUES
 from helper import canRunaway, createTrumpsList, sortHand
 from Trick import Trick
 from Rewards import REWARDS
 import uuid
+from random import randint
 
 
 class Game:
@@ -38,7 +37,10 @@ class Game:
             self.trumpCards = ()
 
             # Needed to control for DeckSeeds during Shuffling
-            self.seed = seed
+            if seed == None:
+                self.seed = randint(0, 1000000000000000)
+            else:
+                self.seed = seed
         # This allows initliasation from dircts
         else:
             self.uuid = str(uuid.uuid4())
@@ -153,11 +155,13 @@ class Game:
         if self.currentTrick.isFinished():
             self.currentTrick.sumScore()
             self.currentTrick.determineWinner()
+            self.setSearched()
             self.scores[self.currentTrick.winningPlayer] += self.currentTrick.score
             self.leadingPlayer = self.currentTrick.winningPlayer
             # self.tricks.append(trick)
             self.removeCards(self.currentTrick.history)
             self.historyFromTrick(self.currentTrick)
+            self.setSearched()
             # new Trick
             if not self.isFinished():
                 gameDict = self.getGameDict()
@@ -183,13 +187,12 @@ class Game:
             gameDict = self.getGameDict()
             trick.gameDict = gameDict
             # TODO figure out if still needed
-            trick.setMembers()
             trick.playTrick()
             self.scores[trick.winningPlayer] += trick.score
             self.leadingPlayer = trick.winningPlayer
-            # self.tricks.append(trick)
             self.removeCards(trick.history)
             self.historyFromTrick(trick)
+            self.setSearched()
         self.setRewards()
         rewardsDict = self.rewardsDict()
         for player in self.players:
@@ -213,7 +216,6 @@ class Game:
             self.historyFromTrick(self.currentTrick)
             self.scores[self.currentTrick.winningPlayer] += self.currentTrick.score
             lead = self.currentTrick.winningPlayer
-            test = 1
 
         # Loop Trick
         while not self.isFinished():
@@ -336,10 +338,6 @@ class Game:
         }
         return rewardsDict
 
-    # TODO:What is this? here or in Tournament?
-    def shufflePositon(self):
-        random.shuffle(self.players)
-
     # still needed since Dict?
     def copy(self):
         return deepcopy(self)
@@ -369,17 +367,21 @@ class Game:
         else:
             self.runAwayPossible = False
 
-    def setSearched(self, trick):
+    # sets searched and runaway
+    def setSearched(self):
         mode, suit = self.gameMode
         if mode != 1:
             return
         else:
             reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
-            ace = Card(reversed[suit], 'A')
-            for c in trick.history:
-                if c == ace:
-                    self.searched = True
-                    return
+            searchedSuit = reversed[suit]
+            ace = Card(searchedSuit, 'A')
+            if not self.searched and not self.ranAway:
+                if self.currentTrick.history[0].suit == searchedSuit and ace not in self.currentTrick.history:
+                    self.ranAway = True
+            if ace in self.currentTrick.history:
+                self.searched = True
+        return
 
     def removeCards(self, history):
         count = 0
