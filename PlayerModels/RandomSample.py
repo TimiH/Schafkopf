@@ -138,7 +138,7 @@ class RandomSample(Player):
         return ret
 
     def trumpsInHandByGamemode(self, gameMode):
-        trumps = createTrumps(gameMode)
+        trumps = createTrumpsList(gameMode)
         trumpsInHand = set(self.hand) & trumps
         return trumpsInHand
 

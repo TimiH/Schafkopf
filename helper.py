@@ -3,59 +3,36 @@ from Card import Card
 # from Game import Game
 from copy import copy
 
-def createTrumps(gameMode):
-    trumpCards = set()
-    reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
-    mode = gameMode[0]
-    if mode == 2:
-        for suit in ['Eichel','Gras','Herz','Schellen']:
-            trumpCards.add(Card(suit,'U'))
-    elif mode == 1:
-        for suit in ['Eichel','Gras','Herz','Schellen']:
-            trumpCards.add(Card(suit,'O'))
-        for suit in ['Eichel','Gras','Herz','Schellen']:
-            trumpCards.add(Card(suit,'U'))
-        for rank in ['A','T','K','9','8','7']:
-            trumpCards.add(Card('Herz',rank))
-    elif mode == 3:
-        _, colour = gameMode
-        for suit in ['Eichel', 'Gras', 'Herz', 'Schellen']:
-            trumpCards.add(Card(suit, 'O'))
-        for suit in list(SUITS.keys()):
-            trumpCards.add(Card(suit, 'U'))
-        for rank in ['A', 'T', 'K', '9', '8', '7']:
-            trumpCards.add(Card(reversed[colour], rank))
-    return trumpCards
-
 def createTrumpsList(gameMode):
     trumpCards = []
     reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
     mode = gameMode[0]
-    if mode ==  2:
-        for suit in ['Eichel','Gras','Herz','Schellen']:
-            trumpCards.append(Card(suit,'U'))
+    if mode == 2:
+        for suit in ['Eichel', 'Gras', 'Herz', 'Schellen']:
+            trumpCards.append(Card(suit, 'U'))
     elif mode == 1:
-        for suit in ['Eichel','Gras','Herz','Schellen']:
-            trumpCards.append(Card(suit,'O'))
-        for suit in ['Eichel','Gras','Herz','Schellen']:
-            trumpCards.append(Card(suit,'U'))
-        for rank in ['A','T','K','9','8','7']:
-            trumpCards.append(Card('Herz',rank))
+        for suit in ['Eichel', 'Gras', 'Herz', 'Schellen']:
+            trumpCards.append(Card(suit, 'O'))
+        for suit in ['Eichel', 'Gras', 'Herz', 'Schellen']:
+            trumpCards.append(Card(suit, 'U'))
+        for rank in ['A', 'T', 'K', '9', '8', '7']:
+            trumpCards.append(Card('Herz', rank))
     elif mode == 3:
-        _,colour = gameMode
-        for suit in ['Eichel','Gras','Herz','Schellen']:
-            trumpCards.append(Card(suit,'O'))
-        for suit in ['Eichel','Gras','Herz','Schellen']:
-            trumpCards.append(Card(suit,'U'))
-        for rank in ['A','T','K','9','8','7']:
-            trumpCards.append(Card(reversed[colour],rank))
+        _, colour = gameMode
+        for suit in ['Eichel', 'Gras', 'Herz', 'Schellen']:
+            trumpCards.append(Card(suit, 'O'))
+        for suit in ['Eichel', 'Gras', 'Herz', 'Schellen']:
+            trumpCards.append(Card(suit, 'U'))
+        for rank in ['A', 'T', 'K', '9', '8', '7']:
+            trumpCards.append(Card(reversed[colour], rank))
     return trumpCards
 
-#Assumes that player passed has the ace
-def canRunaway(player,gameMode):
+
+# Assumes that player passed has the ace
+def canRunaway(player, gameMode):
     hand = set(copy(player.hand))
-    trumps = createTrumps(gameMode)
-    #Only leave colours
+    trumps = set(createTrumpsList(gameMode))
+    # Only leave colours
     hand -= trumps
     reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
     suit = reversed[gameMode[1]]
@@ -64,6 +41,7 @@ def canRunaway(player,gameMode):
         return True
     else:
         return False
+
 
 def recreateHandsfromHistory(history):
     hands = [[], [], [], []]
@@ -167,6 +145,7 @@ def sortTrump(hand):
     hand = oSorted + uSorted + color
     return hand
 
+
 def sortHandWenz(hand):
     # filter U and colours
     uSorted = [x for x in hand if x.rank == 'U']
@@ -186,14 +165,15 @@ def sortHandWenz(hand):
         gSorted = sorted(gSorted, key=byRank)
         sortedHand += gSorted[::-1]
     if hSorted:
-        hSorted = sorted(hSorted,key=byRank)
+        hSorted = sorted(hSorted, key=byRank)
         sortedHand += hSorted[::-1]
     if sSorted:
-        sSorted = sorted(sSorted,key=byRank)
+        sSorted = sorted(sSorted, key=byRank)
         sortedHand += sSorted[::-1]
     return sortedHand
 
-#modified mod function for ringTest
+
+# modified mod function for ringTest
 def modRing(a, b):
     return (((a % b) + b) % b)
 
@@ -238,3 +218,15 @@ def getParnterPos(position, offensivePlayers):
     else:
         partner = [x for x in range(4) if x not in offensivePlayers and x != position]
         return partner[0]
+
+
+def getValidWinners(trickHistory, validCards, gameMode):
+    trickPos = len(trickHistory)
+    winningCards = []
+    for c in validCards:
+        testTrickHistory = copy(trickHistory)
+        testTrickHistory.append(c)
+        winningIndex = getTrickWinnerIndex(testTrickHistory, gameMode)
+        if winningIndex == trickPos:
+            winningCards.append((c, sumTrickHistory(testTrickHistory)))
+    return winningCards

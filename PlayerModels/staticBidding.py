@@ -1,4 +1,4 @@
-from helper import createTrumps
+from helper import createTrumpsList
 from CardValues import SUITS
 from Card import Card
 
@@ -179,8 +179,8 @@ def choseWenzGameRevised(hand):
 
 # Returns a set of Trumps in hand
 def trumpsInHandByGamemode(hand, gameMode):
-    trumps = createTrumps(gameMode)
-    trumpsInHand = set(hand) & trumps
+    trumps = createTrumpsList(gameMode)
+    trumpsInHand = set(hand) & set(trumps)
     return list(trumpsInHand)
 
 
