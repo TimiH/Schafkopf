@@ -181,17 +181,13 @@ class Game:
         lead = self.leadingPlayer
         for n in range(8):
             gameDict = self.getGameDict()
-            # TODO FIX THIS using notFinishied
             trick = Trick(gameDict, self.leadingPlayer)
             self.currentTrick = trick
-            gameDict = self.getGameDict()
-            trick.gameDict = gameDict
-            # TODO figure out if still needed
             trick.playTrick()
-            self.scores[trick.winningPlayer] += trick.score
-            self.leadingPlayer = trick.winningPlayer
-            self.removeCards(trick.history)
-            self.historyFromTrick(trick)
+            self.scores[trick.winningPlayer] += self.currentTrick.score
+            self.leadingPlayer = self.currentTrick.winningPlayer
+            self.removeCards(self.currentTrick.history)
+            self.historyFromTrick(self.currentTrick)
             self.setSearched()
         self.setRewards()
         rewardsDict = self.rewardsDict()
@@ -203,31 +199,27 @@ class Game:
         # print(self.scores)
 
     def continueGame(self):
-        if self.bids == [(0, 0)]:
-            gameDict = self.getGameDict()
-            bidding = Bidding(gameDict, self.leadingPlayer)
-            while not bidding.isFinished():
-                bidding.nextAction()
-
+        if not self.currentTrick:
+            self.continueTillNextAction()
         # Finish current trick
         if not self.currentTrick.isFinished():
             self.currentTrick.playTrick()
             self.removeCards(self.currentTrick.history)
             self.historyFromTrick(self.currentTrick)
             self.scores[self.currentTrick.winningPlayer] += self.currentTrick.score
-            lead = self.currentTrick.winningPlayer
+            self.setSearched()
+            self.leadingPlayer = self.currentTrick.winningPlayer
 
         # Loop Trick
         while not self.isFinished():
-            trick = Trick(None, self.currentTrick.winningPlayer)
-            self.currentTrick = trick
-            copy = self.copy()
-            trick.gameDict = copy
-            trick.setMembers()
-            trick.playTrick()
-            self.scores[trick.winningPlayer] += trick.score
-            self.removeCards(trick.history)
-            self.historyFromTrick(trick)
+            gameDict = self.getGameDict()
+            self.currentTrick = Trick(gameDict, self.leadingPlayer)
+            self.currentTrick.playTrick()
+            self.leadingPlayer = self.currentTrick.winningPlayer
+            self.scores[self.currentTrick.winningPlayer] += self.currentTrick.score
+            self.removeCards(self.currentTrick.history)
+            self.historyFromTrick(self.currentTrick)
+            self.setSearched()
         self.setRewards()
 
     def offenceWon(self):
@@ -375,7 +367,7 @@ class Game:
             reversed = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))
             searchedSuit = reversed[suit]
             ace = Card(searchedSuit, 'A')
-            if not self.searched and not self.ranAway:
+            if self.currentTrick.history[0] not in self.trumpCards and not self.searched and not self.ranAway:
                 if self.currentTrick.history[0].suit == searchedSuit and ace not in self.currentTrick.history:
                     self.ranAway = True
             if ace in self.currentTrick.history:
@@ -383,16 +375,12 @@ class Game:
         return
 
     def removeCards(self, history):
-        count = 0
-        for player in self.players:
-            for c in history:
-                if c in player.hand:
-                    player.hand.remove(c)
-                    count += 1
         for hand in self.playersHands:
-            if c in history:
+            for c in history:
                 if c in hand:
                     hand.remove(c)
+                else:
+                    raise Exception
 
     # Creates a tuple ((Cards),leadingPlayer,winningPLayer)
     def historyFromTrick(self, trick):
