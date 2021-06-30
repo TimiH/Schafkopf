@@ -42,19 +42,22 @@ For example the Ten of Herz is TH and the Ober of Gras is OG.
 
 
 \section{Goal and Rules}
-\subsubsection{Goal}
+
+\subsection{Goal}
 The goal is to score points by taking tricks, of which there are eight.
 If a team after all cards are played has 61 points (60 for the opposition) the game is won.
 The rulesset for Schafkopf depends on the contract that is being played, there are however a certain rules that
 always apply.
-\subsubsection{Trumps}
+
+\subsection{Trumps}
 Schafkopf has a set of cards that are considered trump.
 This set of cards is determined by the contract that is played.
 Each set has an order of strenght that always follows the order of Ober > Unter > Color.
 The suits themselves have also an order of Eichel > Gras > Herz > Schellen.
 As an example the order of trumps for the most common contract Team, where all Ober, all Unter and all Herz are trump:
 (OE,OG,OH,OS,UE,UG,UH,US,AH,TH,KH,9H,8H,7H)
-\subsubsection{Trick}
+
+\subsection{Trick}
 There are two kinds of tricks, trump and suit.
 The first card of each trick,it can either be of trump or a normal suit, determines which kind is present.
 In both cases players behind must play a card of that suit/trump.
@@ -155,6 +158,7 @@ players form the opposition team.
 \newline
 \begin{figure}
     \includegraphics[scale=0.5]{partnerBiddingExample}\label{fig:figure}
+    \caption{The player can only search for AS, since he holds the AG himself and has no Eichel himself}
 \end{figure}
 At the beginning of the hand only the partner knows the full team compositions, but in normal play this becomes
 apparent fairly soon, can sometimes however last until the last trick.
@@ -187,5 +191,48 @@ Schafkopf is a game with a lot of subtle and deep strategies that can take a man
 are given a set of base rules to follow.
 Most of these rules are role dependent and will be outlined shortly below.
 
+\subsection{Search and runaway when possible}
+Players should always search when they have the chance.
+Since at least two of the six searched suit cards are between the bid winner and her partner and one is with herself
+the chance is high that her partner holds no cards of that suit and can trump.
+The more cards of the suit he holds himself, the more likely it is that his partner is free.
+Another benefit of searching is to gain information about the team composition, since the opposition knows the least
+about it.\\
+Due to the natural imbalance of trumps between the two teams, the oppostion will most likely score fewer tricks and
+thus gains from knowing who their partner is.
+This way they can use their trumps and high scoring cards more efficiently.
+\newline
+The searched partner in a team should always run away when he holds four suit cards in order to reduce the points lost
+to the opposition.
+This way he saves the 11 points of the ace for a later trick.
+A rare exeption to the rule is when the searched player holds 5 cards and the bid winner the last.
+In this case running away is pointless since the opposition has no means of searching in the first place.
+\newline
+Although this rule only applies to players that have the lead, it can still be useful in other situations.
+For example when players have the chance to take the lead by winning a trick only as a means to search or run away in
+the following trick.
+This can sometimes mean taking away a trick of the partner or winning a low scoring trick.
+
 \subsection{Bidder plays Trump,oppositon plays color}
-This rule refers to the decision when a player has the lead.
+This rule refers to the decision when a player has the lead, and applies to both Solo and team games.
+Since the bid winner announced the game he should have more trumps than the other players and thus also fewer colors.
+By playing trump when he has the lead, he can drain the opposition's trumps.
+After the opposition no longer holds trump, consecutive colors such as [A,T,K] gain in strength as they cannot be
+trumped anymore.
+If the player had played color from the beginning, the trick could have been lost.\\
+In team mode this rule also applies to the searched player and often serves as a way of signaling team membership,
+since playing trump and being on the opposition in general is counterproductive.
+\newline
+The reverse logic applies to the opposition's strategy, as they have fewer trumps they should use the lead as an
+opportunity to play color to see if they can score this way as it is unlikely to make many tricks
+with trump.
+If a player has aces he should play them early, before the bid winner can rid himself of that color, or play a low
+color in the hope that his partner holds the ace or has trump left in case he does not hold the color himself.
+\newline
+In team games this strategy also servers as way of signalling team membership, especially if the lead in the first
+trick opens with a suit that is not the searched ace.
+By not playing trump and not searching the player signals he is part of the opposition and can not search.
+His partner in turn should thus try to gain the lead in order to search before the other team drains all their trumps.
+
+\subsection{}
+
