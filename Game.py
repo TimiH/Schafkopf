@@ -379,8 +379,6 @@ class Game:
             for c in history:
                 if c in hand:
                     hand.remove(c)
-                else:
-                    raise Exception
 
     # Creates a tuple ((Cards),leadingPlayer,winningPLayer)
     def historyFromTrick(self, trick):
