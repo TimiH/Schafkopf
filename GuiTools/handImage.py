@@ -85,17 +85,4 @@ def handToJpgV(hand):
     new = Image.new('RGB', (width, height * numImg,))
     for key, img in enumerate(images):
         new.paste(img, (0, key * height))
-    return new
-
-
-from Deck import Deck
-
-d = Deck()
-d.shuffle()
-hand = d.deal(8)
-gameMode = (1, 2)
-hand = sortHandByGameMode(hand, gameMode)
-# handjpg = handToJpg(hand)
-handjpg = handoToJpgStackedV(hand)
-# handjpg.show()
-handjpg.save('handexample.jpg')
+    return newcheck

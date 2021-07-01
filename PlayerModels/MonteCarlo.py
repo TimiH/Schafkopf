@@ -1,7 +1,7 @@
 from helper import createTrumps
 from CardValues import SUITS
 from Player import Player
-from PlayerModels.MCTS import MCTS
+from PlayerModels.RandomSample import MCTS
 from helper import sortHand
 
 __metaclass__ = type

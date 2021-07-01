@@ -12,13 +12,13 @@ from Tournament import playTournament, playFairTournament
 import time
 
 # p1 = RandomSample("Tim")
-p1 = HeuristicPlayer("1")
-p2 = HeuristicPlayer("2")
-p3 = HeuristicPlayer("3")
+p1 = RandomPlayer("1")
+p2 = RandomPlayer("2")
+p3 = RandomPlayer("3")
 p4 = HeuristicPlayer("4")
 
 players = [p1, p2, p3, p4]
 start = time.time()
-playFairTournament(players, 10000)
+playFairTournament(players, 1000)
 end = time.time()
 print(("Time:", end - start))

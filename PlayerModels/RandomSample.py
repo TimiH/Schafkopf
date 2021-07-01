@@ -1,172 +1,83 @@
-from helper import createTrumps
-from CardValues import RANKS, SUITS
-from operator import itemgetter
-from PlayerModels.RandomPlayer import RandomPlayer
 from Player import Player
-from PlayerModels.SampleMaster import SampleMaster
-from helper import sortHand
-import random
+from Deck import Deck
+from random import sample
+from operator import add
+from copy import deepcopy
 
-__metaclass__ = type
 
+class MCTS(object):
+    def __init__(self, gameDict, validCards, hand, position, trickHistory):
+        self.gameDict = gameDict
+        self.trickHistory = trickHistory
+        self.playerPosition = position
+        self.players = []
+        self.availableCards = self.getAvailableCards(hand)
+        self.lenHands = []
+        self.children = []
 
-class RandomSample(Player):
-    def __init__(self, name):
-        self.name = name
-        self.hand = []
+        # getting len hands #hacky
+        for hand in self.gameDict['playersHands']:
+            self.lenHands.append(len(hand))
 
-    def setHand(self, cards):
-        self.hand = sortHand(cards)
+        for n in range(4):
+            p = Player("MCTS" + str(n))
+            self.players.append(p)
 
-    def playCard(self, validCards, gamestate, trickHistory):
-        # If no cards or 1 card
-        if len(validCards) == 0:
-            print("noValidCards")
-        if len(validCards) == 1:
-            return validCards[0]
-        else:
-            position = self.getPosition(gamestate)
-            # print("--------------------------------")
-            # print("SampleMaster Position",position)
-            masternode = SampleMaster(gamestate, validCards, self.hand, position, trickHistory)
-            scoreArray = []
-            for child in masternode.children:
-                print("TreeNode:", child.card, child.rewards, masternode.playerPosition)
-                scoreArray.append(child.rewards[position])
-            best = max(scoreArray)
-            bestIndex = scoreArray.index(best)
-            card = masternode.children[bestIndex].card
-            print("Playing:{}".format(card))
-            # print("Hand:{},Playing: {},validCards: {}".format(self.hand,card,validCards))
-            # self.hand.remove(card)
-            return card
+        self.gameDict.players = self.players
 
-    # Somewhat adopted from https://github.com/Taschee/schafkopf/blob/master/schafkopf/players/heuristics_player.py
-    def makeBid(self, validBids):
-        teamGameChoice = self.choseTeamGame(validBids)
-        wenzGameChoice = self.choseWenzGame(validBids)
-        soloGameChoice = self.choseSoloGame(validBids)
-        bids = []
+        self.gameDict.players[position].setHand(hand)
+        for card in validCards:
+            copy = self.gameDict
+            copy.players[position].hand.remove(card)
+            child = TreeNode(copy, card, self.availableCards, self.lenHands, 100, 5)
+            self.children.append(child)
+            child.runSim()
 
-        max = (None, None)
-        if teamGameChoice[0] > max[0]:
-            max = teamGameChoice
-        if wenzGameChoice[0] > max[0]:
-            max = wenzGameChoice
-        if soloGameChoice[0] > max[0]:
-            max = soloGameChoice
-        # print("PLAYERCHOICES",max,teamGameChoice,wenzGameChoice,soloGameChoice)
-        if max != (None, None): print(max, self.hand)
-        return max
+    def getAvailableCards(self):
+        deck = set(Deck().cards)
+        hand = set(deepcopy(self.gameDict['playerHands'][self.playerPosition]))
+        cardsPlayed = set(deepcopy(self.gameDict['cardsPlayed']))
+        trickHistory = set(deepcopy(self.trickHistory))
+        availableCards = deck - hand - cardsPlayed - trickHistory
+        return list(availableCards)
 
-    def sortHand(self, state):
-        pass
+class TreeNode(object):
+    def __init__(self,gamestate,card,availableCards,lenHands,simRuns=100,simTime=2):
+        self.rewards = [0,0,0,0]
+        self.card = card
+        self.hashedHands = {}
+        self.simRuns = simRuns
+        self.simTime = simTime
+        self.lenHands = lenHands
+        self.availableCards = availableCards
+        self.gamestate = gamestate
+        self.gamestate.currentTrick.trickHistory.append(card)
+        # print("We are in: ", self.card,"with Players:",self.gamestate.players)
+        # for p in self.gamestate.players:
+        #     print(p.hand)
 
-    def choseTeamGame(self, validBids):
-        possibleTeam = list(filter(lambda x: x[0] == 1, validBids))
-        ret = (None, None)
-        if not possibleTeam:
-            return (None, None)
-
-        uCount = self.countCardInHand('U')
-        oCount = self.countCardInHand('O')
-        tcount = self.countColoursInHand('Herz')
-        aCount = self.countCardInHand('A')
-        countCoulour = self.countColoursInHand()
-        total = uCount + oCount + tcount
-        # Decide if possible otherwise delete list
-        if total >= 4 and oCount >= 1 and uCount >= 1 and aCount >= 2 and any(
-                x.rank == 'O' and x.rank in ['Eichel', 'Gras', 'Herz'] for x in self.hand):
-            pass
-        elif total >= 5 and oCount >= 2 and uCount >= 1 and all(x > 0 for x in countCoulour):
-            pass
-        elif total >= 5 and (countCoulour[0] == 0 or countCoulour[1] == 0 or countCoulour[3] == 0):
-            pass
-        elif total >= 6:
-            pass
-        else:
-            possibleTeam = []
-
-        # Decide which of them is viable
-        if possibleTeam:
-            first = possibleTeam[0]
-            for mode in possibleTeam:
-                if countCoulour[mode[1]] < countCoulour[first[1]]:
-                    first = mode
-            ret = first
-        return ret
-
-    def choseSoloGame(self, validBids):
-        uCount = self.countCardInHand('U')
-        oCount = self.countCardInHand('O')
-        chosenSolo = (None, None)
-        if (uCount + oCount) < 3:
-            return chosenSolo
-        else:
-            # Find the solo with the most trumps or leave it
-            max = len(self.trumpsInHandByGamemode((3, 0)))
-            for solo in validBids:
-                if solo[0] == 3:
-                    trumpsInHand = self.trumpsInHandByGamemode(solo)
-                    if len(trumpsInHand) >= 5 and len(trumpsInHand) > max:
-                        chosenSolo = solo
-
-        if chosenSolo != (None, None):
-            trumpsInHand = self.trumpsInHandByGamemode(chosenSolo)
-            if len(trumpsInHand) >= 6:
-                return chosenSolo
-            elif len(trumpsInHand) == 5:
-                reversed = dict(zip(SUITS.values(), SUITS.keys()))
-                if self.countSpatzenForTrump(reversed[chosenSolo[1]]) >= 2:
-                    chosenSolo = (None, None)
-
-        return chosenSolo
-
-    # Possibly look at 2U(top 2),2A
-    def choseWenzGame(self, validBids):
-        uCount = self.countCardInHand('U')
-        aCount = self.countCardInHand('A')
-        ret = (None, None)
-        if uCount >= 3:
-            if aCount >= 2:
-                ret = (2, None)
-            elif aCount == 1:
-                ace = list(filter(lambda x: x.rank == 'A', self.hand))[0]
-                aceSuitsInHand = self.countColoursInHand(ace.suit)
-                if aceSuitsInHand >= 3:
-                    ret = (2, None)
-        return ret
-
-    def trumpsInHandByGamemode(self, gameMode):
-        trumps = createTrumpsList(gameMode)
-        trumpsInHand = set(self.hand) & trumps
-        return trumpsInHand
-
-    def countCardInHand(self, rank):
+    def runSim(self):
         count = 0
-        for c in self.hand:
-            if c.rank == rank:
-                count += 1
-        return count
+        while count != self.simRuns:
+            gamecopy = self.gamestate.copy()
+            self.distributeCards(gamecopy)
+            #print(gamecopy.players)
+            gamecopy.currentTrick.gameDict = gamecopy
+            gamecopy.currentTrick.updatePlayers(gamecopy.players)
+            gamecopy.currentTrick.setMembers()
 
-    # Returns either a count for all colours as list [E,G,H,S] or count for specific colour
-    def countColoursInHand(self, colour=None):
-        counts = [0, 0, 0, 0]
-        if colour == None:
-            for card in self.hand:
-                if card.rank not in ['U', 'O']:
-                    counts[SUITS[card.suit]] += 1
-            return counts
-        else:
-            count = 0
-            for card in self.hand:
-                if card.suit == colour and card.rank not in ['U', 'O']:
-                    count += 1
-            return count
+            gamecopy.continueGame()
+            gamecopy.setRewards()
 
-    def countSpatzenForTrump(self, suit):
-        count = 0
-        for card in self.hand:
-            if card.rank != 'A' and card.suit != suit:
-                count += 1
-        return count
+            self.rewards = list(map(add, self.rewards, gamecopy.rewards))
+            #print(self.card,gamecopy.rewards)
+            count +=1
+            #clear(gamecopy)
+
+    def distributeCards(self,gamestate):
+        for p in range(4):
+            if gamestate.players[p].hand:
+                continue
+            #print(self.availableCards,self.lenHands[p])
+            sampledCards = sample(self.availableCards,self.lenHands[p])
+            gamestate.players[p].setHand(sampledCards)
