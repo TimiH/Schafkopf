@@ -27,13 +27,13 @@ class HeuristicPlayer(Player):
         if soloGameChoice[0] > max[0]:
             max = soloGameChoice
         # print("PLAYERCHOICES",max,teamGameChoice,wenzGameChoice,soloGameChoice)
-        if max != (0, 0):
-            print((max, self.hand))
+        # if max != (0, 0):
+        #     print((max, self.hand))
         return max
 
     def playCard(self, validCards, gameDict, trickHistory):
         if len(validCards) == 1:
-            print(f'Only:{self.position},{self.hand=},{validCards},{trickHistory=},{validCards[0]}')
+            # print(f'Only:{self.position},{self.hand=},{validCards},{trickHistory=},{validCards[0]}')
             return validCards[0]
         mode, _ = gameDict['gameMode']
         card = None
@@ -43,7 +43,7 @@ class HeuristicPlayer(Player):
             card = self.playWenzCard(validCards, gameDict, trickHistory)
         if mode == 3:
             card = self.playSoloCard(validCards, gameDict, trickHistory)
-        print(f'{self.position},{self.hand=},{validCards},{trickHistory=},{card}')
+        #print(f'{self.position},{self.hand=},{validCards},{trickHistory=},{card}')
         return card
 
     def playTeamCard(self, validCards, gameDict, trickHistory):
@@ -57,10 +57,8 @@ class HeuristicPlayer(Player):
         else:
             card = self.playTeamOpposition(validCards, gameDict, trickHistory)
         if not card:
-            print(f'ERROR{card=},{validCards=},{self.position}')
-            return random.choice(validCards)
+            raise Exception
         else:
-            # print(validCards, card)
             return card
 
     def playTeamBidWinner(self, validCards, gameDict, trickHistory):
@@ -130,10 +128,9 @@ class HeuristicPlayer(Player):
         # Lead
         if len(trickHistory) == 0:
             # if runaway possible run away
-            if gameDict['runAwayPossible']:
-                if not gameDict['searched'] and not gameDict['ranAway']:
-                    runawayCards = getCardsOfSuit(validCards, searchedSuit, ['O', 'U'])
-                    card = min(runawayCards, key=lambda x: x.value)
+            if not gameDict['searched'] and not gameDict['ranAway'] and gameDict['runAwayPossible']:
+                runawayCards = getCardsOfSuit(validCards, searchedSuit, ['O', 'U'])
+                card = min(runawayCards, key=lambda x: x.value)
             else:
                 # play Trump
                 trumpsInHand = trumpsInHandByGamemode(validCards, gameMode)
@@ -142,7 +139,7 @@ class HeuristicPlayer(Player):
                     card = orderedTrump[0]
                 else:
                     # try play cards not searched suit
-                    validCardsNoSearch = set(validCards) - set(getCardsOfSuit(validCards, ['O', 'U']))
+                    validCardsNoSearch = list(set(validCards) - set(getCardsOfSuit(validCards, ['O', 'U'])))
                     if validCardsNoSearch:
                         card = max(validCardsNoSearch, key=byRank)
                     else:
@@ -162,8 +159,7 @@ class HeuristicPlayer(Player):
                 else:
                     card = min(validCards, key=lambda x: x.value)
         if not card:
-            print(f'ERROR: {trickHistory=}{validCards=}')
-            # raise Exception
+            raise Exception
         return card
 
     def playTeamOpposition(self, validCards, gameDict, trickHistory):
@@ -332,11 +328,9 @@ class HeuristicPlayer(Player):
                         card = getCardOfSuitRank(validCards, playedSuit, 'A')
                     else:
                         card = min(validCards, key=lambda x: x.value)
-        if card not in validCards:
-            print(f'ERROR{card=},{validCards=}')
-            return random.choice(validCards)
+        if not card:
+            raise Exception
         else:
-            # print(validCards, card)
             return card
 
     def playWenzCard(self, validCards, gameDict, trickHistory):
@@ -446,11 +440,9 @@ class HeuristicPlayer(Player):
                         card = getCardOfSuitRank(validCards, playedSuit, 'A')
                     else:
                         card = min(validCards, key=lambda x: x.value)
-        if card not in validCards:
-            print(f'ERROR{card=},{validCards=}')
-            return random.choice(validCards)
+        if not card:
+            raise Exception
         else:
-            # print(validCards, card)
             return card
 
     def getValidWinners(trickHistory, validCards, gameMode):
