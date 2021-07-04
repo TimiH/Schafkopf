@@ -12,7 +12,7 @@ from random import randint
 
 # TODO insert Laufende
 class Game:
-    def __init__(self, players, leadingPlayer, seed=None, gameDict=None):
+    def __init__(self, players, leadingPlayer, seed=None, gameDict=None, laufendeBool=True):
         if gameDict is None:
             self.uuid = str(uuid.uuid4())
             self.players = players  # List of players and Positons via index
@@ -35,6 +35,7 @@ class Game:
             self.rewards = [0, 0, 0, 0]
             self.schneider = False
             self.offensivePlayersWon = None
+            self.laufendeBool = laufendeBool
             self.schwarz = False
             self.trumpCards = ()
 
@@ -66,6 +67,8 @@ class Game:
             self.rewards = gameDict['rewards']
             self.schneider = gameDict['schneider']
             self.schwarz = gameDict['schwarz']
+            self.laufendeBool = gameDict['laufendeBool']
+
             self.offensivePlayersWon = gameDict['offensivePlayersWon']
 
             self.trumpCards = gameDict['trumpCards']
@@ -94,6 +97,7 @@ class Game:
             'rewards': self.rewards,
             'schneider': self.schneider,
             'schwarz': self.schwarz,
+            'laufende': self.laufendeBool,
             'offensivePlayersWon': self.offensivePlayersWon,
             'trumpCards': self.trumpCards,
             'seed': self.seed
@@ -300,8 +304,9 @@ class Game:
         elif self.gameMode[0] == 3:
             baseReward = REWARDS['SOLO']
 
-        reward = baseReward + REWARDS['LAUFENDE'] * self.laufende + REWARDS['SCHNEIDER'] * schneider + REWARDS[
-            'SCHWARZ'] * schwarz
+        reward = baseReward + REWARDS['LAUFENDE'] * self.laufende * self.laufendeBool + REWARDS[
+            'SCHNEIDER'] * schneider + REWARDS[
+                     'SCHWARZ'] * schwarz
 
         if self.gameMode[0] == 1:
             for s in range(0, 4):
@@ -334,7 +339,8 @@ class Game:
             'laufende': self.laufende,
             'rewards': self.rewards,
             'schneider': self.schneider,
-            'schwarz': self.schwarz
+            'schwarz': self.schwarz,
+            'laufendeBool': self.laufendeBool
         }
         return rewardsDict
 

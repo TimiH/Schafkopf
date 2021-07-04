@@ -8,7 +8,7 @@ import pandas as pd
 
 
 # TODO implement fixed Seeds
-def playFairTournament(players, rounds):
+def playFairTournament(players, rounds, laufendeBool=True):
     statistics = Statistics()
     statistics.setPlayerNames(players)
     for round in range(rounds):
@@ -22,7 +22,7 @@ def playFairTournament(players, rounds):
         for hand in range(4):
             print(f'Playing: Round {round, hand}')
             rotatetedPlayers = rotateListForward(players, hand)
-            game = Game(rotatetedPlayers, 0, seed)
+            game = Game(rotatetedPlayers, 0, seed=seed, laufendeBool=laufendeBool)
             game.setupGame()
             game.playBidding()
             game.continueGame()
