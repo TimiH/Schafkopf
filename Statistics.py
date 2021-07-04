@@ -147,9 +147,8 @@ class Statistics:
 
     def getCumSumRound(self):
         df = self.getCumSum()
-        dfRound = df.iloc[::5, :]
-        dfCumSums = dfRound.cumsum()
-        return dfCumSums
+        dfRound = df.iloc[::4, :]
+        return dfRound
 
     def plotCumsums(self):
         df = self.getCumSum()
@@ -161,11 +160,15 @@ class Statistics:
         tsRound = df.plot(grid=True, xlabel='Games', ylabel='Reward')
         return tsRound
 
-    def winPercentagesOverall(self):
+    def getWinPercentagesOverall(self):
         winPercentages = list(map(lambda x, y: x / y, self.GamesWonCount, self.gameCount))
-        return winPercentages
+        names = ['Sauspiel', 'Wenz', 'Solo']
+        cnames = dict(zip(range(3), names))
+        df = pd.DataFrame(winPercentages).transpose()
+        df = df.rename(columns=cnames)
+        return df
 
-    def winPercetagesPlayer(self):
+    def getWinPercentagesPlayer(self):
         winPercentagesAll = []
         for player in range(4):
             winPercentages = list(
