@@ -1,10 +1,8 @@
 from Game import Game
-from operator import add
 from Statistics import Statistics
 from helper import recreateHandsfromHistory, rotateListBackwards, rotateListForward
-from copy import deepcopy
 from random import randint
-import pandas as pd
+from math import floor
 
 
 # TODO implement fixed Seeds
@@ -28,6 +26,25 @@ def playFairTournament(players, rounds, laufendeBool=True):
             game.continueGame()
             gameDict = game.getGameDict()
             statistics.updateSelf(gameDict, hand)
+    print('DONE')
+    statistics.createDataFrame()
+    return statistics
+
+
+def playRandomTournament(players, rounds, laufendeBool=True):
+    statistics = Statistics()
+    statistics.setPlayerNames(players)
+    for round in range(rounds * 4):
+        game = Game(players, round % 4, laufendeBool=laufendeBool)
+        game.setupGame()
+        gameFound = game.playBidding()
+        if not gameFound:
+            round -= 1
+            continue
+        print(f'Playing: Round {floor(round / 4), round % 4}')
+        game.continueGame()
+        gameDict = game.getGameDict()
+        statistics.updateSelf(gameDict, 0)
     print('DONE')
     statistics.createDataFrame()
     return statistics
