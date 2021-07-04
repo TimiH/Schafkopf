@@ -10,7 +10,6 @@ import uuid
 from random import randint
 
 
-# TODO insert Laufende
 class Game:
     def __init__(self, players, leadingPlayer, seed=None, gameDict=None, laufendeBool=True):
         if gameDict is None:
@@ -33,6 +32,7 @@ class Game:
             self.laufende = 0
 
             self.rewards = [0, 0, 0, 0]
+            self.gameValue = 0
             self.schneider = False
             self.offensivePlayersWon = None
             self.laufendeBool = laufendeBool
@@ -65,6 +65,7 @@ class Game:
             self.laufende = gameDict['laufende']
 
             self.rewards = gameDict['rewards']
+            self.gameValue = gameDict['gameValue']
             self.schneider = gameDict['schneider']
             self.schwarz = gameDict['schwarz']
             self.laufendeBool = gameDict['laufendeBool']
@@ -95,6 +96,7 @@ class Game:
             'searched': self.searched,
             'laufende': self.laufende,
             'rewards': self.rewards,
+            'gameValue': self.gameValue,
             'schneider': self.schneider,
             'schwarz': self.schwarz,
             'laufende': self.laufendeBool,
@@ -307,7 +309,7 @@ class Game:
         reward = baseReward + REWARDS['LAUFENDE'] * self.laufende * self.laufendeBool + REWARDS[
             'SCHNEIDER'] * schneider + REWARDS[
                      'SCHWARZ'] * schwarz
-
+        self.gameValue = reward
         if self.gameMode[0] == 1:
             for s in range(0, 4):
                 if self.offenceWon():
@@ -338,6 +340,7 @@ class Game:
             'scores': self.scores,
             'laufende': self.laufende,
             'rewards': self.rewards,
+            'gameValue': self.gameValue,
             'schneider': self.schneider,
             'schwarz': self.schwarz,
             'laufendeBool': self.laufendeBool

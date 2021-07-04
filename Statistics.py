@@ -33,6 +33,7 @@ class Statistics:
 
         # dict
         self.dictionary['gameMode'].append(gameMode)
+        self.dictionary['gameValue'].append(gameDict['gameValue'])
         self.dictionary['leadingPlayer'].append(gameDict['leadingPlayer'])
         self.dictionary['schneider'].append(gameDict['schneider'])
         self.dictionary['schwarz'].append(gameDict['schwarz'])
@@ -104,6 +105,7 @@ class Statistics:
             'rewards1': [],
             'rewards2': [],
             'rewards3': [],
+            'gameValue': [],
             'offensivePlayersWon': [],
             'leadingPlayer': [],
             'schneider': [],
