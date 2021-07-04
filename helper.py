@@ -230,3 +230,13 @@ def getValidWinners(trickHistory, validCards, gameMode):
         if winningIndex == trickPos:
             winningCards.append((c, sumTrickHistory(testTrickHistory)))
     return winningCards
+
+
+# rotates Players forward by 1 Position [0,1,2,3]->[1,2,3,0]
+def rotateListForward(list, n):
+    return list[n:] + list[:n]
+
+
+# rotates Players by backwards 1 Position [1,2,3,0]->[0,1,2,3], used for score manipulation
+def rotateListBackwards(list, n):
+    return list[-n:] + list[:-n]
