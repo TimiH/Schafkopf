@@ -10,6 +10,7 @@ import uuid
 from random import randint
 
 
+# TODO insert Laufende
 class Game:
     def __init__(self, players, leadingPlayer, seed=None, gameDict=None):
         if gameDict is None:
@@ -33,6 +34,7 @@ class Game:
 
             self.rewards = [0, 0, 0, 0]
             self.schneider = False
+            self.offensivePlayersWon = None
             self.schwarz = False
             self.trumpCards = ()
 
@@ -64,6 +66,8 @@ class Game:
             self.rewards = gameDict['rewards']
             self.schneider = gameDict['schneider']
             self.schwarz = gameDict['schwarz']
+            self.offensivePlayersWon = gameDict['offensivePlayersWon']
+
             self.trumpCards = gameDict['trumpCards']
 
             self.seed = gameDict['seed']
@@ -90,6 +94,7 @@ class Game:
             'rewards': self.rewards,
             'schneider': self.schneider,
             'schwarz': self.schwarz,
+            'offensivePlayersWon': self.offensivePlayersWon,
             'trumpCards': self.trumpCards,
             'seed': self.seed
         }
@@ -199,6 +204,8 @@ class Game:
         # print(self.scores)
 
     def continueGame(self):
+        if self.gameMode == (0, 0):
+            return
         if not self.currentTrick:
             self.continueTillNextAction()
         # Finish current trick
@@ -272,6 +279,7 @@ class Game:
         schneider = False
         schwarz = False
         scoreOffense = 0
+        self.offensivePlayersWon = self.offenceWon()
         for p in self.offensivePlayers:
             scoreOffense += self.scores[p]
         # Check if schneider
@@ -343,13 +351,11 @@ class Game:
         # finds second offensive player in team mode
         if self.gameMode[0] == 1:
             suit = self.gameMode[1]
-            for p in self.players:
-                for card in p.hand:
-                    if card.rank == 'A':
-                        if card.suit == REVERSEDSUITS[suit]:
-                            playerIndex = self.players.index(p)
-                            # self.offensivePlayers.append(playerIndex)
-                            self.offensivePlayers.append(playerIndex)
+            ace = Card(REVERSEDSUITS[suit], 'A')
+            for key, value in enumerate(self.playersHands):
+                if ace in value:
+                    self.offensivePlayers.append(key)
+                    break
 
     def setRunAwayPossible(self):
         if len(self.offensivePlayers) > 1:

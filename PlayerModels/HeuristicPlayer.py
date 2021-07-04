@@ -245,7 +245,7 @@ class HeuristicPlayer(Player):
                     # we have trump control or no trump
                     validCardsNoTrump = list(set(validCards) - set(trumpInHand))
                     if validCardsNoTrump:
-                        card = min(validCardsNoTrump, key=byRank)
+                        card = max(validCardsNoTrump, key=byRank)
                     else:
                         card = random.choice(validCards)
             # noLead
