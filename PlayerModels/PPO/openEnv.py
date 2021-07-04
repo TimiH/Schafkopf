@@ -6,7 +6,7 @@ from PlayerModels.RandomPlayer import RandomPlayer
 
 class SchafkopfEnv(gym.Env):
     """Schafkopf environment for OpenAI gym"""
-    metadata = {'render.modes': ['human']}
+    metadata = {'render.modes': ['ansi']}
 
     def __init__(self, players, lead, seed=None):
         super.(SchafkopfEnv, self).__innit__()
@@ -35,4 +35,10 @@ class SchafkopfEnv(gym.Env):
 
     # starts new game
     def render(self, mode='human'):
+        pass
+
+    def seed(self, seed=None):
+        pass
+
+    def close(self):
         pass
