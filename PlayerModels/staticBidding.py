@@ -97,6 +97,7 @@ def choseWenzGame(hand):
     return validBid
 
 
+# TODO Crazy Overengineered with winrates >90%
 # We are aiming for 6 Tricks and if U<4 UE is necessary
 def choseWenzGameRevised(hand):
     uCount = countByRank(hand, 'U')
