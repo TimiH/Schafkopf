@@ -1,12 +1,12 @@
 import random
 
-from Player import Player
-from PlayerModels.staticBidding import choseSoloGame, choseWenzGameRevised, choseTeamGame, choseWenzGame
-from PlayerModels.staticBidding import getCardsOfRank, cardInHand, rankInHand, getCardOfSuitRank, \
+from PlayerModels.Player import Player
+from PlayerModels.staticBidding import choseSoloGame, choseWenzGameRevised, choseTeamGame
+from PlayerModels.staticBidding import getCardsOfRank, cardInHand, getCardOfSuitRank, \
     trumpsInHandByGamemode, getCardsOfSuit
 from helper import createTrumpsList, byRank, getTrickWinnerIndex, sumTrickHistory, ringTest, sortTrump, getParnterPos, \
     getValidWinners
-from CardValues import SUITS, REVERSEDSUITS
+from CardValues import REVERSEDSUITS
 from copy import copy
 
 __metaclass__ = type

@@ -1,24 +1,31 @@
-from Deck import Deck
-from Card import Card
-from Player import Player
 from PlayerModels.RandomPlayer import RandomPlayer
 from PlayerModels.HeuristicPlayer import HeuristicPlayer
 # from PlayerModels.RandomSample import RandomSample
-
-from Game import Game
-from Bidding import Bidding
-from Trick import Trick
-from Tournament import playTournament, playFairTournament
+from Tournament import playFairTournament, playRandomTournament
 import time
 
-# p1 = RandomSample("Tim")
-p1 = RandomPlayer("1")
-p2 = RandomPlayer("2")
-p3 = RandomPlayer("3")
-p4 = HeuristicPlayer("4")
+# p1 = RandomPlayer("RandomPlayer")
+# 2v2
+# p1 = HeuristicPlayer("HeuristicPlayer0")
+# p2 = HeuristicPlayer("HeuristicPlayer1")
+# p3 = RandomPlayer("RandomPlayer0")
+# p4 = RandomPlayer("RandomPlayer1")
+# 3v1
+# p1 = HeuristicPlayer("HeuristicPlayer0")
+# p2 = HeuristicPlayer("HeuristicPlayer1")
+# p3 = HeuristicPlayer("HeuristicPlayer2")
+# p4 = RandomPlayer("RandomPlayer0")
+
+
+# #4H
+p1 = HeuristicPlayer("HeuristicPlayer0")
+p2 = HeuristicPlayer("HeuristicPlayer1")
+p3 = HeuristicPlayer("HeuristicPlayer2")
+p4 = HeuristicPlayer("HeuristicPlayer3")
 
 players = [p1, p2, p3, p4]
 start = time.time()
-playFairTournament(players, 1000)
+stats = playFairTournament(players, 1000, laufendeBool=False)
+# stats = playRandomTournament(players, 1000,laufendeBool=False)
 end = time.time()
 print(("Time:", end - start))

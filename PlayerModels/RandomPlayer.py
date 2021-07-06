@@ -1,17 +1,16 @@
-from operator import itemgetter
-from Player import Player
-from helper import sortHand
-from PlayerModels.staticBidding import choseSoloGame, choseTeamGame, choseWenzGame, choseWenzGameRevised
+from PlayerModels.Player import Player
+from PlayerModels.staticBidding import choseSoloGame, choseTeamGame, choseWenzGameRevised
 import random
 
 __metaclass__ = type
 
+
 class RandomPlayer(Player):
     # Somewhat adopted from https://github.com/Taschee/schafkopf/blob/master/schafkopf/players/heuristics_player.py
     def makeBid(self, validBids):
-        teamGameChoice = choseTeamGame(validBids,self.hand)
+        teamGameChoice = choseTeamGame(validBids, self.hand)
         wenzGameChoice = choseWenzGameRevised(self.hand)
-        soloGameChoice = choseSoloGame(validBids,self.hand)
+        soloGameChoice = choseSoloGame(validBids, self.hand)
         bids = []
 
         max = (0, 0)

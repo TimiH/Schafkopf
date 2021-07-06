@@ -134,8 +134,6 @@ class Trick:
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
         playerHand = deepcopy(self.gameDict['playersHands'][currentPlayerIndex])
         validCards = self.getValidActionsForHand(playerHand)
-        t = None
-
         self.players[currentPlayerIndex].setHand(playerHand)
         playedCard = self.players[currentPlayerIndex].playCard(validCards, self.gameDict, self.history)
         self.history.append(playedCard)
