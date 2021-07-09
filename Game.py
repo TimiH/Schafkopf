@@ -139,8 +139,8 @@ class Game:
             return True
 
     # used in env
-    def step(self, card):
-        self.currentTrick.appendCard(card)
+    def step(self, action):
+        self.currentTrick.appendCard(action)
         if self.isFinished():
             self.setRewards()
             state = {}
@@ -156,6 +156,7 @@ class Game:
                 'playerIndex': playerIndex
             }
             return state, rewards, False
+
 
     # continues the game until an action is necessary
     def continueTillNextAction(self):

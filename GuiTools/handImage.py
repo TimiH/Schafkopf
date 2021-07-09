@@ -85,4 +85,4 @@ def handToJpgV(hand):
     new = Image.new('RGB', (width, height * numImg,))
     for key, img in enumerate(images):
         new.paste(img, (0, key * height))
-    return newcheck
+    return new
