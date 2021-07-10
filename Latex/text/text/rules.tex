@@ -15,18 +15,23 @@ corresponding English names for each suit and rank in the following tables.
 The following tables is ordered descendingly by strength.
 \begin{table}[]
     \begin{tabular}{lll}
+        \toprule
         Suit     & Short Hand & Corresponding French Suit \\
+        \midrule
         Eichel   & E          & Clubs                     \\
         Gras     & G          & Spades                    \\
         Herz     & H          & Hearts                    \\
-        Schellen & S          & Diamonds
+        Schellen & S          & Diamonds                  \\
+        \bottomrule
     \end{tabular}\label{tab:table2}
 \end{table}
 Regardless of the contract each rank has a corresponding point value ranging from 11 to 0 points in discrete steps.
 The total value of all 32 cards is therefore 120.
 \begin{table}[]
     \begin{tabular}{llll}
+        \toprule
         Rank  & Point Value & Short Hand & Corresponding French Rank \\
+        \midrule
         Ass   & 11          & A          & Ace                       \\
         Zehn  & 10          & T          & Ten                       \\
         König & 4           & K          & King                      \\
@@ -34,7 +39,8 @@ The total value of all 32 cards is therefore 120.
         Unter & 2           & U          & Jack                      \\
         9     & 0           & 9          & Nine                      \\
         8     & 0           & 8          & Eight                     \\
-        7     & 0           & 7          & Seven
+        7     & 0           & 7          & Seven                     \\
+        \bottomrule
     \end{tabular}\label{tab:table}
 \end{table}
 In order to refer to cards in the future we also included a short hand way of expressing suit and rank.
@@ -120,9 +126,7 @@ There are also specials rewards a team can earn:
     played.
 \end{description}
 The formula to calculate the final hand reward is always:
-\begin{equation*}
-    Hand Reward = Base Reward + Schneider + Schwarz + Laufende
-\end{equation*}
+\[\text{Hand Reward} = \text{Base Reward} + \text{Schneider} + \text{Schwarz} + \text{Laufende}\]
 Losers pay the winner the Hand rewards paid out always sum up to zero.
 In TEAM game the losers get the negative hand reward, and the winners receive the positive hand reward.
 In SOLO the bid winner receives three time the reward and each player receives a single hand reward.
@@ -130,10 +134,13 @@ The structure used in this paper can be found in the following table.
 The hand is now finished, and the dealer role rotates clockwise.
 \begin{table}[]
 \begin{tabular}{ll}
-Name     & Base Reward \\
-Specials & 10          \\
-Team     & 20          \\
-Solo     & 50    
+    \toprule
+    Name     & Base Reward \\
+    \midrule
+    Specials & 10          \\
+    Team     & 20          \\
+    Solo     & 50          \\
+    \bottomrule
 \end{tabular}\label{tab:table3}
 \end{table}
 \section{Contracts}
