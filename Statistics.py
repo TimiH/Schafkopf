@@ -177,6 +177,14 @@ class Statistics:
         df = df.rename(columns=cnames)
         return df
 
+    def getWinPentagesTotalPlayer(self):
+        gamesPlayedPlayer = [sum(self.GamesPlayedByPlayer[x]) for x in range(4)]
+        gamesWonPlayer = [sum(self.GamesWonByPlayer[x]) for x in range(4)]
+        winPercentages = list(map(lambda x,y: [x/y],gamesWonPlayer,gamesPlayedPlayer))
+        dfZip = dict(zip(self.playerNames, winPercentages))
+        df = pd.DataFrame(dfZip)
+        return df
+
     def getWinPercentagesPlayer(self):
         winPercentagesAll = []
         for player in range(4):
@@ -185,7 +193,7 @@ class Statistics:
             winPercentagesAll.append(winPercentages)
         dfZip = dict(zip(self.playerNames, winPercentagesAll))
         df = pd.DataFrame(dfZip).transpose()
-        names = ['SauspielBid', 'Wenz', 'Solo', 'SauspielPartner', 'SauspielOPP', 'WenzOpp', 'SoloOpp']
+        names = ['Team', 'Wenz', 'Solo', 'Team-Partmer', 'Sauspiel-Opp', 'Wenz-Opp', 'Solo-Opp']
         cnames = dict(zip(range(7), names))
         df = df.rename(columns=cnames)
         return df
@@ -205,7 +213,7 @@ class Statistics:
             evAll.append(ev)
         dfZip = dict(zip(self.playerNames, evAll))
         df = pd.DataFrame(dfZip).transpose()
-        names = ['SauspielBid', 'Wenz', 'Solo', 'SauspielPartner', 'SauspielOPP', 'WenzOpp', 'SoloOpp']
+        names = ['Team', 'Wenz', 'Solo', 'Team-Partmer', 'Sauspiel-Opp', 'Wenz-Opp', 'Solo-Opp']
         cnames = dict(zip(range(7), names))
         df = df.rename(columns=cnames)
         return df
