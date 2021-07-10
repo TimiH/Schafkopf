@@ -14,6 +14,8 @@ class Statistics:
                                     [0, 0, 0, 0, 0, 0, 0]]
         self.GamesWonByPlayer = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0],
                                  [0, 0, 0, 0, 0, 0, 0]]
+        self.RewardsWonByPlayer = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0],
+                                   [0, 0, 0, 0, 0, 0, 0]]
         self.df = None
         self.rewardsOverall = [0, 0, 0, 0]
         self.dictionary = self.createDictionary()
@@ -54,6 +56,8 @@ class Statistics:
         gameMode = gameDict['gameMode'][0]
         offensivePlayersWon = gameDict['offensivePlayersWon']
         offensivePlayersRotated = [(x - rotateBy) % 4 for x in gameDict['offensivePlayers']]
+        rewardsPlayersWon = gameDict['rewards']
+        rewardsPlayersWonRotated = rotateListBackwards(rewardsPlayersWon, rotateBy)
         # TODO
         # self.BidByPlayer[offensivePlayersRotated[0]] += 1
 
@@ -75,25 +79,30 @@ class Statistics:
                 # BidTeam
                 if player == bidWinner:
                     self.GamesPlayedByPlayer[player][path[gameMode]] += 1
+                    self.RewardsWonByPlayer[player][path[gameMode]] += rewardsPlayersWonRotated[player]
                     if offensivePlayersWon:
                         self.GamesWonByPlayer[player][path[gameMode]] += 1
                 elif player == partner:
                     self.GamesPlayedByPlayer[player][path[gameMode + 3]] += 1
+                    self.RewardsWonByPlayer[player][path[gameMode + 3]] += rewardsPlayersWonRotated[player]
                     if offensivePlayersWon:
                         self.GamesWonByPlayer[player][path[gameMode + 3]] += 1
                 else:
                     # Oppostion
                     self.GamesPlayedByPlayer[player][path[gameMode + 4]] += 1
+                    self.RewardsWonByPlayer[player][path[gameMode + 4]] += rewardsPlayersWonRotated[player]
                     if not offensivePlayersWon:
                         self.GamesWonByPlayer[player][path[gameMode + 4]] += 1
             else:
                 if player == offensivePlayersRotated[0]:
                     self.GamesPlayedByPlayer[player][path[gameMode]] += 1
+                    self.RewardsWonByPlayer[player][path[gameMode]] += rewardsPlayersWonRotated[player]
                     if offensivePlayersWon:
                         self.GamesWonByPlayer[player][path[gameMode]] += 1
                 else:
                     # Oppostion
                     self.GamesPlayedByPlayer[player][path[gameMode + 4]] += 1
+                    self.RewardsWonByPlayer[player][path[gameMode + 4]] += rewardsPlayersWonRotated[player]
                     if not offensivePlayersWon:
                         self.GamesWonByPlayer[player][path[gameMode + 4]] += 1
 
@@ -175,6 +184,26 @@ class Statistics:
                 map(lambda x, y: x / y, self.GamesWonByPlayer[player], self.GamesPlayedByPlayer[player]))
             winPercentagesAll.append(winPercentages)
         dfZip = dict(zip(self.playerNames, winPercentagesAll))
+        df = pd.DataFrame(dfZip).transpose()
+        names = ['SauspielBid', 'Wenz', 'Solo', 'SauspielPartner', 'SauspielOPP', 'WenzOpp', 'SoloOpp']
+        cnames = dict(zip(range(7), names))
+        df = df.rename(columns=cnames)
+        return df
+
+    def getEVOverall(self):
+        totalGames = sum(self.gameCount)
+        ev = [x / totalGames for x in self.rewardsOverall]
+        df = pd.DataFrame(ev).transpose()
+        cnames = dict(zip(range(4), self.playerNames))
+        df = df.rename(columns=cnames)
+        return df
+
+    def getEVGameModePlayers(self):
+        evAll = []
+        for player in range(4):
+            ev = list(map(lambda x, y: x / y, self.RewardsWonByPlayer[player], self.GamesWonByPlayer[player]))
+            evAll.append(ev)
+        dfZip = dict(zip(self.playerNames, evAll))
         df = pd.DataFrame(dfZip).transpose()
         names = ['SauspielBid', 'Wenz', 'Solo', 'SauspielPartner', 'SauspielOPP', 'WenzOpp', 'SoloOpp']
         cnames = dict(zip(range(7), names))
