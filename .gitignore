@@ -3,7 +3,7 @@ __pycache__/
 *.pyc
 /DataDump/*
 .run/*
-
+/Visualisation/tablePosAvP/pickleData/
 
 # Created by https://www.toptal.com/developers/gitignore/api/pycharm,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=pycharm,python
