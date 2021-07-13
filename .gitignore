@@ -19,6 +19,7 @@ __pycache__/
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/**/.iml
+.idea/*
 # Generated files
 .idea/**/contentModel.xml
 
@@ -42,10 +43,10 @@ __pycache__/
 # .idea/artifacts
 # .idea/compiler.xml
 # .idea/jarRepositories.xml
- .idea/modules.xml
- .idea/*.iml
+.idea/modules.xml
+.idea/*.iml
 # .idea/modules
- *.iml
+*.iml
 # *.ipr
 
 # CMake
