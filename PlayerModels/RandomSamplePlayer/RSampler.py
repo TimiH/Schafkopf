@@ -1,11 +1,9 @@
 from PlayerModels.RandomPlayer import RandomPlayer
 from PlayerModels.HeuristicPlayer import HeuristicPlayer
 # from random import
-from copy import deepcopy
+from copy import deepcopy,copy
 from Deck import Deck
 
-
-#
 class RSamplerMaster:
     def __init__(self, validCards, hand, position, gamesDict, trickHistory, ):
         # carriedOver
@@ -14,6 +12,7 @@ class RSamplerMaster:
         self.position = position
         self.trickHistory = trickHistory
         self.hand = hand
+        self.gameMode = gamesDict['gameMode']
         # Own variables
         self.nodes = []
         self.result = None
@@ -34,6 +33,19 @@ class RSamplerMaster:
         trickHistory = set(deepcopy(self.trickHistory))
         availableCards = deck - hand - cardsPlayed - trickHistory
         return list(availableCards)
+
+    def fillPlayerHands(self):
+        #fill current trick to playerHands
+        hands = [[],[],[],[]]
+        lead = self.masterCopy['leadingPlayer']
+        for key,card in enumerate(self.trickHistory):
+            c = copy(card)
+            self.playerHands[key+lead].append(c)
+        if self.gameMode == 1:
+            if self.teamsKnown():
+        else:
+            return
+
 
     def teamsKnown(self):
         if self.masterCopy['searched'] or ['ranAway']:
