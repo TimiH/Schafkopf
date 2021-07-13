@@ -12,3 +12,6 @@ YopA1 = OperationNode('Play highest Trump')
 NcondA1 = ConditionNode('Do we have cards not trump?')
 YopA3 = OperationNode('Play highest Rank')
 opA3N = OperationNode('Play random card')
+
+st.connect(cond0)
+bidWinner.connect()

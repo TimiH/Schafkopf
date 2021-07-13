@@ -18,6 +18,7 @@ class Statistics:
                                    [0, 0, 0, 0, 0, 0, 0]]
         self.df = None
         self.rewardsOverall = [0, 0, 0, 0]
+        self.scoresOverall = [0,0,0,0]
         self.dictionary = self.createDictionary()
         self.playerNames = []
 
@@ -46,6 +47,7 @@ class Statistics:
         scores = rotateListBackwards(gameDict['scores'], rotateBy)
         rewards = rotateListBackwards(gameDict['rewards'], rotateBy)
         self.rewardsOverall = list(map(lambda x, y: x + y, self.rewardsOverall, rewards))
+        self.scoresOverall = list(map(lambda x, y: x + y, self.scoresOverall, scores))
         for n in range(4):
             keyRewards = 'rewards' + str(n)
             self.dictionary[keyRewards].append(rewards[n])
@@ -161,12 +163,12 @@ class Statistics:
 
     def plotCumsums(self):
         df = self.getCumSum()
-        ts = df.plot(grid=True, xlabel='Games', ylabel='Reward')
+        ts = df.plot(grid=True, xlabel='Hand', ylabel='Reward Earmed')
         return ts
 
     def plotCumSumsRound(self):
         df = self.getCumSumRound()
-        tsRound = df.plot(grid=True, xlabel='Games', ylabel='Reward')
+        tsRound = df.plot(grid=True, xlabel='Hand', ylabel='Reward Earmed')
         return tsRound
 
     def getWinPercentagesOverall(self):
@@ -215,5 +217,13 @@ class Statistics:
         df = pd.DataFrame(dfZip).transpose()
         names = ['Team', 'Wenz', 'Solo', 'Team-Partmer', 'Sauspiel-Opp', 'Wenz-Opp', 'Solo-Opp']
         cnames = dict(zip(range(7), names))
+        df = df.rename(columns=cnames)
+        return df
+
+    def getEVScoresOverall(self):
+        totalGames = sum(self.gameCount)
+        ev = [x / totalGames for x in self.scoresOverall]
+        df = pd.DataFrame(ev).transpose()
+        cnames = dict(zip(range(4), self.playerNames))
         df = df.rename(columns=cnames)
         return df

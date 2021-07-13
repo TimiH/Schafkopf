@@ -12,8 +12,10 @@ two teams of one and three, and then play 8 tricks with differing rules sets tha
 The Game of Schafkopf uses a 32 card bavarian deck, containing 4 suits with 8 ranks each.
 Since the bavarian deck is comparable with a 52 french deck, where all ranks 2-6 are excluded, we also included the
 corresponding English names for each suit and rank in the following tables.
-The following tables is ordered descendingly by strength.
-\begin{table}[]
+The following tables is ordered descendingly by strength:
+\newline
+\begin{table}[h!]
+    \centering
     \begin{tabular}{lll}
         \toprule
         Suit     & Short Hand & Corresponding French Suit \\
@@ -23,11 +25,18 @@ The following tables is ordered descendingly by strength.
         Herz     & H          & Hearts                    \\
         Schellen & S          & Diamonds                  \\
         \bottomrule
-    \end{tabular}\label{tab:table2}
+    \end{tabular}
+    \caption{The four suits of Schafkopf}
+    \label{tab:suits}
 \end{table}
+\newline
 Regardless of the contract each rank has a corresponding point value ranging from 11 to 0 points in discrete steps.
 The total value of all 32 cards is therefore 120.
-\begin{table}[]
+\newline
+Table \ref{tab:cardsvalues} shows the order of ranks and their values.
+\newline
+\begin{table}[h!]
+    \centering
     \begin{tabular}{llll}
         \toprule
         Rank  & Point Value & Short Hand & Corresponding French Rank \\
@@ -41,26 +50,36 @@ The total value of all 32 cards is therefore 120.
         8     & 0           & 8          & Eight                     \\
         7     & 0           & 7          & Seven                     \\
         \bottomrule
-    \end{tabular}\label{tab:table}
+    \end{tabular}
+    \caption{Card ranks of Schafkpopf and their point values}
+    \label{tab:cardsvalues}
 \end{table}
+\newline
 In order to refer to cards in the future we also included a short hand way of expressing suit and rank.
 For example the Ten of Herz is TH and the Ober of Gras is OG.
-
-
+A visual of all 32 cards in their traditional representation can be seen in Figure \ref{fig:32cards}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.2]{cards.jpg}
+    \caption{The 32 cards in Schafkopf}
+    \label{fig:32cards}
+\end{figure}
 \section{Goal and Rules}
 
 \subsection{Goal}
 The goal is to score points by taking tricks, of which there are eight.
 If a team after all cards are played has 61 points (60 for the opposition) the game is won.
-The rulesset for Schafkopf depends on the contract that is being played, there are however a certain rules that
+The rules set for Schafkopf depends on the contract that is being played, there are however a certain rules that
 always apply.
 
 \subsection{Trumps}
 Schafkopf has a set of cards that are considered trump.
 This set of cards is determined by the contract that is played.
-Each set has an order of strenght that always follows the order of Ober > Unter > Color.
+\newline
+Each set has an order of strength that always follows the order of Ober > Unter > Color.
 The suits themselves have also an order of Eichel > Gras > Herz > Schellen.
 As an example the order of trumps for the most common contract Team, where all Ober, all Unter and all Herz are trump:
+\newline
 (OE,OG,OH,OS,UE,UG,UH,US,AH,TH,KH,9H,8H,7H)
 
 \subsection{Trick}
@@ -107,7 +126,7 @@ The player with the Lead plays his first card and the play continues in clockwis
 card.
 The winner of the of the current trick collects all cards and becomes the new Lead.
 After all eight tricks have been played the game moves into the scoring phase.
-\subsection{Scoring Phase}
+\subsection{Scoring Phase}\label{scoringphase}
 Each team counts their combined points, and a winner is determined.
 The team that won the bid requires 61 points, whilst the opposition team only requires 60 points.
 The rewards can now be calculated using a prearranged structure.
@@ -122,8 +141,8 @@ There are also specials rewards a team can earn:
     points still counts as trick win.
     \item[Laufende] Laufende is a row of the highest trumps held by a party without interruption.
     In the TEAM game and COLOR Solo, payment is made from three Laufende (at least OE,OG,OH) and in the WENZ,
-    payment is made from two Laufende (at leas UE,UG). Laufende can range from 2 up to 14 depening which contract is
-    played.
+    payment is made from two Laufende (at leas UE,UG).
+    Laufende can range from 2 up to 14 depening which contract is played.
 \end{description}
 The formula to calculate the final hand reward is always:
 \[\text{Hand Reward} = \text{Base Reward} + \text{Schneider} + \text{Schwarz} + \text{Laufende}\]
@@ -132,8 +151,9 @@ In TEAM game the losers get the negative hand reward, and the winners receive th
 In SOLO the bid winner receives three time the reward and each player receives a single hand reward.
 The structure used in this paper can be found in the following table.
 The hand is now finished, and the dealer role rotates clockwise.
-\begin{table}[]
-\begin{tabular}{ll}
+\begin{table}[h!]
+    \centering
+\begin{tabular}{cc}
     \toprule
     Name     & Base Reward \\
     \midrule
@@ -141,7 +161,9 @@ The hand is now finished, and the dealer role rotates clockwise.
     Team     & 20          \\
     Solo     & 50          \\
     \bottomrule
-\end{tabular}\label{tab:table3}
+\end{tabular}
+    \caption{The standard rewards in Schafkopf}
+    \label{tab:rewardsStrucutre}
 \end{table}
 \section{Contracts}
 Schafkopf has a lot of differing contracts,these often allow for more Solo contracts or avoid aborting the hand.
@@ -159,18 +181,21 @@ Team mode is a two vs two variant and most, whilst WENZ and COLOR SOLO both pit 
 In the Team game there are 14 Trumps, four Ober, four Unter and all Herz.
 \newline
 The bid winner calls a color ace that she does not hold herself, but she must hold at least one card of that color
-that is not trump.
+that is not trump. An example can be seen in Figure \ref{fig:bidding}
 The player that holds the ace, being called the partner, will be allied for with the bid winner, whilst the remaining
 players form the opposition team.
 \newline
-\begin{figure}
+\begin{figure}[h!]
     \includegraphics[scale=0.5]{partnerBiddingExample}\label{fig:figure}
     \caption{The player can only search for AS, since he holds the AG himself and has no Eichel himself}
+    \label{fig:bidding}
 \end{figure}
+\newline
 At the beginning of the hand only the partner knows the full team compositions, but in normal play this becomes
 apparent fairly soon, can sometimes however last until the last trick.
 If a trick starts with the searched color, the Partner has to play the ace.
 This process is called Searching and reveals the team composition.
+\newline
 The partner may play the Ace at the beginning of a trick himself if he has the lead.
 If no one searches the ace may only be played in the last trick.
 If the partner has a four cards of the searched suit,including the ace, he may run away by playing a different card of
