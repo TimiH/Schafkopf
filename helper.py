@@ -43,15 +43,9 @@ def canRunaway(player, gameMode):
         return False
 
 
-def recreateHandsfromHistory(history):
-    hands = [[], [], [], []]
-
-    for trick in history:
-        lead = trick[1]
-        winner = trick[2]
-        for card in trick[0]:
-            hands[lead].append(card)
-            lead = (lead + 1) % 4
+def handsFromHistory(history):
+    tricks = [rotateListBackwards(x[0],x[1]) for x in history]
+    hands = list(zip(*tricks))
     return hands
 
 
@@ -75,7 +69,6 @@ def sortHand(hand):
     uSorted = [x for x in hand if x.rank == 'U']
     otherCards = [x for x in hand if x.rank != 'U' and x.rank != 'O']
 
-    # ugly if statements in case list empty
     sortedHand = []
     if oSorted:
         oSorted = sorted(oSorted, key=bySuit)

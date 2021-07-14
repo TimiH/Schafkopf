@@ -1,5 +1,7 @@
+import numpy as np
 from bitarray import bitarray
 from CardValues import RANKS, SUITS
+from helper import rotateListBackwards,rotateListForward
 
 def createQstates(hand, validCards, playedCard, position, gameDict, trickhistory):
     qstateDict = {}
@@ -10,7 +12,10 @@ def createQstates(hand, validCards, playedCard, position, gameDict, trickhistory
     qstateDict['ValidCards'] = createBitArrayFromHand(validCards)
     qstateDict['playedCards'] = createBitArrayFromCard(playedCard)
     qstateDict['Trumps'] = createBitArrayFromHand(gameDict['trumpCards'])
-    qstateDict['TrickHistory'] = createBitArrayFromHand(trickhistory)
+    qstateDict['history'] = convertHistory(gameDict['history'],position)
+    #TODO split
+    qstateDict['TrickHistory'] = trickHistoryToArray(trickhistory,position)
+
     qstateDict['TrumpsRemainOthers'] = qstateDict['Trumps'] & ~qstateDict['playedCards'] & ~qstateDict['Hand'] & ~ \
         qstateDict['TrickHistory']
     qstateDict['CardsLeftInGameOthers'] = trueVector & ~qstateDict['playedCards'] & ~qstateDict['Hand']
@@ -20,22 +25,63 @@ def createQstates(hand, validCards, playedCard, position, gameDict, trickhistory
     # qstateDict['CurrentWinnerPos'] = ''
     qstateDict['Lead'] = createPositionArrayFromIndex(gameDict['leadingPlayer'])
     # General Game
-    qstateDict['Score0'] = gameDict['scores'][0]
-    qstateDict['Score1'] = gameDict['scores'][1]
-    qstateDict['Score2'] = gameDict['scores'][2]
-    qstateDict['Score3'] = gameDict['scores'][3]
-    qstateDict['pointsLeftInGame'] = 120 - sum(gameDict['scores'])
-    qstateDict['pointsInTrick'] = collectPointsInTrick(trickhistory)
-    qstateDict['ranAway'] = gameDict['ranAway']
-    qstateDict['searched'] = gameDict['searched']
-    qstateDict['PostionMeTable'] = createPositionArrayFromIndex(position)
-    qstateDict['GameMode'] = gameDict['gameMode']
+
+    #Scores: rotated normalized
+    scoresRotated = rotateListBackwards(gameDict['scores'],position)
+    qstateDict['Score0'] = scoresRotated[0] / 120
+    qstateDict['Score1'] = scoresRotated[0] / 120
+    qstateDict['Score2'] = scoresRotated[0] / 120
+    qstateDict['Score3'] = scoresRotated[0] / 120
+
+    qstateDict['pointsLeftInGame'] = 120 - sum(gameDict['scores'])/120
+    qstateDict['pointsInTrick'] = collectPointsInTrick(trickhistory)/120
+    qstateDict['teamScores'] = createTeamScores(gameDict['scores'], [qstateDict['OwnTeam']]) / 120
+
+    #Bool
+    qstateDict['ranAway'] = bitarray(([gameDict['ranAway']]))
+    qstateDict['searched'] = bitarray([gameDict['searched']])
+    #Encoded
+    qstateDict['GameMode'] = gameModeBitArray(gameDict['gameMode'])
+
     qstateDict['BidWinner'] = createPositionArrayFromIndex(gameDict['offensivePlayers'][0])
     qstateDict['OwnTeam'] = createTeamArray(position, gameDict)
-    qstateDict['teamScores'] = createTeamScores(gameDict['scores'], [qstateDict['OwnTeam']])
 
     return qstateDict
 
+def convertHistory(history,postion):
+    hist = []
+    for h in history:
+        hist,lead,_ = h
+        tmp = []
+        for c in hist:
+            tmp.append(createBitArrayFromCard(c))
+        afterLead = rotateListBackwards(tmp,lead)
+        hist.append(afterPos)
+    return hist
+
+#returns [bit(32),bit(32),bit(32),bit(32)] with position = arr[0]
+def trickHistoryToArray(trickhistory,position):
+    arr = [createFalseArray(32) for _ in range(4)]
+
+    for key,card in enumerate(trickhistory):
+        temp = createBitArrayFromCard(card)
+        arr[key] = temp
+    arr = rotateListBackwards(arr,position)
+    return arr
+
+#4+1+4, Sau,Wenz,Solo
+def gameModeBitArray(gameMode):
+    mode, suit = gameMode
+    arr = bitarray(11).setall(0)
+    if mode == 1:
+        arr[0] = 1
+        arr[suit+1] = 1
+    if mode == 2:
+        arr[5] == 1
+    if mode == 3:
+        arr[6] == 1
+        arr[suit+7]
+    return arr
 
 def createBitArrayFromHand(hand):
     array = bitarray(32)

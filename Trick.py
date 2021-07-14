@@ -15,6 +15,7 @@ class Trick:
         self.score = 0
         self.winningPlayer = None
 
+    #TODO still needed?
     def updatePlayers(self, players):
         self.players = players
 
@@ -128,7 +129,11 @@ class Trick:
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
         playerHand = deepcopy(self.gameDict['playersHands'][currentPlayerIndex])
         validCards = self.getValidActionsForHand(playerHand)
-        return validCards, currentPlayerIndex, playerHand, self.history
+        return validCards, currentPlayerIndex, playerHand, self.history, self.gameState
+
+    def getCurrentPlayerIndex(self):
+        currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
+        return currentPlayerIndex
 
     def nextAction(self):
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4

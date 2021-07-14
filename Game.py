@@ -9,7 +9,6 @@ from Rewards import REWARDS
 import uuid
 from random import randint
 
-
 class Game:
     def __init__(self, players, leadingPlayer, seed=None, gameDict=None, laufendeBool=True):
         if gameDict is None:
@@ -157,6 +156,12 @@ class Game:
             }
             return state, rewards, False
 
+
+    def stepAction(self,action):
+        a = action().toList().index(1)
+        suit,rank = a//4,a%4
+        card = Card(SUITS[suit],RANKS[rank])
+        self.currentTrick.history.append(card)
 
     # continues the game until an action is necessary
     def continueTillNextAction(self):
