@@ -2,7 +2,7 @@ from GameModes import MODES
 from CardValues import SUITS, RANKS
 from Card import Card
 import random
-from QstateHelper import createQstates, convertBitArraysInDictTo01
+from StateVectorDict import createVectorDict, convertBitArraysInDictTo01
 import json
 import pickle
 import uuid
@@ -47,7 +47,7 @@ class Player(object):
                 self.states[i].update(resultsDict)
 
     def recordQstate(self, hand, validCards, playedCard, gameDict, trickHistory):
-        qstates = createQstates(hand, validCards, playedCard, self.position, gameDict, trickHistory)
+        qstates = createVectorDict(hand, validCards, playedCard, self.position, gameDict, trickHistory)
         convertBitArraysInDictTo01(qstates)
         name = abs(len(hand) - 8)
         self.states['Round' + str(name)] = qstates

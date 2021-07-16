@@ -1,21 +1,28 @@
 class Memory():
     def __init__(self):
-        self.nextState = []
-        self.reward = []
-        self.info = []
+        self.actions = []
+        self.states = []
+        self.logprobs = []
+        self.rewards = []
+        self.scores = []
+        # self.teamScores = []
         self.done = []
 
+    def update(self, action, state, logprobs, reward, done):
+        self.actions.extend(action)
+        self.states.extend(state)
+        self.logprobs.extend(logprobs)
+        self.rewards.extend(reward)
+        self.done.extend(done)
 
-    def update(self,action,gamestate,validcards,reward,info):
-        self.actions.append(action)
-        self.states.append(action)
-        self.logprobs.append()
-        self.rewards.
-        self.done.
+    def updateReward(self, reward, score):
+        self.rewards.append(reward)
+        self.scores.append(score)
+        # self.teamScores.append(teamScore)
 
     def reset(self):
-        self.nextState = []
+        self.actions = []
+        self.states = []
+        self.logprobs = []
+        self.rewards = []
         self.done = []
-        self.reward = []
-        self.info = []
-
