@@ -1,6 +1,6 @@
 from Game import Game
 from Statistics import Statistics
-from helper import recreateHandsfromHistory, rotateListBackwards, rotateListForward
+from helper import rotateListBackwards, rotateListForward
 from random import randint
 from math import floor
 

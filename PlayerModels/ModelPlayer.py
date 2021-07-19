@@ -6,11 +6,11 @@ from torch.distributions import Categorical
 import torch
 
 from Card import Card
-from CardValues import RANKS, SUITS
+from CardValues import RANKS, REVERSEDSUITS
 
 
 class ModelPlayer(Player):
-    def __init__(self, name, policy, eval=False, record=False, targetFile=None):
+    def __init__(self, name, policy, eval=True, record=False, targetFile=None):
         self.name = name
         self.hand = []
         self.memory = Memory()
@@ -25,7 +25,7 @@ class ModelPlayer(Player):
     def playCard(self, validCards, gameState, trickHistory):
         # encode state
         vectorDict = createVectorDict(self.hand, validCards, self.position, gameState, trickHistory)
-        inputVector = self.policy.preprocess(self, stateVector=vectorDict)
+        inputVector = self.policy.preprocess(vectorDict)
         actionProbabilities, stateValue = self.policy(inputVector)
         distribution = Categorical(actionProbabilities)
         # Playing
@@ -40,8 +40,9 @@ class ModelPlayer(Player):
             self.memory.logprobs.append(actionProbabilities)
 
         # convert action to card
-        suit, rank = action // 4, action % 4
-        card = Card(SUITS[suit], RANKS[rank])
+        index = action.item()
+        suit, rank = index // 8, index % 8
+        card = Card(REVERSEDSUITS[suit], RANKS[rank])
         if card not in validCards:
             raise Exception
         else:
