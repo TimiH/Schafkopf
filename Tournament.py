@@ -33,7 +33,7 @@ def playFairTournament(players, rounds, laufendeBool=True, verbose=True):
     return statistics
 
 
-def playRandomTournament(players, rounds, laufendeBool=True):
+def playRandomTournament(players, rounds, verbose=False, laufendeBool=True):
     statistics = Statistics()
     statistics.setPlayerNames(players)
     for round in range(rounds * 4):
@@ -43,7 +43,8 @@ def playRandomTournament(players, rounds, laufendeBool=True):
         if not gameFound:
             round -= 1
             continue
-        print(f'Playing: Round {floor(round / 4), round % 4}')
+        if verbose:
+            print(f'Playing: Round {floor(round / 4), round % 4}')
         game.continueGame()
         gameDict = game.getGameDict()
         statistics.updateSelf(gameDict, 0)

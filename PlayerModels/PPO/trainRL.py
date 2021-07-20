@@ -5,7 +5,7 @@ from PlayerModels.PPO.PPO import PPO
 from PlayerModels.ModelPlayer import ModelPlayer
 from PlayerModels.PPO.Memory import Memory
 
-from Tournament import playFairTournament
+from Tournament import playFairTournament, playRandomTournament
 import torch
 import glob
 import os
@@ -39,7 +39,8 @@ def main():
     for _ in range(1000000):
         Settings.logger.info("playing " + str(Settings.update_games) + " games")
         # play games
-        stats = playFairTournament(players, Settings.update_games / 4, verbose=False, laufendeBool=False)
+        # stats = playFairTournament(players, Settings.update_games / 4, verbose=False, laufendeBool=False)
+        stats = playRandomTournament(players, Settings.update_games / 4, verbose=False, laufendeBool=False)
         Settings.logger.info("Games played")
 
         # safe stats to pickle
