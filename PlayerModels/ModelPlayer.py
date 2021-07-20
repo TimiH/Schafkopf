@@ -33,11 +33,12 @@ class ModelPlayer(Player):
             action = torch.argmax(actionProbabilities, 0)
         # Training
         else:
-            action = distribution.sample
+            action = distribution.sample()
             # Memory stuff
-            self.memory.states.append([i.detatch() for i in inputVector])
+            # input vector has len 2
+            self.memory.states.append([i.detach() for i in inputVector])
             self.memory.actions.append(action)
-            self.memory.logprobs.append(actionProbabilities)
+            self.memory.logprobs.append(distribution.log_prob(action).detach())
 
         # convert action to card
         index = action.item()
@@ -54,15 +55,15 @@ class ModelPlayer(Player):
         self.memory.done += done
 
         reward = resultsDict['rewards'][self.position]
-        steps = len(self.memory)
-        rewards = steps * [0.0]
-        rewards[-1] = reward
+        steps = 8
+        rewards = steps * [float(reward)]
+        # rewards[-1] = reward
         self.memory.rewards += rewards
 
-        score = resultsDict['scores'][self.position]
-        scores = steps * [0.0]
-        scores[-1] = score
-        self.memory.scores += scores
+        # score = resultsDict['scores'][self.position]
+        # scores = steps * [0.0]
+        # scores[-1] = float(score)
+        # self.memory.scores += scores
 
     def makeBid(self, validBids):
         teamGameChoice = choseTeamGame(validBids, self.hand)

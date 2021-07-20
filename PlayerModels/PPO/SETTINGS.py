@@ -1,12 +1,8 @@
 import logging
 import os
-import os
 import torch
 from torch.utils.tensorboard import SummaryWriter
 
-
-# from dataset import ExperienceDatasetLinear, ExperienceDatasetLSTM
-# from PlayerModels.PPO.LinearPolicy import LinearModel
 
 class Settings:
     # global logger
@@ -20,6 +16,8 @@ class Settings:
 
     # Tensorboard
     runFolder = os.getcwd() + "/runsFolder/"
+    checkFolder = os.getcwd() + "/checkpoints/"
+
     summary_writer = SummaryWriter(log_dir=runFolder)
 
     # Parameters
@@ -27,8 +25,6 @@ class Settings:
     update_games = 10000  # update policy every n games
     batch_size = update_games * 22
     mini_batch_size = batch_size
-    eval_games = 500
-    checkpoint_folder = os.getcwd() + "/checkpoints/"
 
     lr = 0.0002
     lr_stepsize = 30000000  # 300000

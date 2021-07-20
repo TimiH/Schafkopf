@@ -8,12 +8,13 @@ class Memory():
         # self.teamScores = []
         self.done = []
 
-    def update(self, action, state, logprobs, reward, done):
-        self.actions.extend(action)
-        self.states.extend(state)
-        self.logprobs.extend(logprobs)
-        self.rewards.extend(reward)
-        self.done.extend(done)
+    # needed to merge several memories into one for the PPO
+    def update(self, memory):
+        self.actions.extend(memory.actions)
+        self.states.extend(memory.states)
+        self.logprobs.extend(memory.logprobs)
+        self.rewards.extend(memory.rewards)
+        self.done.extend(memory.done)
 
     def updateReward(self, reward, score):
         self.rewards.append(reward)
@@ -25,4 +26,6 @@ class Memory():
         self.states = []
         self.logprobs = []
         self.rewards = []
+        self.scores = []
+        # self.teamScores = []
         self.done = []

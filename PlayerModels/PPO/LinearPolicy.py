@@ -17,6 +17,7 @@ class LinearModel(nn.Module):
         self.criticLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
         self.actorOut = nn.Linear(self.hidden_neurons, 32)
         self.criticOut = nn.Linear(self.hidden_neurons, 1)
+        self.double()
 
         self.device = Settings.device
 
@@ -33,11 +34,10 @@ class LinearModel(nn.Module):
 
         ax = ax.masked_fill(actionMask == 0, -1e9)
         ax = F.softmax(ax, dim=-1)
-
         return ax, cx
 
-    def evaluate(self, input, action):
-        actionLogProbabilities, stateValue = self(input)
+    def evaluate(self, inputVector, action):
+        actionLogProbabilities, stateValue = self(inputVector)
         dist = Categorical(actionLogProbabilities)
 
         actionLogProbabilities = dist.log_prob(action)
@@ -64,9 +64,11 @@ class LinearModel(nn.Module):
         # for p in test:
         #     print(f'{p}{p.shape}')
 
-        inputVector = np.concatenate((trickHistory, hand, cardsPlayed, lead, gameMode, ranAway, searched, bidWinner, ownTeam, scores))
+        inputVector = np.concatenate(
+            (trickHistory, hand, cardsPlayed, lead, gameMode, ranAway, searched, bidWinner, ownTeam, scores))
 
         # actionḾasking
         validCards = np.array(list(stateVector['validCards']))  # 32
 
-        return [torch.tensor(inputVector).float().to(torch.device('cpu')), torch.tensor(validCards).float().to(torch.device('cpu'))]
+        # return [torch.tensor(inputVector).float().to(self.device), torch.tensor(validCards).float().to(self.device)]
+        return [torch.tensor(inputVector).to(self.device), torch.tensor(validCards).to(self.device)]
