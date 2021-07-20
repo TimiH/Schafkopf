@@ -19,9 +19,13 @@ class Settings:
     checkFolder = os.getcwd() + "/checkpoints/"
 
     summary_writer = SummaryWriter(log_dir=runFolder)
-
+    device = None
     # Parameters
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cuda")
+
     update_games = 8000  # update policy every n games
     batch_size = update_games * 22
     mini_batch_size = batch_size
