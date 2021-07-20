@@ -256,3 +256,4 @@ dmypy.json
 /DataDump/
 /PlayerModels/PPO/SIMPLE/
 Visualisation/tablePosAvB/pickleData/
+/runsFolder/*
