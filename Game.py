@@ -240,6 +240,10 @@ class Game:
             self.historyFromTrick(self.currentTrick)
             self.setSearched()
         self.setRewards()
+        rewardsDict = self.rewardsDict()
+        for player in self.players:
+            player.setResults(rewardsDict)
+            player.saveRecordsPickle()
 
     def offenceWon(self):
         if not self.isFinished:

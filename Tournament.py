@@ -6,10 +6,10 @@ from math import floor
 
 
 # TODO implement fixed Seeds
-def playFairTournament(players, rounds, laufendeBool=True):
+def playFairTournament(players, rounds, laufendeBool=True, verbose=True):
     statistics = Statistics()
     statistics.setPlayerNames(players)
-    for round in range(rounds):
+    for round in range(int(rounds)):
         gameFound = False
         while not gameFound:
             seed = randint(0, 1000000000)
@@ -18,7 +18,8 @@ def playFairTournament(players, rounds, laufendeBool=True):
             gameFound = game.playBidding()
         # print(f'(GameSeed:{game.seed})')
         for hand in range(4):
-            print(f'Playing: Round {round, hand}')
+            if verbose:
+                print(f'Playing: Round {round, hand}')
             rotatetedPlayers = rotateListForward(players, hand)
             game = Game(rotatetedPlayers, 0, seed=seed, laufendeBool=laufendeBool)
             game.setupGame()
@@ -26,7 +27,8 @@ def playFairTournament(players, rounds, laufendeBool=True):
             game.continueGame()
             gameDict = game.getGameDict()
             statistics.updateSelf(gameDict, hand)
-    print('DONE')
+    if verbose:
+        print('DONE')
     statistics.createDataFrame()
     return statistics
 
