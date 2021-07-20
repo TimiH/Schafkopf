@@ -40,7 +40,7 @@ def main():
         Settings.logger.info("playing " + str(Settings.update_games) + " games")
         # play games
         # stats = playFairTournament(players, Settings.update_games / 4, verbose=False, laufendeBool=False)
-        stats = playRandomTournament(players, Settings.update_games / 4, verbose=False, laufendeBool=False)
+        stats = playRandomTournament(players, Settings.update_games / 4, laufendeBool=False)
         Settings.logger.info("Games played")
 
         # safe stats to pickle

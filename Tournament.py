@@ -36,7 +36,7 @@ def playFairTournament(players, rounds, laufendeBool=True, verbose=True):
 def playRandomTournament(players, rounds, verbose=False, laufendeBool=True):
     statistics = Statistics()
     statistics.setPlayerNames(players)
-    for round in range(rounds * 4):
+    for round in range(int(rounds) * 4):
         game = Game(players, round % 4, laufendeBool=laufendeBool)
         game.setupGame()
         gameFound = game.playBidding()

@@ -22,7 +22,7 @@ class Settings:
 
     # Parameters
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    update_games = 10000  # update policy every n games
+    update_games = 8000  # update policy every n games
     batch_size = update_games * 22
     mini_batch_size = batch_size
 
