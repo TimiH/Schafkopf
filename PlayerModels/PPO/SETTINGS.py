@@ -15,8 +15,8 @@ class Settings:
     logger.setLevel(logging.INFO)
 
     # Tensorboard
-    runFolder = os.getcwd() + "/runsFolder/"
-    checkFolder = os.getcwd() + "/checkpoints/"
+    runFolder = os.getcwd() + "/PlayerModels/PPO/runsFolder/"
+    checkFolder = os.getcwd() + "/PlayerModels/PPO/checkpoints/"
 
     summary_writer = SummaryWriter(log_dir=runFolder)
     device = None
@@ -24,19 +24,19 @@ class Settings:
     if torch.cuda.is_available():
         device = torch.device("cuda")
     else:
-        device = torch.device("cuda")
+        device = torch.device("cpu")
 
-    update_games = 8000  # update policy every n games
-    batch_size = update_games * 22
+    update_games = 4000  # update policy every n games
+    batch_size = int(update_games / 4)
     mini_batch_size = batch_size
 
     lr = 0.0002
-    lr_stepsize = 30000000  # 300000
+    lr_stepsize = 300000  # 300000
     lr_gamma = 0.3
 
     betas = (0.9, 0.999)
     gamma = 0.99  # discount factor
-    K_epochs = 16  # 8  # update policy for K epochs
+    K_epochs = 4  # 8  # update policy for K epochs
     eps_clip = 0.2  # clip parameter for PPO
     c1, c2 = 0.5, 0.005
 

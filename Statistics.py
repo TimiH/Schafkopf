@@ -211,7 +211,7 @@ class Statistics:
     def getEVGameModePlayers(self):
         evAll = []
         for player in range(4):
-            ev = list(map(lambda x, y: x / y, self.RewardsWonByPlayer[player], self.GamesWonByPlayer[player]))
+            ev = list(map(lambda x, y: x / y, self.RewardsWonByPlayer[player], self.GamesPlayedByPlayer[player]))
             evAll.append(ev)
         dfZip = dict(zip(self.playerNames, evAll))
         df = pd.DataFrame(dfZip).transpose()

@@ -13,15 +13,16 @@ import pickle
 
 
 def main():
-    # init Tensor
-    tb = program.TensorBoard()
-    tb.configure(argv=[None, '--logdir', Settings.runFolder])
-    tb.launch()
+    # init Tensorboard
+
+    # tb = program.TensorBoard()
+    # tb.configure(argv=[None, '--logdir', Settings.runFolder])
+    # tb.launch()
 
     # Policy new or newest version
     policy = LinearModel()
     episodes = generation = 0
-    checkpoints = glob.glob(os.getcwd() + '/checkpoints/*.pt')
+    checkpoints = glob.glob(os.getcwd() + '/PlayerModels/PPO/checkpoints/*.pt')
     if checkpoints:
         latest = checkpoints[-1]
         print(f'Loading Policy checkpoint{latest}')
@@ -45,7 +46,7 @@ def main():
 
         # safe stats to pickle
         Settings.logger.info("Saving stats")
-        name = '/trainingStats/' + str(episodes) + '.p'
+        name = '/PlayerModels/PPO/trainingStats/' + str(episodes) + '.p'
         with open(os.getcwd() + name, 'wb') as out:
             pickle.dump(stats, out, pickle.HIGHEST_PROTOCOL)
         Settings.logger.info("Stats saved")
@@ -65,8 +66,9 @@ def main():
         players = [ModelPlayer(str(i), ppo.policy_old, eval=False) for i in range(4)]
 
         # saving Policy
+        episodes += 1
         torch.save(ppo.policy_old.state_dict(), Settings.checkFolder + str(episodes) + ".pt")
-        Settings.logger.info(f"Weights Saved under ")
+        Settings.logger.info(f"Weights Saved")
 
 
 if __name__ == '__main__':

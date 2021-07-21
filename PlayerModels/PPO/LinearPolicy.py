@@ -20,6 +20,7 @@ class LinearModel(nn.Module):
         self.double()
 
         self.device = Settings.device
+        print()
 
     def forward(self, input):
         [inputVector, actionMask] = input
