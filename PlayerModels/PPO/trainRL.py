@@ -21,6 +21,7 @@ def main():
 
     # Policy new or newest version
     policy = LinearModel()
+    policy.to(Settings.device)
     episodes = generation = 0
     checkpoints = glob.glob(os.getcwd() + '/PlayerModels/PPO/checkpoints/*.pt')
     if checkpoints:
@@ -38,6 +39,7 @@ def main():
 
     # generate Games and update
     for _ in range(1000000):
+        # TODO reset policy to train()
         Settings.logger.info("playing " + str(Settings.update_games) + " games")
         # play games
         # stats = playFairTournament(players, Settings.update_games / 4, verbose=False, laufendeBool=False)
