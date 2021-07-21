@@ -10,6 +10,8 @@ class LinearModel(nn.Module):
     def __init__(self):
         super().__init__()
         # input 233
+        self.device = Settings.device
+
         self.hidden_neurons = 64
         self.inLayer = nn.Linear(217, self.hidden_neurons)
         self.midLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
@@ -19,8 +21,6 @@ class LinearModel(nn.Module):
         self.criticOut = nn.Linear(self.hidden_neurons, 1)
         self.double()
 
-        self.device = Settings.device
-        print()
 
     def forward(self, input):
         [inputVector, actionMask] = input
