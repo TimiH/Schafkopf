@@ -19,7 +19,6 @@ class LinearModel(nn.Module):
         self.criticLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
         self.actorOut = nn.Linear(self.hidden_neurons, 32)
         self.criticOut = nn.Linear(self.hidden_neurons, 1)
-        self.double()
 
 
     def forward(self, input):
@@ -67,9 +66,9 @@ class LinearModel(nn.Module):
 
         inputVector = np.concatenate(
             (trickHistory, hand, cardsPlayed, lead, gameMode, ranAway, searched, bidWinner, ownTeam, scores))
-
+        inputVector = inputVector.astype('float')
         # actionḾasking
         validCards = np.array(list(stateVector['validCards']))  # 32
-
-        # return [torch.tensor(inputVector).float().to(self.device), torch.tensor(validCards).float().to(self.device)]
-        return [torch.tensor(inputVector).to(self.device), torch.tensor(validCards).to(self.device)]
+        validCards = validCards.astype('float')
+        return [torch.tensor(inputVector).float().to(self.device), torch.tensor(validCards).float().to(self.device)]
+        # return [torch.tensor(inputVector).to(self.device), torch.tensor(validCards).to(self.device)]

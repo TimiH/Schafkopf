@@ -56,7 +56,7 @@ class ModelPlayer(Player):
 
         reward = resultsDict['rewards'][self.position]
         steps = 8
-        rewards = steps * [float(reward)]
+        rewards = steps * [reward * 1.0]
         # rewards[-1] = reward
         self.memory.rewards += rewards
 

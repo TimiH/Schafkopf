@@ -85,7 +85,7 @@ class PPO:
         # Transfer to GPU
         old_states = [old_state.to(Settings.device) for old_state in old_states]
         old_actions, old_logprobs, old_rewards = old_actions.to(Settings.device), old_logprobs.to(
-          Settings.device), old_rewards.to(Settings.device)
+          Settings.device), old_rewards.float().to(Settings.device)
 
         # Evaluating old actions and values :
         logprobs, state_values, dist_entropy = self.policy.evaluate(old_states, old_actions)
