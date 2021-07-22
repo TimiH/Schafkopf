@@ -172,7 +172,7 @@ class Statistics:
         return tsRound
 
     def getWinPercentagesOverall(self):
-        winPercentages = list(map(lambda x, y: x / y, self.GamesWonCount, self.gameCount))
+        winPercentages = list(map(lambda x, y: x / y if y != 0 else 0.0, self.GamesWonCount, self.gameCount))
         names = ['Sauspiel', 'Wenz', 'Solo']
         cnames = dict(zip(range(3), names))
         df = pd.DataFrame(winPercentages).transpose()
@@ -182,7 +182,7 @@ class Statistics:
     def getWinPentagesTotalPlayer(self):
         gamesPlayedPlayer = [sum(self.GamesPlayedByPlayer[x]) for x in range(4)]
         gamesWonPlayer = [sum(self.GamesWonByPlayer[x]) for x in range(4)]
-        winPercentages = list(map(lambda x,y: [x/y],gamesWonPlayer,gamesPlayedPlayer))
+        winPercentages = list(map(lambda x, y: [x / y] if y != 0 else [0, 0], gamesWonPlayer, gamesPlayedPlayer))
         dfZip = dict(zip(self.playerNames, winPercentages))
         df = pd.DataFrame(dfZip)
         return df
@@ -191,7 +191,8 @@ class Statistics:
         winPercentagesAll = []
         for player in range(4):
             winPercentages = list(
-                map(lambda x, y: x / y, self.GamesWonByPlayer[player], self.GamesPlayedByPlayer[player]))
+                map(lambda x, y: x / y if y != 0 else 0.0, self.GamesWonByPlayer[player],
+                    self.GamesPlayedByPlayer[player]))
             winPercentagesAll.append(winPercentages)
         dfZip = dict(zip(self.playerNames, winPercentagesAll))
         df = pd.DataFrame(dfZip).transpose()
@@ -211,7 +212,8 @@ class Statistics:
     def getEVGameModePlayers(self):
         evAll = []
         for player in range(4):
-            ev = list(map(lambda x, y: x / y, self.RewardsWonByPlayer[player], self.GamesPlayedByPlayer[player]))
+            ev = list(map(lambda x, y: x / y if y != 0 else 0.0, self.RewardsWonByPlayer[player],
+                          self.GamesPlayedByPlayer[player]))
             evAll.append(ev)
         dfZip = dict(zip(self.playerNames, evAll))
         df = pd.DataFrame(dfZip).transpose()
