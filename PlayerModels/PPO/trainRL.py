@@ -41,8 +41,7 @@ def main():
     players = [ModelPlayer(str(i), policy, eval=False) for i in range(4)]
 
     # generate Games and update
-    for _ in range(1000000):
-        # TODO reset policy to train()
+    for _ in range(Settings.episodes):
         Settings.logger.info("playing " + str(Settings.update_games) + " games")
         # play games
         # stats = playFairTournament(players, Settings.update_games / 4, verbose=False, laufendeBool=False)
