@@ -27,8 +27,8 @@ class Settings:
         device = torch.device("cpu")
 
     update_games = 4000  # update policy every n games
-    batch_size = int(update_games / 4)
-    mini_batch_size = batch_size
+    batch_size = int(update_games * 4)
+    mini_batch_size = 4
 
     lr = 0.0002
     lr_stepsize = 300000  # 300000

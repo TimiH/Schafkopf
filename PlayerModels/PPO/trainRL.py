@@ -4,10 +4,11 @@ from PlayerModels.PPO.SETTINGS import Settings
 from PlayerModels.PPO.PPO import PPO
 from PlayerModels.ModelPlayer import ModelPlayer
 from PlayerModels.PPO.Memory import Memory
-
 from Tournament import playFairTournament, playRandomTournament
+
 import torch
 import glob
+import re
 import os
 import pickle
 
@@ -23,10 +24,11 @@ def main():
     policy = LinearModel()
     policy.to(Settings.device)
     episodes = generation = 0
+    path = '/PlayerModels/PPO/checkpoints/'
     checkpoints = glob.glob(os.getcwd() + '/PlayerModels/PPO/checkpoints/*.pt')
     if checkpoints:
-        latest = checkpoints[-1]
-        print(f'Loading Policy checkpoint{latest}')
+        latest = max(checkpoints, key=lambda x: int(re.findall(r'\d+', x)[0]))
+        print(f'Loading Policy checkpoint {latest}')
         policy.load_state_dict(torch.load(latest))
         generation = len(checkpoints)
         episodes = generation
@@ -70,7 +72,7 @@ def main():
         # saving Policy
         episodes += 1
         torch.save(ppo.policy_old.state_dict(), Settings.checkFolder + str(episodes) + ".pt")
-        Settings.logger.info(f"Weights Saved")
+        Settings.logger.info(f"Weights Saved! Episode: {episodes} completed")
 
 
 if __name__ == '__main__':
