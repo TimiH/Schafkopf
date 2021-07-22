@@ -23,10 +23,10 @@ import time
 # p3 = HeuristicPlayer("HeuristicPlayer2")
 # p4 = RandomPlayer("RandomPlayer0")
 
-p1 = ModelPlayer('Mode0', LinearModel(), eval=False)
-p2 = ModelPlayer('Model', LinearModel(), eval=False)
-p3 = ModelPlayer('Mode2', LinearModel(), eval=False)
-p4 = ModelPlayer('Mode3', LinearModel(), eval=False)
+p1 = ModelPlayer('Mode0', LinearModel(), eval=True)
+p2 = ModelPlayer('Model', LinearModel(), eval=True)
+p3 = ModelPlayer('Mode2', LinearModel(), eval=True)
+p4 = ModelPlayer('Mode3', LinearModel(), eval=True)
 
 # #4H
 # p1 = HeuristicPlayer("HeuristicPlayer0")
@@ -37,7 +37,7 @@ p4 = ModelPlayer('Mode3', LinearModel(), eval=False)
 
 players = [p1, p2, p3, p4]
 start = time.time()
-stats = playFairTournament(players, 1000, laufendeBool=False)
+stats = playFairTournament(players, 100, laufendeBool=False)
 # stats = playRandomTournament(players, 1000,laufendeBool=False)
 end = time.time()
 print(("Time:", end - start))
