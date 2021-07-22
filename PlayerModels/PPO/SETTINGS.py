@@ -26,9 +26,8 @@ class Settings:
     else:
         device = torch.device("cpu")
 
-    update_games = 10000  # update policy every n games
     episodes = 200
-    update_games = 1000  # update policy every n games
+    update_games = 10000  # update policy every n games
     batch_size = int(update_games * 4 * 8)  # 4 players * 8 tuples
     mini_batch_size = 8
 
