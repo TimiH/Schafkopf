@@ -49,11 +49,11 @@ def main():
         Settings.logger.info("Games played")
 
         # safe stats to pickle
-        Settings.logger.info("Saving stats")
-        name = '/PlayerModels/PPO/trainingStats/' + str(episodes) + '.p'
-        with open(os.getcwd() + name, 'wb') as out:
-            pickle.dump(stats, out, pickle.HIGHEST_PROTOCOL)
-        Settings.logger.info("Stats saved")
+        # Settings.logger.info("Saving stats")
+        # name = '/PlayerModels/PPO/trainingStats/' + str(episodes) + '.p'
+        # with open(os.getcwd() + name, 'wb') as out:
+        #     pickle.dump(stats, out, pickle.HIGHEST_PROTOCOL)
+        # Settings.logger.info("Stats saved")
 
         # update the policy
         Settings.logger.info("updating policy")
