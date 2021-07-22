@@ -123,7 +123,7 @@ class PPO:
 
     # Copy new weights into old policy:
     self.policy_old.load_state_dict(self.policy.state_dict())
-    Settings.summary_writer.add_scalar('Loss', avg_loss, i_episode)
+    Settings.summary_writer.add_scalar('Loss/Loss', avg_loss, i_episode)
     Settings.summary_writer.add_scalar('Loss/policy_loss', avg_loss / count, i_episode)
     Settings.summary_writer.add_scalar('Loss/value_loss', avg_value_loss / count, i_episode)
     Settings.summary_writer.add_scalar('Loss/entropy', avg_entropy / count, i_episode)

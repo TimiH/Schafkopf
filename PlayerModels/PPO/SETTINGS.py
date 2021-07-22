@@ -30,6 +30,8 @@ class Settings:
     batch_size = int(update_games * 4)
     mini_batch_size = 4
 
+    eval_rounds = 500  # played against Random and Heuristic
+
     lr = 0.0002
     lr_stepsize = 300000  # 300000
     lr_gamma = 0.3
