@@ -39,7 +39,7 @@ class Settings:
 
     betas = (0.9, 0.999)
     gamma = 0.99  # discount factor
-    K_epochs = 4  # 8  # update policy for K epochs
+    K_epochs = 8  # 8  # update policy for K epochs
     eps_clip = 0.2  # clip parameter for PPO
     c1, c2 = 0.5, 0.005
 
