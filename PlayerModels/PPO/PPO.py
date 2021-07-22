@@ -100,7 +100,7 @@ class PPO:
         value_loss = self.MseLoss(state_values, old_rewards)
         loss = -torch.min(surr1, surr2) + self.c1 * value_loss - self.c2 * dist_entropy
 
-        clip_fraction = (abs(ratios - 1.0) > self.eps_clip).type(torch.DoubleTensor).mean()
+        clip_fraction = (abs(ratios - 1.0) > self.eps_clip).type(torch.FloatTensor).mean()
         approx_kl_divergence = .5 * ((logprobs - old_logprobs.detach()) ** 2).mean()
         explained_var = 1 - torch.var(old_rewards - state_values) / torch.var(old_rewards)
 
@@ -122,7 +122,6 @@ class PPO:
 
     # Copy new weights into old policy:
     self.policy_old.load_state_dict(self.policy.state_dict())
-    Settings.summary_writer.add_scalar('Loss/Loss', avg_loss, i_episode)
     Settings.summary_writer.add_scalar('Loss/policy_loss', avg_loss / count, i_episode)
     Settings.summary_writer.add_scalar('Loss/value_loss', avg_value_loss / count, i_episode)
     Settings.summary_writer.add_scalar('Loss/entropy', avg_entropy / count, i_episode)
