@@ -100,7 +100,6 @@ class PPO:
         value_loss = self.MseLoss(state_values, old_rewards)
         loss = -torch.min(surr1, surr2) + self.c1 * value_loss - self.c2 * dist_entropy
 
-        # clip_fraction = (abs(ratios - 1.0) > self.eps_clip).type(torch.FloatTensor).mean()
         clip_fraction = (abs(ratios - 1.0) > self.eps_clip).type(torch.DoubleTensor).mean()
         approx_kl_divergence = .5 * ((logprobs - old_logprobs.detach()) ** 2).mean()
         explained_var = 1 - torch.var(old_rewards - state_values) / torch.var(old_rewards)
