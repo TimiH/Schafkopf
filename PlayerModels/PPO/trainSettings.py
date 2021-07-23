@@ -7,6 +7,7 @@ from torch.utils.tensorboard import SummaryWriter
 class TrainSettings:
     def __init__(self, name, colab=True):
         self.name = name
+        self.colab = colab
 
         self.episodes = None
         self.update_games = None
@@ -22,7 +23,7 @@ class TrainSettings:
 
         self.summary_writer = None
 
-        if colab:
+        if self.colab:
             self.checkpoints = "/content/drive/MyDrive/experiment/" + self.name + "/checkpoints/"
             self.runsFolder = "/content/drive/MyDrive/experiment/" + self.name + "/runsFolder/"
             self.summary_writer = SummaryWriter(log_dir=self.runsFolder)
@@ -32,5 +33,21 @@ class TrainSettings:
             self.summary_writer = SummaryWriter(log_dir=self.runsFolder)
 
     def save(self):
+        data = {
+            'name': self.name,
+            'colab': self.colab,
+            'episodes': self.episodes,
+            'update_ games': self.update_games,
+            'batch_size': self.batch_size,
+            'mini_batches': self.mini_batch_size,
+            'K_epochs': self.K_epochs,
+            'eval_rounds': self.eval_rounds,
+            'eval_intervals': self.eval_interval,
+        }
         with open(self.runsFolder + self.name, 'wb') as out:
-            pickle.dump(self, out, pickle.HIGHEST_PROTOCOL)
+            pickle.dump(data, out, pickle.HIGHEST_PROTOCOL)
+
+    def load(path):
+        with open(path, 'rb') as data:
+            d = pickle.load(data)
+        pass

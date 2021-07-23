@@ -10,10 +10,11 @@ from PlayerModels.PPO.DataSet import Dataset
 
 class PPO:
   def __init__(self, policy, lr_params, betas, gamma, K_epochs, eps_clip, batch_size, mini_batch_size, c1=0.5, c2=0.01,
-               start_episode=-1):
+               start_episode=-1, sumWriter=None):
 
     [self.lr, self.lr_stepsize, self.lr_gamma] = lr_params
 
+    self.sumWriter = sumWriter
     self.betas = betas
     self.gamma = gamma
     self.eps_clip = eps_clip
@@ -122,10 +123,11 @@ class PPO:
 
     # Copy new weights into old policy:
     self.policy_old.load_state_dict(self.policy.state_dict())
-    Settings.summary_writer.add_scalar('Loss/policy_loss', avg_loss / count, i_episode)
-    Settings.summary_writer.add_scalar('Loss/value_loss', avg_value_loss / count, i_episode)
-    Settings.summary_writer.add_scalar('Loss/entropy', avg_entropy / count, i_episode)
-    Settings.summary_writer.add_scalar('Loss/learning_rate', self.lr_scheduler.get_last_lr()[0], i_episode)
-    Settings.summary_writer.add_scalar('Loss/ppo_clipping_fraction', avg_clip_fraction / count, i_episode)
-    Settings.summary_writer.add_scalar('Loss/approx_kl_divergence', avg_approx_kl_divergence / count, i_episode)
-    Settings.summary_writer.add_scalar('Loss/avg_explained_var', avg_explained_var / count, i_episode)
+
+  self.sumWriter.add_scalar('Loss/policy_loss', avg_loss / count, i_episode)
+  self.sumWriter.add_scalar('Loss/value_loss', avg_value_loss / count, i_episode)
+  self.sumWriter.add_scalar('Loss/entropy', avg_entropy / count, i_episode)
+  self.sumWriter.add_scalar('Loss/learning_rate', self.lr_scheduler.get_last_lr()[0], i_episode)
+  self.sumWriter.add_scalar('Loss/ppo_clipping_fraction', avg_clip_fraction / count, i_episode)
+  self.sumWriter.add_scalar('Loss/approx_kl_divergence', avg_approx_kl_divergence / count, i_episode)
+  self.sumWriter.add_scalar('Loss/avg_explained_var', avg_explained_var / count, i_episode)

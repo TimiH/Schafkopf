@@ -18,7 +18,7 @@ class Settings:
     runFolder = os.getcwd() + "/PlayerModels/PPO/runsFolder/"
     checkFolder = os.getcwd() + "/PlayerModels/PPO/checkpoints/"
 
-    summary_writer = SummaryWriter(log_dir=runFolder)
+    # summary_writer = SummaryWriter(log_dir=runFolder)
     device = None
     # Parameters
     if torch.cuda.is_available():

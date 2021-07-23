@@ -38,7 +38,7 @@ def main(tSettings):
 
     ppo = PPO(policy, [Settings.lr, Settings.lr_stepsize, Settings.lr_gamma], Settings.betas, Settings.gamma,
               tSettings.K_epochs, Settings.eps_clip, tSettings.batch_size, tSettings.mini_batch_size, c1=Settings.c1,
-              c2=Settings.c2, start_episode=generation - 1)
+              c2=Settings.c2, start_episode=generation - 1, sumWriter=tSettings.summary_writer)
 
     # players
     players = [ModelPlayer(str(i), policy, eval=False) for i in range(4)]
@@ -90,12 +90,12 @@ def main(tSettings):
             Settings.logger.info("Logging EVs")
             Settings.logger.info(f'EV Heuristic: {evPlayerHeu}')
             Settings.logger.info(f'EV Random: {evPlayerRan}')
-            Settings.summary_writer.add_scalar('EV/Heuristic/Overall', evOverallHeu, episodes)
-            Settings.summary_writer.add_scalar('EV/Random/Overall', evOverallHeu, episodes)
+            tSettings.summary_writer.add_scalar('EV/Heuristic/Overall', evOverallHeu, episodes)
+            tSettings.summary_writer.add_scalar('EV/Random/Overall', evOverallHeu, episodes)
             for i in evPlayerHeu:
-                Settings.summary_writer.add_scalar('EV/Heuristic/' + i[0], i[1], episodes)
+                tSettings.summary_writer.add_scalar('EV/Heuristic/' + i[0], i[1], episodes)
             for i in evPlayerRan:
-                Settings.summary_writer.add_scalar('EV/Random/' + i[0], i[1], episodes)
+                tSettings.summary_writer.add_scalar('EV/Random/' + i[0], i[1], episodes)
 
 
 if __name__ == '__main__':
