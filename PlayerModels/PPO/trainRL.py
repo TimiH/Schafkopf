@@ -42,6 +42,7 @@ def main():
 
     # generate Games and update
     for _ in range(Settings.episodes):
+        Settings.logger.info("---------------------")
         Settings.logger.info("playing " + str(Settings.update_games) + " games")
         # play games
         # stats = playFairTournament(players, Settings.update_games / 4, verbose=False, laufendeBool=False)
@@ -82,6 +83,8 @@ def main():
 
         # Logging
         Settings.logger.info("Logging EVs")
+        Settings.logger.infor(f'EV Heuristic: {evPlayerHeu}')
+        Settings.logger.infor(f'EV Random: {evPlayerRan}')
         Settings.summary_writer.add_scalar('EV/Heuristic/Overall', evOverallHeu, episodes)
         Settings.summary_writer.add_scalar('EV/Random/Overall', evOverallHeu, episodes)
         for i in evPlayerHeu:

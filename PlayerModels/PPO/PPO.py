@@ -57,7 +57,7 @@ class PPO:
     Settings.logger.info("AVG rewards: " + str(np.mean(rewards)))
     Settings.logger.info("STD rewards: " + str(np.std(rewards)))
     # Normalizing the rewards:
-    rewards = np.array(rewards)
+    rewards = np.array(rewards).astype('float')
     rewards = (rewards - np.mean(rewards)) / (np.std(rewards) + 1e-5)
 
     # Create dataset from collected experiences
