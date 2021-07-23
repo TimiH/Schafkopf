@@ -88,8 +88,8 @@ def main(tSettings):
 
             # Logging
             Settings.logger.info("Logging EVs")
-            Settings.logger.info(f'EV Heuristic: {evPlayerHeu}')
-            Settings.logger.info(f'EV Random: {evPlayerRan}')
+            Settings.logger.info(f'EV Heuristic: {evOverallHeu}')
+            Settings.logger.info(f'EV Random: {evOverallRan}')
             tSettings.summary_writer.add_scalar('EV/Heuristic/Overall', evOverallHeu, episodes)
             tSettings.summary_writer.add_scalar('EV/Random/Overall', evOverallHeu, episodes)
             for i in evPlayerHeu:
