@@ -26,12 +26,13 @@ class Settings:
     else:
         device = torch.device("cpu")
 
-    episodes = 200
-    update_games = 1000  # update policy every n games
-    batch_size = update_games * 4 * 8  # 4 players * 8 tuples
-    mini_batch_size = 8
+    # episodes = 200
+    # update_games = 1000  # update policy every n games
+    # batch_size = update_games * 4 * 8  # 4 players * 8 tuples
+    # mini_batch_size = 8
 
-    eval_rounds = 500  # played against Random and Heuristic
+    # eval_rounds = 500  # played against Random and Heuristic
+    # eval_intervall = 5
 
     lr = 0.0002
     lr_stepsize = 30000000.0  # 300000
