@@ -124,10 +124,10 @@ class PPO:
     # Copy new weights into old policy:
     self.policy_old.load_state_dict(self.policy.state_dict())
 
-  self.sumWriter.add_scalar('Loss/policy_loss', avg_loss / count, i_episode)
-  self.sumWriter.add_scalar('Loss/value_loss', avg_value_loss / count, i_episode)
-  self.sumWriter.add_scalar('Loss/entropy', avg_entropy / count, i_episode)
-  self.sumWriter.add_scalar('Loss/learning_rate', self.lr_scheduler.get_last_lr()[0], i_episode)
-  self.sumWriter.add_scalar('Loss/ppo_clipping_fraction', avg_clip_fraction / count, i_episode)
-  self.sumWriter.add_scalar('Loss/approx_kl_divergence', avg_approx_kl_divergence / count, i_episode)
-  self.sumWriter.add_scalar('Loss/avg_explained_var', avg_explained_var / count, i_episode)
+    self.sumWriter.add_scalar('Loss/policy_loss', avg_loss / count, i_episode)
+    self.sumWriter.add_scalar('Loss/value_loss', avg_value_loss / count, i_episode)
+    self.sumWriter.add_scalar('Loss/entropy', avg_entropy / count, i_episode)
+    self.sumWriter.add_scalar('Loss/learning_rate', self.lr_scheduler.get_last_lr()[0], i_episode)
+    self.sumWriter.add_scalar('Loss/ppo_clipping_fraction', avg_clip_fraction / count, i_episode)
+    self.sumWriter.add_scalar('Loss/approx_kl_divergence', avg_approx_kl_divergence / count, i_episode)
+    self.sumWriter.add_scalar('Loss/avg_explained_var', avg_explained_var / count, i_episode)
