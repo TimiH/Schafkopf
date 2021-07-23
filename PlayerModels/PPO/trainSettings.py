@@ -23,8 +23,8 @@ class TrainSettings:
         self.summary_writer = None
 
         if colab:
-            self.checkpoints = "/content/drive/experiment/" + self.name + "/checkpoints/"
-            self.runsFolder = "/content/drive/experiment/" + self.name + "/runsFolder/"
+            self.checkpoints = "/content/drive/MyDrive/experiment/" + self.name + "/checkpoints/"
+            self.runsFolder = "/content/drive/MyDrive/experiment/" + self.name + "/runsFolder/"
             self.summary_writer = SummaryWriter(log_dir=self.runsFolder)
         else:
             self.runsFolder = os.getcwd() + "/PlayerModels/PPO/runsFolder/"
