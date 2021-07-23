@@ -83,8 +83,8 @@ def main():
 
         # Logging
         Settings.logger.info("Logging EVs")
-        Settings.logger.infor(f'EV Heuristic: {evPlayerHeu}')
-        Settings.logger.infor(f'EV Random: {evPlayerRan}')
+        Settings.logger.info(f'EV Heuristic: {evPlayerHeu}')
+        Settings.logger.info(f'EV Random: {evPlayerRan}')
         Settings.summary_writer.add_scalar('EV/Heuristic/Overall', evOverallHeu, episodes)
         Settings.summary_writer.add_scalar('EV/Random/Overall', evOverallHeu, episodes)
         for i in evPlayerHeu:
