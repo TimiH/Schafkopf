@@ -75,7 +75,7 @@ def main(tSettings):
 
         # saving Policy
         episodes += 1
-        torch.save(ppo.policy_old.state_dict(), Settings.checkFolder + str(episodes) + ".pt")
+        torch.save(ppo.policy_old.state_dict(), tSettings.checkpoints + str(episodes) + ".pt")
         Settings.logger.info(f"Weights Saved! Episode: {episodes} completed")
 
         # running eval
