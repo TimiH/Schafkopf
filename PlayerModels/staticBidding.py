@@ -96,6 +96,39 @@ def choseWenzGame(hand):
                 validBid = (2, 0)
     return validBid
 
+def choseWenzGameSimple(hand):
+    uCount = countByRank(hand, 'U')
+    aCount = countByRank(hand, 'A')
+    validBid = (0, 0)
+    # 4 U with A+3 or AA or AT
+    if uCount == 4:
+        # AAXX
+        if aCount >= 2:
+            validBid = (2, 0)
+        elif aCount == 1:
+            ace = list([x for x in hand if x.rank == 'A'])[0]
+            aceSuitCount = countColourOfSuit(hand, ace.suit, ['U', 'A'])
+            # A2X
+            if aceSuitCount >= 2:
+                validBid = (2, 0)
+    elif uCount == 3:
+        if aCount >= 2:
+            aces = list([x for x in hand if x.rank == 'A'])
+            if any(cardInHand(hand, ace.suit, 'T') for ace in aces):
+                validBid = (2, 0)
+        if aCount == 1:
+            ace = getCardsOfRank(hand, 'A')[0]
+            if cardInHand(hand, ace.suit, 'T'):
+                validBid = (2, 0)
+    elif uCount == 2:
+        if any(cardInHand(hand, x, 'U') for x in ['Eichel', 'Gras']):
+            # AAA+T|+3
+            if aCount >= 2:
+                aces = list([x for x in hand if x.rank == 'A'])
+                colours = countAllSuits(hand, ['U', 'A'])
+                if any((colours[SUITS[x.suit]]) >= 2 for x in aces):
+                    validBid = (2, 0)
+    return validBid
 
 # TODO Crazy Overengineered with winrates >90%
 # We are aiming for 6 Tricks and if U<4 UE is necessary
