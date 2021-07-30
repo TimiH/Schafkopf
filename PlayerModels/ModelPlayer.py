@@ -61,10 +61,10 @@ class ModelPlayer(Player):
         rewards[-1] = reward * 1.0
         self.memory.rewards += rewards
 
-        # score = resultsDict['scores'][self.position]
-        # scores = steps * [0.0]
-        # scores[-1] = float(score)
-        # self.memory.scores += scores
+        score = resultsDict['scores'][self.position]
+        scores = steps * [0.0]
+        scores[-1] = score
+        self.memory.scores += scores
 
     def makeBid(self, validBids):
         teamGameChoice = choseTeamGame(validBids, self.hand)

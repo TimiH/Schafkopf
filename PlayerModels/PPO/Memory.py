@@ -15,6 +15,7 @@ class Memory():
         self.logprobs.extend(memory.logprobs)
         self.rewards.extend(memory.rewards)
         self.done.extend(memory.done)
+        self.scores.extend(memory.scores)
 
     def updateReward(self, reward, score):
         self.rewards.append(reward)

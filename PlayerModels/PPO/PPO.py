@@ -56,7 +56,8 @@ class PPO:
     #   rewards.append(discounted_reward)
     # rewards.reverse()
 
-    rewards = memory.rewards
+    # rewards = memory.rewards
+    rewards = memory.scores
     Settings.logger.info("AVG rewards: " + str(np.mean(rewards)))
     Settings.logger.info("STD rewards: " + str(np.std(rewards)))
     # Normalizing the rewards:
