@@ -67,11 +67,25 @@ def playEvalTournament(policy, rounds):
     statsHeuristc = playFairTournament([p1, p2, p3, p4], rounds, laufendeBool=False, verbose=False)
     evOverallHeu = statsHeuristc.getEVOverall().iloc[0, [0, 2]].mean()
     evPlayerHeu = statsHeuristc.getEVGameModePlayers().iloc[[0, 2],].mean()
+    evOverallPerHeu = statsHeuristc.getWinPentagesTotalPlayer().iloc[0, [0, 2]].mean()
+    evPlayerPerHeu = statsHeuristc.getWinPercentagesPlayer().iloc[[0, 2],].mean()
 
     # random
     p2, p4 = RandomPlayer('2'), RandomPlayer('4')
     statsRandom = playFairTournament([p1, p2, p3, p4], rounds, laufendeBool=False, verbose=False)
     evOverallRan = statsRandom.getEVOverall().iloc[0, [0, 2]].mean()
     evPlayerRan = statsRandom.getEVGameModePlayers().iloc[[0, 2],].mean()
+    evOverallPerRan = statsRandom.getWinPentagesTotalPlayer().iloc[0, [0, 2]].mean()
+    evPlayerPerRan = statsRandom.getWinPercentagesPlayer().iloc[[0, 2],].mean()
 
-    return evOverallHeu, evPlayerHeu, evOverallRan, evPlayerRan
+    statsDict = {
+        'evOverallHeu': evOverallHeu,
+        'evPlayerHeu': evPlayerHeu,
+        'evOverallPerHeu': evOverallPerHeu,
+        'evPlayerPerHeu': evPlayerPerHeu,
+        'evOverallRan': evOverallRan,
+        'evPlayerRan': evPlayerRan,
+        'evOverallPerRan': evOverallPerRan,
+        'evPlayerPerRan': evPlayerPerRan
+    }
+    return statsDict

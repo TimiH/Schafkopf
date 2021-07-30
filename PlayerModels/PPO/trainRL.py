@@ -81,21 +81,36 @@ def main(tSettings):
         # running eval
         if episodes % tSettings.eval_interval == 0:
             Settings.logger.info(f"Running Eval: 2x {tSettings.eval_rounds}")
-            evOverallHeu, evPlayerHeu, evOverallRan, evPlayerRan = playEvalTournament(ppo.policy_old,
-                                                                                      tSettings.eval_rounds)
-            evPlayerHeu = list(evPlayerHeu.iteritems())
-            evPlayerRan = list(evPlayerRan.iteritems())
+
+            statsDict = playEvalTournament(ppo.policy_old, tSettings.eval_rounds)
+            # assinging
+            evPlayerHeu = list(statsDict['evPlayerHeu'].iteritems())
+            evPlayerRan = list(statsDict['evPlayerRan'].iteritems())
+            evPlayerPerHeu = list(statsDict['evPlayerPerHeu'].iteritems())
+            evPlayerPerRan = list(statsDict['evPlayerPerRan'].iteritems())
+
+            evOverallHeu = statsDict['evOverallHeu']
+            evOverallRan = statsDict['evOverallRan']
+            evOverallPerHeu = statsDict['evOverallPerHeu']
+            evOverallPerRan = statsDict['evOverallPerRan']
 
             # Logging
             Settings.logger.info("Logging EVs")
             Settings.logger.info(f'EV Heuristic: {evOverallHeu}')
             Settings.logger.info(f'EV Random: {evOverallRan}')
+            # tensorboard
             tSettings.summary_writer.add_scalar('EV/Heuristic/Overall', evOverallHeu, episodes)
             tSettings.summary_writer.add_scalar('EV/Random/Overall', evOverallHeu, episodes)
+            tSettings.summary_writer.add_scalar('%/Heuristic/Overall', evOverallHeu, episodes)
+            tSettings.summary_writer.add_scalar('%/Random/Overall', evOverallHeu, episodes)
             for i in evPlayerHeu:
                 tSettings.summary_writer.add_scalar('EV/Heuristic/' + i[0], i[1], episodes)
             for i in evPlayerRan:
                 tSettings.summary_writer.add_scalar('EV/Random/' + i[0], i[1], episodes)
+            for i in evPlayerPerHeu:
+                tSettings.summary_writer.add_scalar('%/Heuristic/' + i[0], i[1], episodes)
+            for i in evPlayerPerRan:
+                tSettings.summary_writer.add_scalar('%/Random/' + i[0], i[1], episodes)
 
 
 if __name__ == '__main__':
