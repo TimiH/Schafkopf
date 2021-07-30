@@ -1,5 +1,5 @@
 from PlayerModels.Player import Player
-from PlayerModels.staticBidding import choseSoloGame, choseTeamGame, choseWenzGameRevised
+from PlayerModels.staticBidding import choseSoloGame, choseTeamGame, choseWenzGameRevised, choseWenzGameSimple
 import random
 
 __metaclass__ = type
@@ -9,7 +9,7 @@ class RandomPlayer(Player):
     # Somewhat adopted from https://github.com/Taschee/schafkopf/blob/master/schafkopf/players/heuristics_player.py
     def makeBid(self, validBids):
         teamGameChoice = choseTeamGame(validBids, self.hand)
-        wenzGameChoice = choseWenzGameRevised(self.hand)
+        wenzGameChoice = choseWenzGameSimple(self.hand)
         soloGameChoice = choseSoloGame(validBids, self.hand)
         bids = []
 

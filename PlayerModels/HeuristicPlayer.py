@@ -1,7 +1,7 @@
 import random
 
 from PlayerModels.Player import Player
-from PlayerModels.staticBidding import choseSoloGame, choseWenzGameRevised, choseTeamGame
+from PlayerModels.staticBidding import choseSoloGame, choseWenzGameRevised, choseTeamGame, choseWenzGameSimple
 from PlayerModels.staticBidding import getCardsOfRank, cardInHand, getCardOfSuitRank, \
     trumpsInHandByGamemode, getCardsOfSuit
 from helper import createTrumpsList, byRank, getTrickWinnerIndex, sumTrickHistory, ringTest, sortTrump, getParnterPos, \
@@ -15,7 +15,7 @@ __metaclass__ = type
 class HeuristicPlayer(Player):
     def makeBid(self, validBids):
         teamGameChoice = choseTeamGame(validBids, self.hand)
-        wenzGameChoice = choseWenzGameRevised(self.hand)
+        wenzGameChoice = choseWenzGameSimple(self.hand)
         soloGameChoice = choseSoloGame(validBids, self.hand)
         bids = []
 

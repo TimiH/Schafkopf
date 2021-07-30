@@ -1,6 +1,6 @@
 from PlayerModels.Player import Player
 from PlayerModels.PPO.Memory import Memory
-from PlayerModels.staticBidding import choseTeamGame, choseWenzGameRevised, choseSoloGame
+from PlayerModels.staticBidding import choseTeamGame, choseWenzGameSimple, choseSoloGame
 from StateVectorDict import createVectorDict
 from torch.distributions import Categorical
 import torch
@@ -68,7 +68,7 @@ class ModelPlayer(Player):
 
     def makeBid(self, validBids):
         teamGameChoice = choseTeamGame(validBids, self.hand)
-        wenzGameChoice = choseWenzGameRevised(self.hand)
+        wenzGameChoice = choseWenzGameSimple(self.hand)
         soloGameChoice = choseSoloGame(validBids, self.hand)
         bids = []
 
