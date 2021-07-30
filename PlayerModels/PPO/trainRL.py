@@ -30,7 +30,7 @@ def main(tSettings):
     checkpoints = glob.glob(tSettings.checkpoints + '*.pt')
 
     if checkpoints:
-        latest = max(checkpoints, key=lambda x: int(re.findall(r'\d+', x)[0]))
+        latest = max(checkpoints, key=os.path.getctime)
         print(f'Loading Policy checkpoint {latest}')
         policy.load_state_dict(torch.load(latest))
         generation = len(checkpoints)

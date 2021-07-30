@@ -13,8 +13,10 @@ class PPO:
                start_episode=-1, sumWriter=None):
 
     [self.lr, self.lr_stepsize, self.lr_gamma] = lr_params
-
     self.sumWriter = sumWriter
+    if not sumWriter:
+      raise Exception("No Summary Writer in PPO")
+
     self.betas = betas
     self.gamma = gamma
     self.eps_clip = eps_clip
