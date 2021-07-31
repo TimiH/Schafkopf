@@ -129,7 +129,7 @@ class Trick:
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
         playerHand = deepcopy(self.gameDict['playersHands'][currentPlayerIndex])
         validCards = self.getValidActionsForHand(playerHand)
-        return validCards, currentPlayerIndex, playerHand, self.history, self.gameState
+        return validCards, currentPlayerIndex, playerHand, self.history, self.gameDict
 
     def getCurrentPlayerIndex(self):
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4

@@ -7,7 +7,7 @@ import json
 import pickle
 import uuid
 import os
-
+import random
 
 class Player(object):
     def __init__(self, name, record=False, targetFile=''):
@@ -28,10 +28,10 @@ class Player(object):
         self.position = postion
 
     def makeBid(self, validBids):
-        pass
+        return random.choice(validBids)
 
     def playCard(self, validCards, state, trickHistory):
-        pass
+        return random.choice(validCards)
 
     def sortHand(self, state):
         pass
@@ -66,3 +66,4 @@ class Player(object):
             path = os.getcwd() + '/DataDump/pickle'
             with open(path + id, 'wb') as out:
                 pickle.dump(self.states, out, pickle.HIGHEST_PROTOCOL)
+
