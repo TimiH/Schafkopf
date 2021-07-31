@@ -9,10 +9,10 @@ from PlayerModels.PPO.SETTINGS import Settings
 class LinearModel(nn.Module):
     def __init__(self):
         super().__init__()
-        # input 233
+        # input 217
         self.device = Settings.device
 
-        self.hidden_neurons = 64
+        self.hidden_neurons = 32
         self.inLayer = nn.Linear(217, self.hidden_neurons)
         self.midLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
         self.actorLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
