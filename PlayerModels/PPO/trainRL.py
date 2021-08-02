@@ -100,7 +100,7 @@ def main(tSettings):
             Settings.logger.info(f'EV Random: {evOverallRan}')
             # tensorboard
             tSettings.summary_writer.add_scalar('EV/Heuristic/Overall', evOverallHeu, episodes)
-            tSettings.summary_writer.add_scalar('EV/Random/Overall', evOverallHeu, episodes)
+            tSettings.summary_writer.add_scalar('EV/Random/Overall', evOverallRan, episodes)
             tSettings.summary_writer.add_scalar('%/Heuristic/Overall', evOverallPerHeu, episodes)
             tSettings.summary_writer.add_scalar('%/Random/Overall', evOverallPerRan, episodes)
             for i in evPlayerHeu:
