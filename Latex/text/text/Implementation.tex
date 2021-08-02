@@ -1,0 +1,106 @@
+\chapter{Implementation}
+In this chapter I will briefly outline the approach we took for the implementation of the Schafkopf environment and
+the training pipeline.
+
+
+\section{Enviroment}
+The environment was programmed in Python for its fast development and integration of current Reinforcement libraries
+such as PyTorch, and follows the traditional Model-View-Controller(\textbf{MVC}) paradigm.
+The \textbf{MVC} is a proven concept for game environments as it cleanly separates the game logic held in the model
+with the decision process making of the controller in our case the agents interacting with the environment.
+In our implementation there are two main components necessary to play a hand of Schafkopf:
+\begin{description}
+    \item[Game Object] Acts as the model and handles the game logic, game phases and action validation
+    \item[Player Object] Acts as the controller and makes an agents individual decision based on the implemented logic
+\end{description}
+
+\subsection{Game Object}
+The game object is initialised with a list of four agent objects, a lead variable that determines the player position
+with the \textbf{Lead} role.
+Optionally a seed variable can be passed to control
+Internally it follows the game phases defined in \ref{gamephases} .\\
+In the\textbf{ Setup phase} it creates a shuffled 32 card deck and deals each player eight cards.
+The deck's order can optionally be controlled via a seed variable, which can be useful for debugging or replaying
+certain games for evaluation, for example if we want only seeds that give players \textbf{Solo} cards.
+\newline
+During \textbf{Bidding phase} each player in their respective order at the virtual table is given their hand in
+combination with their valid bidding options, which depend on previous bids as well as their hand, by calling the
+players' bidding methods.
+Once every player has returned their bid the \textbf{Bidding phase} concludes, the highest bid and resulting game
+mode can be
+determined.
+If at this stage no contract has been decided the hand ends immediately.
+The hand moves now into the \textbf{Trick phase} after variables such as team composition, run away possibilities and
+other game mode induced variables have been evaluated.
+\newline
+In \textbf{Trick phase} for each of the eight tricks we perform the same loop of actions starting with the leading
+player:
+\begin{enumerate}
+    \item Set the players current hand in the corresponding player object
+    \item Determine the valid cards the player may play
+    \item Pass the game state,current trick history and valid cards to player by calling player's \textit{playCard}
+    method
+    \item Check if the action returned by the player is valid
+\end{enumerate}
+After all players played their card, the trick winner is determined, the point scores are updated, and played cards
+are removed from the corresponding hands.
+After \textbf{Team Mode} it is also important to check if players \textbf{ran away}} or \textbf{searched} as this is
+vital to allow for correct deduction of valid cards that can be played.
+\newline
+Once all eight tricks have been played successfully the \textbf{Scoring phase} commences and a winner and resulting
+reward is calculated and the hand is concluded.
+
+[pseudocode]
+\subsection{Game State}
+The game state holds all information that define a hand at any moment and is held and passed as dictionary throughout
+the environment.
+\newline
+\begin{table}[h!]
+\begin{tabular}{lll}
+Name              & Type           & Description                                                             \\
+\hline
+Hands             & List of Cards  & Description                                                             \\
+Game Mode         & Category       & Can be one of eigth possible contracts                                  \\
+Lead              & Int            & Table position of leading player                                        \\
+Scores            & List of Int    & List of length four                                                     \\
+Trick History     & Tuple of Cards & Tuples that keep track of pass tricks                                   \\
+Cards Played      & List of Cards  & List of all the cards played (Not necessary, but useful for perfomance) \\
+Seed              & Int            & Records the Seed for debugging and evaluation                           \\
+Offensive Players & Int            & List of table positions of bid winner and partner                       \\
+Run Away Possible & Bool           & Can partner technically run away                                        \\
+Ran Away          & Bool           & Did partner run away                                                    \\
+Searched          & Bool           & Has been searched
+\end{tabular}
+\caption{Game state and its members.}
+\label{tab:gamestate}
+\end{table}
+
+\subsection{Player Class}
+The player class is a template class \ref{lst:playerclass} that every agent inherits from.
+It handles an agent's decision process during the bidding phase as well as the trick phase.
+The two main methods that any agent has to shadow are \textit{makebid()} and \textit{playCard()}.
+These are called by the environment and make the agent the controller in the \textbf{MVC} paradigm.
+\newline
+\begin{lstlisting}[!H][language=Python,label={lst:playerclass}]
+import random
+class Player():
+def __init__(self, name):
+self.name = name
+self.hand = []
+self.position = None
+
+def setHand(self, cards):
+self.hand = []
+self.hand = cards
+
+def setPosition(self, postion):
+self.position = postion
+
+def makeBid(self, validBids):
+return random.choice(validBids)
+
+def playCard(self, validCards, gameState, trickHistory):
+return random.choice(validCards)
+\end{lstlisting}
+\section{Reinforcment Learning Setup}
+
