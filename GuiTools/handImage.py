@@ -86,3 +86,6 @@ def handToJpgV(hand):
     for key, img in enumerate(images):
         new.paste(img, (0, key * height))
     return new
+
+def trickToImg():
+    pass

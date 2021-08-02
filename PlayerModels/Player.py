@@ -18,8 +18,6 @@ class Player(object):
         self.states = {}
         self.target = targetFile
 
-    ##TODO __repr__ and __str__
-
     def setHand(self, cards):
         self.hand = []
         self.hand = cards
@@ -30,11 +28,8 @@ class Player(object):
     def makeBid(self, validBids):
         return random.choice(validBids)
 
-    def playCard(self, validCards, state, trickHistory):
+    def playCard(self, validCards, gameState, trickHistory):
         return random.choice(validCards)
-
-    def sortHand(self, state):
-        pass
 
     def getPosition(self, gameDict):
         for key, value in enumerate(gameDict['players']):
