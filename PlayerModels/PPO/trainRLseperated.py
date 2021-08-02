@@ -65,8 +65,7 @@ def main(tSettings, mode):
         Settings.logger.info("---------------------")
         Settings.logger.info("playing " + str(tSettings.update_games) + " games")
         # play games
-        # stats = playFairTournament(players, Settings.update_games / 4, verbose=False, laufendeBool=False)
-        stats = playRandomTournament(players, tSettings.update_games / 4, laufendeBool=False)
+        stats = playRandomTournament(players, tSettings.update_games / 4, mode=mode, laufendeBool=False)
         Settings.logger.info("Games played")
 
         # safe stats to pickle
@@ -88,7 +87,12 @@ def main(tSettings, mode):
         ppo.update(overallMemory, episodes)
 
         # Reseting players
-        players = [ModelPlayer(str(i), ppo.policy_old, eval=False) for i in range(4)]
+        if mode == 1:
+            players = [SeperatedModelPlayer(str(i), policyTeam=policy, eval=False) for i in range(4)]
+        if mode == 2:
+            players = [SeperatedModelPlayer(str(i), policyWenz=policy, eval=False) for i in range(4)]
+        if mode == 3:
+            players = [SeperatedModelPlayer(str(i), policySolo=policy, eval=False) for i in range(4)]
 
         # saving Policy
         episodes += 1

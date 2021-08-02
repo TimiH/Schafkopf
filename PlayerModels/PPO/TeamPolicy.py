@@ -9,11 +9,11 @@ from PlayerModels.PPO.SETTINGS import Settings
 class TeamModel(nn.Module):
     def __init__(self):
         super().__init__()
-        # input 233
+        # input 214
         self.device = Settings.device
 
         self.hidden_neurons = 64
-        self.inLayer = nn.Linear(217, self.hidden_neurons)
+        self.inLayer = nn.Linear(214, self.hidden_neurons)
         self.midLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
         self.actorLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
         self.criticLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
@@ -49,7 +49,7 @@ class TeamModel(nn.Module):
         hand = np.array(list(stateVector['hand']))  # 32
         cardsPlayed = np.array(list(stateVector['cardsPlayed']))  # 32
         lead = np.array(list(stateVector['lead']))  # 4
-        gameMode = np.array(list(stateVector['gameMode'])[::-4])  # 7
+        gameMode = np.array(list(stateVector['gameMode'])[-4::])  # 4
         ranAway = np.array(list(stateVector['ranAway']))  # 1
         searched = np.array(list(stateVector['searched']))  # 1
         bidWinner = np.array(list(stateVector['bidWinner']))  # 4
@@ -59,7 +59,7 @@ class TeamModel(nn.Module):
         trickHistory = stateVector['trickHistoryPlayer']
         trickHistory = trickHistory[0] + trickHistory[1] + trickHistory[2] + trickHistory[3]
         trickHistory = np.array(list(trickHistory))  # 32*4
-        test = [trickHistory, hand, cardsPlayed, lead, gameMode, ranAway, searched, bidWinner, ownTeam, scores]
+        # test = [trickHistory, hand, cardsPlayed, lead, gameMode, ranAway, searched, bidWinner, ownTeam, scores]
         # for p in test:
         #     print(f'{p}{p.shape}')
 
