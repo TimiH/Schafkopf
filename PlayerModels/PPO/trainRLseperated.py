@@ -26,14 +26,14 @@ def main(tSettings, mode):
     # Policy new or newest version
     if mode == 1:
         policy = TeamModel()
-        folder = '/team/'
+        folder = 'team/'
     if mode == 2:
         policy = WenzModel()
-        folder = '/wenz/'
+        folder = 'wenz/'
 
     if mode == 3:
         policy = SoloModel()
-        folder = '/solo/'
+        folder = 'solo/'
 
     policy.to(Settings.device)
     episodes = generation = 0
@@ -96,7 +96,7 @@ def main(tSettings, mode):
 
         # saving Policy
         episodes += 1
-        torch.save(ppo.policy_old.state_dict(), tSettings.checkpoints + str(episodes) + ".pt")
+        torch.save(ppo.policy_old.state_dict(), tSettings.checkpoints + folder + str(episodes) + ".pt")
         Settings.logger.info(f"Weights Saved! Episode: {episodes} completed")
 
         # running eval
