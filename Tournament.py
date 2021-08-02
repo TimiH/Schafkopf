@@ -10,7 +10,7 @@ from math import floor
 
 
 # TODO implement fixed Seeds
-def playFairTournament(players, rounds, laufendeBool=True, verbose=True):
+def playFairTournament(players, rounds, mode=0, laufendeBool=True, verbose=True):
     statistics = Statistics()
     statistics.setPlayerNames(players)
     for round in range(int(rounds)):
@@ -20,6 +20,8 @@ def playFairTournament(players, rounds, laufendeBool=True, verbose=True):
             game = Game(players, 0, seed)
             game.setupGame()
             gameFound = game.playBidding()
+            if game.gameMode[0] != mode:
+                gameFound = False
         # print(f'(GameSeed:{game.seed})')
         for hand in range(4):
             if verbose:
@@ -37,14 +39,14 @@ def playFairTournament(players, rounds, laufendeBool=True, verbose=True):
     return statistics
 
 
-def playRandomTournament(players, rounds, verbose=False, laufendeBool=True):
+def playRandomTournament(players, rounds, mode=0, verbose=False, laufendeBool=True):
     statistics = Statistics()
     statistics.setPlayerNames(players)
     for round in range(int(rounds) * 4):
         game = Game(players, round % 4, laufendeBool=laufendeBool)
         game.setupGame()
         gameFound = game.playBidding()
-        if not gameFound:
+        if not gameFound or game.gameMode[0] != mode:
             round -= 1
             continue
         if verbose:
