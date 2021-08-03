@@ -103,7 +103,7 @@ def main(tSettings, mode):
         if episodes % tSettings.eval_interval == 0:
             Settings.logger.info(f"Running Eval: 2x {tSettings.eval_rounds}")
 
-            statsDict = playEvalTournament(ppo.policy_old, tSettings.eval_rounds)
+            statsDict = playEvalTournament(ppo.policy_old, tSettings.eval_rounds, mode=mode)
             # assinging
             evPlayerHeu = list(statsDict['evPlayerHeu'].iteritems())
             evPlayerRan = list(statsDict['evPlayerRan'].iteritems())
