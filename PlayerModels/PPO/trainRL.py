@@ -69,6 +69,7 @@ def main(tSettings):
         Settings.logger.info("Memory created")
 
         ppo.update(overallMemory, episodes)
+        ppo.lr_scheduler.step(episodes)
 
         # Reseting players
         players = [ModelPlayer(str(i), ppo.policy_old, eval=False) for i in range(4)]
