@@ -30,6 +30,8 @@ def playFairTournament(players, rounds, mode=0, laufendeBool=True, verbose=True)
             game = Game(rotatetedPlayers, 0, seed=seed, laufendeBool=laufendeBool)
             game.setupGame()
             game.playBidding()
+            if game.gameMode[0] != mode:
+                print('asdasd')
             game.continueGame()
             gameDict = game.getGameDict()
             statistics.updateSelf(gameDict, hand)
@@ -43,15 +45,13 @@ def playRandomTournament(players, rounds, mode=0, verbose=False, laufendeBool=Tr
     statistics = Statistics()
     statistics.setPlayerNames(players)
     for round in range(int(rounds) * 4):
-        game = Game(players, round % 4, laufendeBool=laufendeBool)
-        game.setupGame()
-        gameFound = game.playBidding()
-        if not gameFound:
-            round -= 1
-            continue
-        if mode != 0 and game.gameMode[0] != mode:
-            round -= 1
-            continue
+        gameFound = False
+        while not gameFound:
+            game = Game(players, round % 4)
+            game.setupGame()
+            gameFound = game.playBidding()
+            if mode != 0 and game.gameMode[0] != mode:
+                gameFound = False
         if verbose:
             print(f'Playing: Round {round // 4, round % 4}')
         game.continueGame()
