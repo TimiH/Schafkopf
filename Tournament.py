@@ -30,8 +30,6 @@ def playFairTournament(players, rounds, mode=0, laufendeBool=True, verbose=True)
             game = Game(rotatetedPlayers, 0, seed=seed, laufendeBool=laufendeBool)
             game.setupGame()
             game.playBidding()
-            if game.gameMode[0] != mode:
-                print('asdasd')
             game.continueGame()
             gameDict = game.getGameDict()
             statistics.updateSelf(gameDict, hand)
