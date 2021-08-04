@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname("/home/h/hesset/work/Schafkopf/"))
 print(sys.path)
 from PlayerModels.PPO.trainSettings import TrainSettings
 from PlayerModels.PPO.trainRL import main
