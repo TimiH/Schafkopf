@@ -6,7 +6,6 @@ from PlayerModels.PPO.SETTINGS import Settings
 from PlayerModels.PPO.PPO import PPO
 from PlayerModels.SeperatedModelPlayer import SeperatedModelPlayer
 from PlayerModels.PPO.Memory import Memory
-from PlayerModels.PPO.trainSettings import TrainSettings
 from Tournament import playFairTournament, playRandomTournament, playEvalTournament
 
 import torch
@@ -85,6 +84,7 @@ def main(tSettings, mode):
         Settings.logger.info("Memory created")
 
         ppo.update(overallMemory, episodes)
+        ppo.lr_scheduler.step(episodes)
 
         # Reseting players
         if mode == 1:
