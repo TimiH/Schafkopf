@@ -63,9 +63,23 @@ of computational efficiency and performance, when applied to deep neural network
 For this reason we exclusively use \textbf{ReLU} in all input and hidden layers.
 
 \paragraph{Softmax}
-Softmax is useful activation function for output layers, as they transform any input regardless of size to an output
-that is within [0,1].
-This allows for outputs to be interpreted
+\textbf{Softmax} is a useful activation function for output layers, as they transform any input regardless of
+absolute size to an output that is within [0,1].
+The output of an output layer with \textbf{Softmax} is a normalised probability distribution, where each neuron in
+the layer has a probability, and the sum of all probabilities is 1.
+The definition of \textbf{Softmax} is the following:
+\begin{center}
+    \begin{math}
+        \boxed{
+            \begin{aligned}
+                &\textrm{Let } x \textrm{ be the input of a \textbf{ReLU}}\\
+                &f(x) = max(0,x)
+            \end{aligned}
+        }
+        \caption{Definition of the \textbf{Softmax} activation function}
+        \label{activationSoftmax}
+    \end{math}
+\end{center}
 \newline
 Now that we defined a neuron, we can use multiple neurons to form a layer, which in turn can be connected in sequence
 to form a \textbf{NN}.
