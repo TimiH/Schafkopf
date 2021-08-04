@@ -29,8 +29,12 @@ class TrainSettings:
             self.runsFolder = "/content/drive/MyDrive/experiment/" + self.name + "/runsFolder/"
             self.summary_writer = SummaryWriter(log_dir=self.runsFolder)
         else:
-            self.runsFolder = os.getcwd() + "/PlayerModels/PPO/runsFolder/"
-            self.checkpoints = os.getcwd() + "/PlayerModels/PPO/checkpoints/"
+            self.runsFolder = os.getcwd() + "/PlayerModels/PPO/experiments/runsFolder/" + self.name + "/"
+            self.checkpoints = os.getcwd() + "/PlayerModels/PPO/experiments/checkpoints/" + self.name + "/"
+            if not os.path.isdir(self.runsFolder):
+                os.mkdir(self.runsFolder)
+                os.mkdir(self.checkpoints)
+
             self.summary_writer = SummaryWriter(log_dir=self.runsFolder)
 
     def save(self):
