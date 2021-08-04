@@ -48,7 +48,7 @@ class PPO:
     # # Monte Carlo estimate of state rewards:
     rewards = []
     discounted_reward = 0
-    for reward, is_terminal in zip(reversed(memory.rewards), reversed(memory.is_terminals)):
+    for reward, is_terminal in zip(reversed(memory.rewards), reversed(memory.done)):
       if is_terminal:
         discounted_reward = 0
       discounted_reward = reward + (self.gamma * discounted_reward)
