@@ -41,7 +41,6 @@
 %\usepackage[diplom]{mdsg}                        % uncomment the corresponding option
 %\usepackage[fopra]{mdsg}
 \usepackage[bachelor]{mdsg}
-\usepackage{listing}
 %\usepackage[master]{mdsg}
 %
 % =================================================================================================
@@ -99,6 +98,9 @@
 \usepackage[table]{xcolor-solarized}
 \usepackage{wasysym}
 \usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{listing}
+
 
 \setcounter{tocdepth}{3}                          % sectioning depth in toc
 \setcounter{secnumdepth}{3}                       % sectioning depth in text
@@ -162,9 +164,9 @@
 % -------------------------------------------------------------------------------------------------
 %
     \begin{spacing}{0.9}                          % save some space
-       \bibliographystyle{geralpha}               % for german thesis
-       %\bibliographystyle{alpha}                 % for english thesis
-       \bibliography{bibliography}                % the location of bib file
+        %\bibliographystyle{geralpha}               % for german thesis
+        \bibliographystyle{alpha}                 % for english thesis
+        \bibliography{bibliography}                % the location of bib file
     \end{spacing}
 \end{document}
 %

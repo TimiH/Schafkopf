@@ -41,6 +41,8 @@ can be express by the following formula:
 \end{center}
 There are a number of possible activation functions that can be used, but for our purpose we will look at
 \textbf{Rectified Linear Unit (RELU)} and the \textbf{Softmax}.\\
+
+\paragraph{Rectified Linear Unit (RELU)}
 \textbf{ReLU} is a simple activation function that forwards the input, if its positive, otherwise zero.
 The \textbf{ReLU} function is formulated using:
 
@@ -56,6 +58,14 @@ The \textbf{ReLU} function is formulated using:
         \label{activationRelu}
     \end{math}
 \end{center}
+\textbf{ReLU}, when compared to the more tradition Sigmoid activation function, has proven to be favourable in terms
+of computational efficiency and performance, when applied to deep neural networks. \cite{krizhevsky2012imagenet}
+For this reason we exclusively use \textbf{ReLU} in all input and hidden layers.
+
+\paragraph{Softmax}
+Softmax is useful activation function for output layers, as they transform any input regardless of size to an output
+that is within [0,1].
+This allows for outputs to be interpreted
 \newline
 Now that we defined a neuron, we can use multiple neurons to form a layer, which in turn can be connected in sequence
 to form a \textbf{NN}.
