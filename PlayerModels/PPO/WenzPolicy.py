@@ -12,9 +12,9 @@ class WenzModel(nn.Module):
         # input 208
         self.device = Settings.device
 
-        self.hidden_neurons = 64
+        self.hidden_neurons = 48
         self.inLayer = nn.Linear(208, self.hidden_neurons)
-        self.midLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
+        # self.midLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
         self.actorLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
         self.criticLayer = nn.Linear(self.hidden_neurons, self.hidden_neurons)
         self.actorOut = nn.Linear(self.hidden_neurons, 32)
@@ -24,7 +24,7 @@ class WenzModel(nn.Module):
         [inputVector, actionMask] = input
 
         x = F.relu(self.inLayer(inputVector))
-        x = F.relu(self.midLayer(x))
+        # x = F.relu(self.midLayer(x))
         # Split into actor & critic
         ax = F.relu(self.actorLayer(x))
         ax = F.relu(self.actorOut(ax))
