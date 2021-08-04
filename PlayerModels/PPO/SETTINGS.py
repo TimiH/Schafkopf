@@ -35,7 +35,7 @@ class Settings:
     # eval_intervall = 5
 
     lr = 0.0002
-    lr_stepsize = 15000000.0  # 300000
+    # lr_stepsize = 30000000.0  # 300000
     lr_gamma = 0.3
 
     betas = (0.9, 0.999)

@@ -58,8 +58,26 @@ keywords = {cs.AI},
 primaryclass = {cs.AI},
 }
 
-@Misc{Aug2021,
-year = {Aug, 2021},
+@Article{Smith2017,
+author = {Leslie N. Smith and Nicholay Topin},
+title = {Super-Convergence: Very Fast Training of Neural Networks Using Large Learning Rates},
+year = {2017},
+month = aug,
+abstract = {In this paper, we describe a phenomenon, which we named "super-convergence", where neural networks can be trained an order of magnitude faster than with standard training methods. The existence of super-convergence is relevant to understanding why deep networks generalize well. One of the key elements of super-convergence is training with one learning rate cycle and a large maximum learning rate. A primary insight that allows super-convergence training is that large learning rates regularize the training, hence requiring a reduction of all other forms of regularization in order to preserve an optimal regularization balance. We also derive a simplification of the Hessian Free optimization method to compute an estimate of the optimal learning rate. Experiments demonstrate super-convergence for Cifar-10/100, MNIST and Imagenet datasets, and resnet, wide-resnet, densenet, and inception architectures. In addition, we show that super-convergence provides a greater boost in performance relative to standard training when the amount of labeled training data is limited. The architectures and code to replicate the figures in this paper are available at github.com/lnsmith54/super-convergence. See http://www.fast.ai/2018/04/30/dawnbench-fastai/ for an application of super-convergence to win the DAWNBench challenge (see https://dawn.cs.stanford.edu/benchmark/).},
+archiveprefix = {arXiv},
+eprint = {1708.07120},
+file = {:http\://arxiv.org/pdf/1708.07120v3:PDF},
+keywords = {cs.LG, cs.CV, cs.NE, stat.ML},
+primaryclass = {cs.LG},
+}
+
+@Article{krizhevsky2012imagenet,
+author = {Krizhevsky, Alex and Sutskever, Ilya and Hinton, Geoffrey E},
+journal = {Advances in neural information processing systems},
+title = {Imagenet classification with deep convolutional neural networks},
+year = {2012},
+pages = {1097--1105},
+volume = {25},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

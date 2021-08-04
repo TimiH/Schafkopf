@@ -13,6 +13,7 @@ class TrainSettings:
         self.update_games = None
         self.batch_size = None
         self.mini_batch_size = None
+        self.lr_stepsize = None
         self.K_epochs = None
 
         self.eval_rounds = None
@@ -41,6 +42,7 @@ class TrainSettings:
             'batch_size': self.batch_size,
             'mini_batches': self.mini_batch_size,
             'K_epochs': self.K_epochs,
+            'lr_stepsize': self.lr_stepsize,
             'eval_rounds': self.eval_rounds,
             'eval_intervals': self.eval_interval,
         }
