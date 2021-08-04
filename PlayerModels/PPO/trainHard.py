@@ -1,3 +1,6 @@
+import os
+
+print(os.getcwd())
 from PlayerModels.PPO.trainSettings import TrainSettings
 from PlayerModels.PPO.trainRL import main
 
