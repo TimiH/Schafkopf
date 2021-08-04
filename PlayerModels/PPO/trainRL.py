@@ -48,7 +48,6 @@ def main(tSettings):
         Settings.logger.info("---------------------")
         Settings.logger.info("playing " + str(tSettings.update_games) + " games")
         # play games
-        # stats = playFairTournament(players, Settings.update_games / 4, verbose=False, laufendeBool=False)
         stats = playRandomTournament(players, tSettings.update_games / 4, laufendeBool=False)
         Settings.logger.info("Games played")
 
@@ -67,6 +66,8 @@ def main(tSettings):
             overallMemory.update(p.memory)
             del p.memory
         Settings.logger.info("Memory created")
+        with open(tSettings.checkpoints + 'memory' + str(episodes), 'wb') as out:
+            pickle.dump(stats, out, pickle.HIGHEST_PROTOCOL)
 
         ppo.update(overallMemory, episodes)
         ppo.lr_scheduler.step(episodes)
