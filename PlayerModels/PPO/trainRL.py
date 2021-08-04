@@ -36,7 +36,7 @@ def main(tSettings):
         generation = len(checkpoints)
         episodes = generation
 
-    ppo = PPO(policy, [Settings.lr, Settings.lr_stepsize, Settings.lr_gamma], Settings.betas, Settings.gamma,
+    ppo = PPO(policy, [Settings.lr, tSettings.lr_stepsize, Settings.lr_gamma], Settings.betas, Settings.gamma,
               tSettings.K_epochs, Settings.eps_clip, tSettings.batch_size, tSettings.mini_batch_size, c1=Settings.c1,
               c2=Settings.c2, start_episode=generation - 1, sumWriter=tSettings.summary_writer)
 
@@ -69,7 +69,7 @@ def main(tSettings):
         Settings.logger.info("Memory created")
 
         ppo.update(overallMemory, episodes)
-        ppo.lr_scheduler.step(episodes)
+        ppo.lr_scheduler.step()
 
         # Reseting players
         players = [ModelPlayer(str(i), ppo.policy_old, eval=False) for i in range(4)]
