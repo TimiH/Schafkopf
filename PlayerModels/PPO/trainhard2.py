@@ -1,43 +1,45 @@
 from PlayerModels.PPO.trainSettings import TrainSettings
 from PlayerModels.PPO.trainRLseperated import main
 
-tSettings = TrainSettings('131', colab=False)
+name = '132'
 
-tSettings.episodes = 200
-tSettings.eval_rounds = 1000
-tSettings.eval_interval = 10000  # error 10
+episodes = 250
+eval_rounds = 250
+eval_interval = 5
+update_games = 500
+
+tSettings = TrainSettings(name, colab=False, seperated=1)
+tSettings.episodes = episodes
+tSettings.eval_rounds = eval_rounds
+tSettings.eval_interval = eval_interval  # error 10
 tSettings.lr_stepsize = 30000000
-tSettings.update_games = 200
+tSettings.update_games = 500
 tSettings.batch_size = tSettings.update_games * 8 * 4
 tSettings.mini_batch_size = tSettings.batch_size
-
 tSettings.K_epochs = 12
 
 # tSettings.save()
 main(tSettings, mode=1)
 
-tSettings = TrainSettings('131', colab=False)
-
-tSettings.episodes = 200
-tSettings.eval_rounds = 1000
-tSettings.eval_interval = 10000  # error 10
+tSettings = TrainSettings(name, colab=False, seperated=2)
+tSettings.episodes = episodes
+tSettings.eval_rounds = eval_rounds
+tSettings.eval_interval = eval_interval  # error 10
 tSettings.lr_stepsize = 30000000
-tSettings.update_games = 200
+tSettings.update_games = 500
 tSettings.batch_size = tSettings.update_games * 8 * 4
 tSettings.mini_batch_size = tSettings.batch_size
-
 tSettings.K_epochs = 12
 
 # tSettings.save()
 main(tSettings, mode=2)
 
-tSettings = TrainSettings('132', colab=False)
-
-tSettings.episodes = 200
-tSettings.eval_rounds = 1000
-tSettings.eval_interval = 10000  # error 10
+tSettings = TrainSettings(name, colab=False, seperated=3)
+tSettings.episodes = episodes
+tSettings.eval_rounds = eval_rounds
+tSettings.eval_interval = eval_interval  # error 10
 tSettings.lr_stepsize = 30000000
-tSettings.update_games = 200
+tSettings.update_games = 500
 tSettings.batch_size = tSettings.update_games * 8 * 4
 tSettings.mini_batch_size = tSettings.batch_size
 

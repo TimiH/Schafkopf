@@ -1,11 +1,11 @@
 import os
 import pickle
 from torch.utils.tensorboard import SummaryWriter
-
+from pathlib import Path
 
 # to allow for more easier training setting
 class TrainSettings:
-    def __init__(self, name, colab=True):
+    def __init__(self, name, colab=True, seperated=0):
         self.name = name
         self.colab = colab
 
@@ -25,15 +25,25 @@ class TrainSettings:
         self.summary_writer = None
 
         if self.colab:
+
             self.checkpoints = "/content/drive/MyDrive/experiment/" + self.name + "/checkpoints/"
             self.runsFolder = "/content/drive/MyDrive/experiment/" + self.name + "/runsFolder/"
+            if seperated != 0:
+                folder = ['team/', 'wenz/', 'solo/']
+                self.runsFolder += folder[seperated - 1]
+                self.checkpoints += folder[seperated - 1]
+            Path("self.runsFolder").mkdir(parents=True, exist_ok=True)
+            Path("self.checkpoints").mkdir(parents=True, exist_ok=True)
             self.summary_writer = SummaryWriter(log_dir=self.runsFolder)
         else:
             self.runsFolder = os.getcwd() + "/PlayerModels/PPO/experiments/runsFolder/" + self.name + "/"
             self.checkpoints = os.getcwd() + "/PlayerModels/PPO/experiments/checkpoints/" + self.name + "/"
-            if not os.path.isdir(self.runsFolder):
-                os.mkdir(self.runsFolder)
-                os.mkdir(self.checkpoints)
+            if seperated != 0:
+                folder = ['team/', 'wenz/', 'solo/']
+                self.runsFolder += folder[seperated - 1]
+                self.checkpoints += folder[seperated - 1]
+            Path(self.runsFolder).mkdir(parents=True, exist_ok=True)
+            Path(self.checkpoints).mkdir(parents=True, exist_ok=True)
 
             self.summary_writer = SummaryWriter(log_dir=self.runsFolder)
 

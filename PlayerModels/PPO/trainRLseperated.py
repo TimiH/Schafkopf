@@ -16,29 +16,19 @@ import pickle
 
 
 def main(tSettings, mode):
-    # init Tensorboard
-
-    # tb = program.TensorBoard()
-    # tb.configure(argv=[None, '--logdir', Settings.runFolder])
-    # tb.launch()
-
     # Policy new or newest version
     if mode == 1:
         policy = TeamModel()
-        folder = 'team/'
     if mode == 2:
         policy = WenzModel()
-        folder = 'wenz/'
-
     if mode == 3:
         policy = SoloModel()
-        folder = 'solo/'
 
     policy.to(Settings.device)
     episodes = generation = 0
     # path = '/PlayerModels/PPO/checkpoints/'
     # checkpoints = glob.glob(os.getcwd() + '/PlayerModels/PPO/checkpoints/*.pt')
-    checkpoints = glob.glob(tSettings.checkpoints + folder + '*.pt')
+    checkpoints = glob.glob(tSettings.checkpoints + '*.pt')
 
     if checkpoints:
         latest = max(checkpoints, key=os.path.getctime)
@@ -47,17 +37,17 @@ def main(tSettings, mode):
         generation = len(checkpoints)
         episodes = generation
 
-    ppo = PPO(policy, [Settings.lr, Settings.lr_stepsize, Settings.lr_gamma], Settings.betas, Settings.gamma,
+    ppo = PPO(policy, [Settings.lr, tSettings.lr_stepsize, Settings.lr_gamma], Settings.betas, Settings.gamma,
               tSettings.K_epochs, Settings.eps_clip, tSettings.batch_size, tSettings.mini_batch_size, c1=Settings.c1,
               c2=Settings.c2, start_episode=generation - 1, sumWriter=tSettings.summary_writer)
 
     # players
     if mode == 1:
-        players = [SeperatedModelPlayer(str(i), policyTeam=policy, eval=False) for i in range(4)]
+        players = [SeperatedModelPlayer(str(i), policyTeam=ppo.policy_old, eval=False) for i in range(4)]
     if mode == 2:
-        players = [SeperatedModelPlayer(str(i), policyWenz=policy, eval=False) for i in range(4)]
+        players = [SeperatedModelPlayer(str(i), policyWenz=ppo.policy_old, eval=False) for i in range(4)]
     if mode == 3:
-        players = [SeperatedModelPlayer(str(i), policySolo=policy, eval=False) for i in range(4)]
+        players = [SeperatedModelPlayer(str(i), policySolo=ppo.policy_old, eval=False) for i in range(4)]
 
     # generate Games and update
     for _ in range(tSettings.episodes):
@@ -96,7 +86,7 @@ def main(tSettings, mode):
 
         # saving Policy
         episodes += 1
-        torch.save(ppo.policy_old.state_dict(), tSettings.checkpoints + folder + str(episodes) + ".pt")
+        torch.save(ppo.policy_old.state_dict(), tSettings.checkpoints + str(episodes) + ".pt")
         Settings.logger.info(f"Weights Saved! Episode: {episodes} completed")
 
         # running eval
