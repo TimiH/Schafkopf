@@ -46,8 +46,8 @@ class Game:
         # This allows initliasation from dircts
         else:
             self.uuid = str(uuid.uuid4())
-            self.players = gameDict['players']  # List of players and Positons via index
-            self.playersHands = gameDict['playersHand']
+            self.players = players  # List of players and Positons via index
+            self.playersHands = gameDict['playersHands']
             self.scores = gameDict['scores']
             self.leadingPlayer = gameDict['leadingPlayer']
             self.history = gameDict['history']
@@ -58,7 +58,6 @@ class Game:
             self.offensivePlayers = gameDict['offensivePlayers']
             self.runAwayPossible = gameDict['runAwayPossible']
 
-            self.currentTrick = gameDict['currentTrick']
             self.ranAway = gameDict['ranAway']
             self.searched = gameDict['searched']
             self.laufende = gameDict['laufende']
@@ -74,13 +73,20 @@ class Game:
             self.trumpCards = gameDict['trumpCards']
 
             self.seed = gameDict['seed']
+            self.currentTrick = None
+            self.currentTrick = Trick(self.getGameDict(), self.leadingPlayer)
+            self.currentTrick.history = gameDict['trickHistory']
+            a = 0
 
-    # TODO deepcopy?
     def getGameDict(self):
+        trickHistory = []
+        if self.currentTrick:
+            trickHistory = self.currentTrick.history
         gameDict = {
             'uuid': self.uuid,
             'players': self.players,
             'playersHands': self.playersHands,
+            'bids': self.bids,
             'scores': self.scores,
             'leadingPlayer': self.leadingPlayer,
             'history': self.history,
@@ -88,9 +94,7 @@ class Game:
             'gameMode': self.gameMode,
             'runAwayPossible': self.runAwayPossible,
             'offensivePlayers': self.offensivePlayers,
-
-            # TODO Copy action for currentTrick is needed
-            # 'currentTrick': copy(self.currentTrick),
+            'trickHistory': trickHistory,
             'ranAway': self.ranAway,
             'searched': self.searched,
             'laufende': self.laufende,
@@ -98,12 +102,12 @@ class Game:
             'gameValue': self.gameValue,
             'schneider': self.schneider,
             'schwarz': self.schwarz,
-            'laufende': self.laufendeBool,
+            'laufendeBool': self.laufendeBool,
             'offensivePlayersWon': self.offensivePlayersWon,
             'trumpCards': self.trumpCards,
             'seed': self.seed
         }
-        return gameDict
+        return deepcopy(gameDict)
 
     def isFinished(self):
         if len(self.history) == 8:
