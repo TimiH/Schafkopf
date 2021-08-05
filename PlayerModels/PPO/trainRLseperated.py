@@ -78,11 +78,11 @@ def main(tSettings, mode):
 
         # Reseting players
         if mode == 1:
-            players = [SeperatedModelPlayer(str(i), policyTeam=policy, eval=False) for i in range(4)]
+            players = [SeperatedModelPlayer(str(i), policyTeam=ppo.policy_old, eval=False) for i in range(4)]
         if mode == 2:
-            players = [SeperatedModelPlayer(str(i), policyWenz=policy, eval=False) for i in range(4)]
+            players = [SeperatedModelPlayer(str(i), policyWenz=ppo.policy_old, eval=False) for i in range(4)]
         if mode == 3:
-            players = [SeperatedModelPlayer(str(i), policySolo=policy, eval=False) for i in range(4)]
+            players = [SeperatedModelPlayer(str(i), policySolo=ppo.policy_old, eval=False) for i in range(4)]
 
         # saving Policy
         episodes += 1
