@@ -56,7 +56,7 @@ class PPO:
       rewards.append(discounted_reward)
     rewards.reverse()
 
-    rewards = memory.rewards
+    # rewards = memory.rewards
     Settings.logger.info("AVG rewards: " + str(np.mean(rewards)))
     Settings.logger.info("STD rewards: " + str(np.std(rewards)))
     # Normalizing the rewards:
@@ -64,7 +64,7 @@ class PPO:
     rewards = (rewards - np.mean(rewards)) / (np.std(rewards) + 1e-5)
 
     # Create dataset from collected experiences
-    dataset = Dataset(memory.states, memory.actions, memory.logprobs, rewards)  # needed 1?
+    dataset = Dataset(memory.states, memory.actions, memory.logprobs, rewards)
 
     training_generator = data.DataLoader(dataset, collate_fn=dataset.custom_collate, batch_size=self.batch_size,
                                          shuffle=True)
