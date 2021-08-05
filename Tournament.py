@@ -63,7 +63,7 @@ def playRandomTournament(players, rounds, mode=0, verbose=False, laufendeBool=Tr
 
 # plays fair Tournament versus Heuristic and Random
 def playEvalTournament(policy, rounds, mode=0):
-    p1, p3 = ModelPlayer('1', policy, eval=True), ModelPlayer('3', policy, eval=True)
+    p1, p3 = ModelPlayer('1', policy, eval=True, debug=False), ModelPlayer('3', policy, eval=True, debug=False)
 
     # heuristic
     p2, p4 = HeuristicPlayer('2'), HeuristicPlayer('4')
