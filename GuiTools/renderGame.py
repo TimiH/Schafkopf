@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 from GuiTools.handImage import handoToJpgStackedH, handToJpgV, handoToJpgStackedV, getCardImg, getHandArray
 from helper import rotateListBackwards, sortHandByGameMode
 
@@ -16,18 +16,8 @@ def renderGameState(gameState, trickHistory, validCards=None, position=None):
     # hand Positions
     posN = (int(WIDTH / 2) - int(SIZEHAND[0] / 2), 0 + PADDING)
     posS = (int(WIDTH / 2) - int(SIZEHAND[0] / 2), HEIGHT - PADDING - SIZEHAND[1])
-    posW = (int(WIDTH / 2))
-    # TODO flip
     posW = (0 + PADDING, int(HEIGHT / 2) - int(SIZEHAND[0] / 2))
-    posE = (WIDTH - SIZEHAND[1] - PADDING, int(HEIGHT / 2) - int(SIZEHAND[0] / 2))
-
-    # cardPositions
-    cardN = (int(WIDTH / 2) - int(SIZECARD[0] / 2), int(HEIGHT / 2) - int(SIZECARD[1]) - TRICKPADDING)
-    cardS = (int(WIDTH / 2) - int(SIZECARD[0] / 2), int(HEIGHT / 2) + +TRICKPADDING)
-
-    cardW = (int(WIDTH / 2) - int(SIZECARD[1]) - TRICKPADDING, int(HEIGHT / 2) - int(SIZECARD[1] / 2))
-    cardE = (int(WIDTH / 2) + int(SIZECARD[1]) + TRICKPADDING, int(HEIGHT / 2) - int(SIZECARD[1] / 2))
-    cardPos = [cardS, cardW, cardN, cardW]
+    posE = (WIDTH - SIZEHAND[1] + PADDING, int(HEIGHT / 2) - int(SIZEHAND[0] / 2))
 
     # Main image
     img = Image.new('RGB', (WIDTH, HEIGHT), color=COLOUR)
@@ -56,7 +46,6 @@ def renderGameState(gameState, trickHistory, validCards=None, position=None):
                 handE.remove(card)
 
     # greyscale non valid cards
-    # TODO if time
     validIndex = []
     if validCards:
         currentPos = len(trickHistory)
@@ -68,8 +57,6 @@ def renderGameState(gameState, trickHistory, validCards=None, position=None):
     handN = getHandArray(handN)
     handW = getHandArray(handW)
     handE = getHandArray(handE)
-
-    # greyscaling
 
     # Pasting hands to image
     for key, card in enumerate(handS):
@@ -88,23 +75,52 @@ def renderGameState(gameState, trickHistory, validCards=None, position=None):
         card.thumbnail(SIZECARD)
         if currentPos == 2 and key not in validIndex:
             card = card.convert('LA')
-        card = card.transpose(Image.ROTATE_90)
+        # card = card.transpose(Image.ROTATE_90)
         pos = (posW[0], posW[1] + key * int(SIZECARD[0] / 2))
         img.paste(card, pos)
     for key, card in enumerate(handE):
         card.thumbnail(SIZECARD)
         if currentPos == 3 and key not in validIndex:
             card = card.convert('LA')
-        card = card.transpose(Image.ROTATE_90)
+        # card = card.transpose(Image.ROTATE_90)
         pos = (posE[0], posE[1] + key * int(SIZECARD[0] / 2))
         img.paste(card, pos)
 
-    # cards on the table
+    # trickHistory
+    # cardPositions
+    cardN = (int(WIDTH / 2) - int(SIZECARD[0] / 2), int(HEIGHT / 2) - int(SIZECARD[1]) - TRICKPADDING)
+    cardS = (int(WIDTH / 2) - int(SIZECARD[0] / 2), int(HEIGHT / 2) + +TRICKPADDING)
 
-
+    cardW = (int(WIDTH / 2) - int(SIZECARD[1]) - TRICKPADDING, int(HEIGHT / 2) - int(SIZECARD[1] / 2))
+    cardE = (int(WIDTH / 2) + int(SIZECARD[1]) + TRICKPADDING, int(HEIGHT / 2) - int(SIZECARD[1] / 2))
+    cardPos = [cardS, cardW, cardN, cardW]
     for key, card in enumerate(trickHistory):
         image = getCardImg(card)
         image.thumbnail(SIZECARD)
         img.paste(image, cardPos[key])
+
+    # Draw Text
+    # -----------------------
+    draw = ImageDraw.Draw(img)
+    fontSize = 40
+    font = ImageFont.truetype('/home/tim/Work/Schafkopf/GuiTools/font/Russo Sans Bold.otf', fontSize)
+
+    # playerNames
+    NAMESPADDING = 20
+    tPosS = (int(WIDTH / 2) - fontSize / 2, HEIGHT - SIZECARD[1] - NAMESPADDING - fontSize - 10)
+    tPosW = (WIDTH - SIZECARD[0] - PADDING - NAMESPADDING - fontSize - 10, int(HEIGHT / 2))
+    tPosN = (int(WIDTH / 2) - fontSize / 2, SIZECARD[1] + NAMESPADDING)
+    tPosE = (SIZECARD[0] + PADDING, int(HEIGHT / 2))
+    draw.text(tPosS, 'S', font=font)
+    draw.text(tPosW, 'W', font=font)
+    draw.text(tPosN, 'N', font=font)
+    draw.text(tPosE, 'E', font=font)
+    # Rectangle
+    rectPos0 = (WIDTH / 2 + SIZEHAND[0] / 2, PADDING)
+    rectPos1 = (WIDTH - PADDING, SIZECARD[1] + PADDING)
+    draw.rectangle((rectPos0, rectPos1), fill='black')
+    # GameMode
+    # Scores
+    # Teams
 
     return img
