@@ -4,19 +4,19 @@ from PlayerModels.staticBidding import choseTeamGame, choseWenzGameSimple, chose
 from StateVectorDict import createVectorDict
 from torch.distributions import Categorical
 import torch
-
 from Card import Card
-from CardValues import RANKS, REVERSEDSUITS
+from CardValues import RANKS, REVERSEDSUITS, SUITS
 
 
 class ModelPlayer(Player):
-    def __init__(self, name, policy, eval=True, record=False, targetFile=None):
+    def __init__(self, name, policy, eval=True, record=False, targetFile=None, debug=True):
         self.name = name
         self.hand = []
         self.memory = Memory()
         self.policy = policy
         self.position = None
         self.eval = eval
+        self.debug = debug
 
         self.record = record
         self.states = {}
@@ -31,6 +31,12 @@ class ModelPlayer(Player):
         # Playing
         if self.eval:
             action = torch.argmax(actionProbabilities, 0)
+            if self.debug:
+                cardProbs = []
+                for card in validCards:
+                    index = SUITS[card.suit] * 8 + RANKS.index(card.rank)
+                    prob = round(distribution.probs[index].item(), 4)
+                    cardProbs.append((card, prob))
         # Training
         else:
             action = distribution.sample()
