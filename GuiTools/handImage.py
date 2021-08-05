@@ -9,6 +9,12 @@ def getCardImg(card):
     image = Image.open(path + name)
     return image
 
+def getHandArray(hand):
+    arr = []
+    for card in hand:
+        img = getCardImg(card)
+        arr.append(img)
+    return arr
 
 def handoToJpgStackedH(hand):
     if not hand:
