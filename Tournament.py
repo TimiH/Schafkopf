@@ -2,6 +2,7 @@ from Game import Game
 from Statistics import Statistics
 from helper import rotateListBackwards, rotateListForward
 from PlayerModels.ModelPlayer import ModelPlayer
+from PlayerModels.SeperatedModelPlayer import SeperatedModelPlayer
 from PlayerModels.PPO.LinearPolicy import LinearModel
 from PlayerModels.RandomPlayer import RandomPlayer
 from PlayerModels.HeuristicPlayer import HeuristicPlayer
@@ -64,6 +65,46 @@ def playRandomTournament(players, rounds, mode=0, verbose=False, laufendeBool=Tr
 # plays fair Tournament versus Heuristic and Random
 def playEvalTournament(policy, rounds, mode=0):
     p1, p3 = ModelPlayer('1', policy, eval=True, debug=False), ModelPlayer('3', policy, eval=True, debug=False)
+
+    # heuristic
+    p2, p4 = HeuristicPlayer('2'), HeuristicPlayer('4')
+    statsHeuristc = playFairTournament([p1, p2, p3, p4], rounds, mode=mode, laufendeBool=False, verbose=False)
+    evOverallHeu = statsHeuristc.getEVOverall().iloc[0, [0, 2]].mean()
+    evPlayerHeu = statsHeuristc.getEVGameModePlayers().iloc[[0, 2],].mean()
+    evOverallPerHeu = statsHeuristc.getWinPentagesTotalPlayer().iloc[0, [0, 2]].mean()
+    evPlayerPerHeu = statsHeuristc.getWinPercentagesPlayer().iloc[[0, 2],].mean()
+
+    # random
+    p2, p4 = RandomPlayer('2'), RandomPlayer('4')
+    statsRandom = playFairTournament([p1, p2, p3, p4], rounds, mode=mode, laufendeBool=False, verbose=False)
+    evOverallRan = statsRandom.getEVOverall().iloc[0, [0, 2]].mean()
+    evPlayerRan = statsRandom.getEVGameModePlayers().iloc[[0, 2],].mean()
+    evOverallPerRan = statsRandom.getWinPentagesTotalPlayer().iloc[0, [0, 2]].mean()
+    evPlayerPerRan = statsRandom.getWinPercentagesPlayer().iloc[[0, 2],].mean()
+
+    statsDict = {
+        'evOverallHeu': evOverallHeu,
+        'evPlayerHeu': evPlayerHeu,
+        'evOverallPerHeu': evOverallPerHeu,
+        'evPlayerPerHeu': evPlayerPerHeu,
+        'evOverallRan': evOverallRan,
+        'evPlayerRan': evPlayerRan,
+        'evOverallPerRan': evOverallPerRan,
+        'evPlayerPerRan': evPlayerPerRan
+    }
+    return statsDict
+
+
+def playEvalTournamentSeperated(policy, rounds, mode=0):
+    if mode == 1:
+        p1 = SeperatedModelPlayer('1', policyTeam=policy, eval=False)
+        p3 = SeperatedModelPlayer('2', policyTeam=policy, eval=False)
+    if mode == 2:
+        p1 = SeperatedModelPlayer('1', policyWenz=policy, eval=False)
+        p3 = SeperatedModelPlayer('2', policyWenz=policy, eval=False)
+    if mode == 3:
+        p1 = SeperatedModelPlayer('1', policySolo=policy, eval=False)
+        p3 = SeperatedModelPlayer('2', policySolo=policy, eval=False)
 
     # heuristic
     p2, p4 = HeuristicPlayer('2'), HeuristicPlayer('4')

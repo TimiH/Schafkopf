@@ -6,7 +6,7 @@ from PlayerModels.PPO.SETTINGS import Settings
 from PlayerModels.PPO.PPO import PPO
 from PlayerModels.SeperatedModelPlayer import SeperatedModelPlayer
 from PlayerModels.PPO.Memory import Memory
-from Tournament import playFairTournament, playRandomTournament, playEvalTournament
+from Tournament import playFairTournament, playRandomTournament, playEvalTournamentSeperated
 
 import torch
 import glob
@@ -96,7 +96,7 @@ def main(tSettings, mode):
         if episodes % tSettings.eval_interval == 0:
             Settings.logger.info(f"Running Eval: 2x {tSettings.eval_rounds}")
 
-            statsDict = playEvalTournament(ppo.policy_old, tSettings.eval_rounds, mode=mode)
+            statsDict = playEvalTournamentSeperated(ppo.policy_old, tSettings.eval_rounds, mode=mode)
             # assinging
             evPlayerHeu = list(statsDict['evPlayerHeu'].iteritems())
             evPlayerRan = list(statsDict['evPlayerRan'].iteritems())
