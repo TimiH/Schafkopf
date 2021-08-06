@@ -107,8 +107,8 @@ class Game:
             'trumpCards': self.trumpCards,
             'seed': self.seed
         }
-        # return deepcopy(gameDict)
-        return gameDict
+        return deepcopy(gameDict)
+        # return gameDict
 
     def isFinished(self):
         if len(self.history) == 8:
