@@ -33,7 +33,7 @@ def main(tSettings, mode):
     if checkpoints:
         latest = max(checkpoints, key=os.path.getctime)
         Settings.logger.info(f'Loading Policy checkpoint {latest}')
-        if Settings.device == 'cpu':
+        if not torch.cuda.is_available():
             policy.load_state_dict(torch.load(latest, map_location=torch.device('cpu')))
         else:
             policy.load_state_dict(torch.load(latest))
