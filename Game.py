@@ -43,7 +43,7 @@ class Game:
                 self.seed = randint(0, 1000000000000000)
             else:
                 self.seed = seed
-        # This allows initliasation from dircts
+        # This allows initialisation from dict
         else:
             self.uuid = str(uuid.uuid4())
             self.players = players  # List of players and Positons via index
@@ -107,7 +107,8 @@ class Game:
             'trumpCards': self.trumpCards,
             'seed': self.seed
         }
-        return deepcopy(gameDict)
+        # return deepcopy(gameDict)
+        return gameDict
 
     def isFinished(self):
         if len(self.history) == 8:
