@@ -137,7 +137,7 @@ class Trick:
 
     def nextAction(self):
         currentPlayerIndex = (len(self.history) + self.leadingPlayer) % 4
-        playerHand = deepcopy(self.gameDict['playersHands'][currentPlayerIndex])
+        playerHand = self.gameDict['playersHands'][currentPlayerIndex]
         validCards = self.getValidActionsForHand(playerHand)
         self.players[currentPlayerIndex].setHand(playerHand)
         playedCard = self.players[currentPlayerIndex].playCard(validCards, self.gameDict, self.history)
