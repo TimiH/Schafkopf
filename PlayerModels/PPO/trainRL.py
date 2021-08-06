@@ -32,7 +32,10 @@ def main(tSettings):
     if checkpoints:
         latest = max(checkpoints, key=os.path.getctime)
         print(f'Loading Policy checkpoint {latest}')
-        policy.load_state_dict(torch.load(latest))
+        if Settings.device == 'cpu':
+            policy.load_state_dict(torch.load(latest, map_location=torch.device('cpu')))
+        else:
+            policy.load_state_dict(torch.load(latest))
         generation = len(checkpoints)
         episodes = generation
 
