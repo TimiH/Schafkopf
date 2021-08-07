@@ -35,12 +35,13 @@ class GreedyPlayer(Player):
         # Lead play highest Card
         if len(trickHistory) == 0:
             # play highest Card
-            trumpsInHand = trumpsInHandByGamemode(validCards, gameMode)
-            if trumpsInHand:
-                orderedTrump = sortTrump(trumpsInHand)
-                card = orderedTrump[0]
+            validNoTrump = list(set(validCards) - set(trumps))
+            if validNoTrump:
+                card = min(validNoTrump, key=byRank)
             else:
-                card = min(validCards, key=byRank)
+                trumpInHand = trumpsInHandByGamemode(validCards, gameMode)
+                orderedTrump = sortTrump(trumpInHand)
+                card = orderedTrump[0]
         else:
             # win or min
             winningCards = getValidWinners(trickHistory, validCards, gameMode)
