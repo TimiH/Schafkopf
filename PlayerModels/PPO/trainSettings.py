@@ -30,10 +30,10 @@ class TrainSettings:
                 self.runsFolder = "/content/drive/MyDrive/experiment/" + self.name + "/runsFolder/"
             else:
                 folder = ['team/', 'wenz/', 'solo/']
-                self.runsFolder += folder[seperated - 1]
-                self.checkpoints += folder[seperated - 1]
                 self.checkpoints = "/content/drive/MyDrive/experiment/" + self.name + "/checkpoints/"
                 self.runsFolder = "/content/drive/MyDrive/experiment/" + self.name + "/runsFolder/"
+                self.runsFolder += str(folder[seperated - 1])
+                self.checkpoints += str(folder[seperated - 1])
             Path("self.runsFolder").mkdir(parents=True, exist_ok=True)
             Path("self.checkpoints").mkdir(parents=True, exist_ok=True)
             self.summary_writer = SummaryWriter(log_dir=self.runsFolder)
@@ -42,8 +42,8 @@ class TrainSettings:
             self.checkpoints = os.getcwd() + "/PlayerModels/PPO/experiments/checkpoints/" + self.name + "/"
             if seperated != 0:
                 folder = ['team/', 'wenz/', 'solo/']
-                self.runsFolder += folder[seperated - 1]
-                self.checkpoints += folder[seperated - 1]
+                self.runsFolder += str(folder[seperated - 1])
+                self.checkpoints += str(folder[seperated - 1])
             Path(self.runsFolder).mkdir(parents=True, exist_ok=True)
             Path(self.checkpoints).mkdir(parents=True, exist_ok=True)
 
