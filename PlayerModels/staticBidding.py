@@ -29,6 +29,8 @@ def choseTeamGame(validBids, hand):
         # 2O & U
         elif oCount >= 2 and uCount <= 1:
             pass
+        else:
+            possibleTeam = []
     # 4 Trump containing 1 out of [OE,OG,OH], 1 U, and two Aces not heart
     elif total == 4:
         if oCount == 1 and uCount == 1 and any(x.rank == 'O' and x.suit in ['Eichel', 'Gras', 'Herz'] for x in hand):
@@ -36,6 +38,8 @@ def choseTeamGame(validBids, hand):
             acesInHand = list([x for x in hand if x.rank == 'A' and x.suit != 'Herz'])
             if len(acesInHand) >= 2:
                 pass
+        else:
+            possibleTeam = []
     else:
         possibleTeam = []
 
