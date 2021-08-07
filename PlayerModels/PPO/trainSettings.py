@@ -25,13 +25,15 @@ class TrainSettings:
         self.summary_writer = None
 
         if self.colab:
-
-            self.checkpoints = "/content/drive/MyDrive/experiment/" + self.name + "/checkpoints/"
-            self.runsFolder = "/content/drive/MyDrive/experiment/" + self.name + "/runsFolder/"
-            if seperated != 0:
+            if seperated == 0:
+                self.checkpoints = "/content/drive/MyDrive/experiment/" + self.name + "/checkpoints/"
+                self.runsFolder = "/content/drive/MyDrive/experiment/" + self.name + "/runsFolder/"
+            else:
                 folder = ['team/', 'wenz/', 'solo/']
                 self.runsFolder += folder[seperated - 1]
                 self.checkpoints += folder[seperated - 1]
+                self.checkpoints = "/content/drive/MyDrive/experiment/" + self.name + "/checkpoints/"
+                self.runsFolder = "/content/drive/MyDrive/experiment/" + self.name + "/runsFolder/"
             Path("self.runsFolder").mkdir(parents=True, exist_ok=True)
             Path("self.checkpoints").mkdir(parents=True, exist_ok=True)
             self.summary_writer = SummaryWriter(log_dir=self.runsFolder)
