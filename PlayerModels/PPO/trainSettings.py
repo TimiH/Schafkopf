@@ -6,7 +6,7 @@ from pathlib import Path
 # to allow for more easier training setting
 class TrainSettings:
     def __init__(self, name, colab=True, seperated=0):
-        self.name = name
+        self.name = str(name)
         self.colab = colab
 
         self.episodes = None
