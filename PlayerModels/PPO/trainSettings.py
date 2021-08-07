@@ -29,9 +29,9 @@ class TrainSettings:
                 self.checkpoints = "/content/drive/MyDrive/experiment/" + self.name + "/checkpoints/"
                 self.runsFolder = "/content/drive/MyDrive/experiment/" + self.name + "/runsFolder/"
             else:
-                folder = ['team/', 'wenz/', 'solo/']
                 self.checkpoints = "/content/drive/MyDrive/experiment/" + self.name + "/checkpoints/"
                 self.runsFolder = "/content/drive/MyDrive/experiment/" + self.name + "/runsFolder/"
+                folder = ['team/', 'wenz/', 'solo/']
                 self.runsFolder += str(folder[seperated - 1])
                 self.checkpoints += str(folder[seperated - 1])
             Path("self.runsFolder").mkdir(parents=True, exist_ok=True)
