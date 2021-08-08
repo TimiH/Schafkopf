@@ -1,5 +1,5 @@
 from helper import createTrumpsList
-from CardValues import SUITS
+from CardValues import SUITS, REVERSEDSUITS
 from Card import Card
 
 
@@ -13,7 +13,7 @@ def choseTeamGame(validBids, hand):
     # Counting U,O,T,A and
     uCount = countByRank(hand, 'U')
     oCount = countByRank(hand, 'O')
-    tCount = int(len(trumpsInHandByGamemode(hand, (1,))))
+    tCount = len(getCardsOfSuit(hand, REVERSEDSUITS[2], ['U', 'O']))
     colourCount = countAllSuits(hand)  # Counts[E,G,H,S]
     total = uCount + oCount + tCount
 
