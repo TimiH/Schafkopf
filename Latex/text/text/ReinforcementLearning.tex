@@ -2,7 +2,7 @@
 Machine learning consists of three approaches to problem-solving: Supervised learning, unsupervised learning and
 reinforcement learning.
 We will focus on the latter one, as reinforcement learning enables agents to learn complex behaviour through
-exploration within an game environment.
+exploration within a game environment.
 In this chapter I will briefly explain the key concepts and methods of reinforcement learning that allow our model
 learn the game of Schafkopf.
 For this we will explain neural networks, their components and internal mechanisms, the reinforcement learning approach,
@@ -105,11 +105,10 @@ state(\textit{s}) at the time of his action that, which we use as input in our N
 (\textit{a}), in our case an action in the form of a valid card from our hand, to take.
 At the end of each a hand we collect a reward(\textit{r}), which our policy over time tries to maximise.\\
 We can define our policy as a function that takes a state and returns the probability of an action:\\
-\[ \pi(s)\rightarrow P(a)\]\\
+\[\pi(s)\rightarrow P(a)\]\\
 Ideally we would want our policy to be optimal, for which we require a method of updating our NN using the
 experiences and rewards we gained through interaction with the environment.
-By optimal we understand, that from any given state \textit{s\textsubscript{i}} we maximise the reward \textit{r}
-For this we use
+By optimal we understand, that from any given state \textit{s\textsubscript{i}} we maximise the reward \textit{r}.
 
 
 \section{Actor-Critic}
