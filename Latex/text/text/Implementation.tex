@@ -172,7 +172,7 @@ design.
 \label{fig:layerchart}
 \end{figure}
 \end{center}
-\subsubsection{CompleteRL}
+\subsection{CompleteRL}
 The CompleteRL agent uses the same network for all three game modes.
 This was our initial approach, to see if one network can do it all.
 The input vector (See Tab. \ref{tab:CompleteRLinput}), derived from the game state, uses \textit{one hot encoding}
@@ -203,7 +203,7 @@ Sum & 233 & Total size of the input Vector\\
 \label{tab:CompleteRLinput}
 \end{table}
 
-\section{SeperatedRL}
+\subsection{SeperatedRL}
 As an experiment we also trained \textbf{SeperatedRL} that has a different model for each of the three contracts
 (Team,Wenz,Solo).
 The idea is to reduce the variance in the training data, whilst also only including the relevant information and thus
