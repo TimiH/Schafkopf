@@ -43,11 +43,11 @@ def loadSeperatedPlayer(name, experiment, episode):
     policyT = loadTeam(experiment, episode)
     policyW = loadWenz(experiment, episode)
     policyS = loadSolo(experiment, episode)
-    player = SeperatedModelPlayer(str(name), policyTeam=policyT, policySolo=policyS, policyWenz=policyW)
+    player = SeperatedModelPlayer(str(name), policyTeam=policyT, policySolo=policyS, policyWenz=policyW,eval=True)
     return player
 
 
 def loadLinearPlayer(name, experiment, episode):
     policy = loadLinear(experiment, episode)
-    player = ModelPlayer(str(name), policy)
+    player = ModelPlayer(str(name), policy,eval=True,debug=False)
     return player
