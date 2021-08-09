@@ -70,7 +70,6 @@ can be express by the following formula:
                 &\textrm{and let }\phi \textrm{ be the activation function}&\\
                 &y\textsubscript{k} = \phi (\sum_{i=0}^n w\textsubscript{kn}x\textsubscript{n})
             \end{aligned}}
-        \caption{Formula to calcualate neuron output }
         \label{neuronactivation}
     \end{math}
 \end{center}
@@ -88,7 +87,6 @@ The \textbf{ReLU} function is formulated using:
                 &f(x) = max(0,x)
             \end{aligned}
         }
-        \caption{Definition of \textbf{ReLU} activation function}
         \label{activationRelu}
     \end{math}
 \end{center}
@@ -109,11 +107,9 @@ The definition of \textbf{Softmax} is the following:
                 &f(z)_{i} = \frac{e^{z_{i}}}{\sum_{j=1}^{N} e^{z_{j}} }
             \end{aligned}
         }
-        \caption{Definition of the \textbf{Softmax} activation function}
         \label{activationSoftmax}
     \end{math}
 \end{center}
-\newline
 Now that we defined a neuron, we can use multiple neurons to form a layer, which in turn can be connected in sequence
 to form a \textbf{NN}.
 The minimal architecture of a network consists of three layers, whereas the middle layers are named hidden layers:
