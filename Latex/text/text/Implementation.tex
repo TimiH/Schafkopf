@@ -45,7 +45,7 @@ player:
 \end{enumerate}
 After all players played their card, the trick winner is determined, the point scores are updated, and played cards
 are removed from the corresponding hands.
-After \textbf{Team Mode} it is also important to check if players \textbf{ran away}} or \textbf{searched} as this is
+After \textbf{Team Mode} it is also important to check if players \textbf{ran away} or \textbf{searched} as this is
 vital to allow for correct deduction of valid cards that can be played.
 \newline
 Once all eight tricks have been played successfully the \textbf{Scoring phase} commences and a winner and resulting
@@ -80,7 +80,7 @@ It handles an agent's decision process during the bidding phase as well as the t
 The two main methods that any agent has to shadow are \textit{makebid()} and \textit{playCard()}.
 These are called by the environment and make the agent the controller in the \textbf{MVC} paradigm.
 \newline
-\begin{lstlisting}[!H][language=Python,label={lst:playerclass}]
+\begin{lstlisting}[language=Python,label={lst:playerclass}]
 import random
 class Player():
 def __init__(self, name):
@@ -129,7 +129,7 @@ We collect at each step in the hand:
 Due to the nature of Schafkopf, rewards are only received at the end of each episode.
 We use reward discounting to assign rewards to non-terminal states as well by multiplying the terminal reward with a
 discount factor (0.99 was used). See the code below for the method used.
-\begin{lstlisting}[!h][language=Python,label={lst:rewards},caption={Reward calculation for non-terminal steps}]
+\begin{lstlisting}[language=Python,label={lst:rewards},caption={Reward calculation for non-terminal steps}]
 rewards = []
 gamma = 0.99
 discountedReward = 0
@@ -171,11 +171,10 @@ design.
 \caption{Network layer flow used the Actor-Critic Models}
 \label{fig:layerchart}
 \end{figure}
-\end{center}
 \subsection{CompleteRL}
 The CompleteRL agent uses the same network for all three game modes.
 This was our initial approach, to see if one network can do it all.
-The input vector (See Tab. \ref{tab:CompleteRLinput}), derived from the game state, uses \textit{one hot encoding}
+The input vector (See Tab. \ref{tab:completerlinput}), derived from the game state, uses \textit{one hot encoding}
 for all cards, positions and information and is always rotated so the acting player is in position zero, to keep the
 vector representation
 consistent.\\
@@ -193,14 +192,15 @@ Ran Away      & 1        & If partner ran away (Bool)                           
 Searched      & 1        & If the ace has been searched (Bool)                   \\
 Bid Winner    & 4        & Position that won the bidding                         \\
 Own Team      & 4        & Position of own Team (1000 if unknown)                \\
-Scores        & 4*1      & Scores for each position (Normalised using Score/120) \\
-Trick History & (32+4)*4 & Cards played by each position                        \\
+Scores        & \(4*1\)      & Scores for each position (Normalised using Score/120) \\
+Trick History & \((32+4)*4\) & Cards played by each position                        \\
 \midrule
 Sum & 233 & Total size of the input Vector\\
 \bottomrule
 \end{tabular}
+\label{tab:completerlinput}
 \caption{Input vector for the CompleteRL model}
-\label{tab:CompleteRLinput}
+
 \end{table}
 
 \subsection{SeperatedRL}
@@ -235,9 +235,8 @@ Bid Winner    & 4        & 4                         & 4                        
 bidding                         \\
 Own Team      & 4        & 4                         & 4                               & Position of own Team (1000
 if unknown)                \\
-Scores        & 4*1      & 4*1                       & 4*1                             & Scores for each position
-(Normalised) \\
-Trick History & (32+4)*4 & (32+4)*4                  & (32+4)*4} & Cards played by each position
+Scores        & 4*1      & 4*1                       & 4*1                             & Scores for each position (Normalised) \\
+Trick History & \((32+4)*4\) & (32+4)*4                  & (32+4)*4 & Cards played by each position
 \\
 \midrule
 Sum           & 214      & 208                       & 212                             & Total size of the input
