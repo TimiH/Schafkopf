@@ -1,8 +1,35 @@
 \chapter{Discussion}
-Bad results
-low resources
-static bidding might have been to tight
-larger networks LSTM
+Firstly it has to be sad that \textbf{PPO} proved to very robust and there was any change in parameters was not
+noticable during training.
+The biggest factor was batch size, which when increased would lead almost guarantee convergence in our case.\\
+There was however a limit to that, where once a models converged, they did not show any improvement in playing strength.
+\newline
+The results are somewhat disappointing and there are a number of reasons for that.\\
+The biggest flaw in our implementation was the use of the trick history as we only passed the played cards a player
+previously played, but any good player will tell you that that is only somewhat useful.
+The order of cards matters, since it reveals useful information about the game.
+Whether an opponent does not hold trump anymore, can be only inferred from the trick history.
+However, to fully represent the trick history we would need to increase the input vector by a factor factor of almost
+10.
+Each card is represented using a 32bit vector, plus a 4 bit position vector, indicating who that card belongs to, and
+another 4 bit vector to represent the lead, multiplied by 8 Tricks).
+For the scope of this project and the resources available this seemed too much.
+\newline
+\newline
+Another limitation might also be the network size itself.
+In previous experiments we originally started with an extra hidden layer and 64 neuron for each hidden layer, but
+convergence was only possible with 150000 hands per episode, which would require an overhaul of our trainings
+pipeline, to include parallel data generation.
+\newline
+Lastly we are critical about the idea of static bidding, which is on the one hand really useful for the purpose of
+this work, as it allows clear comparison between agents, but might hinder training progress.
+The static bidding only returned Solo hands, that were not just playable but even easily winning.
+On the one hand, this allows our network to generalize a winning strategy with ease, but the bar might also be not very
+high.
+\newline
+Implementing the bidding into a network would certainly be interesting, but the results would be harder to interpret,
+since the easiest way to play a losing strategy is to play bad Solo contracts, which are much more expensive.
+\newline
 
 
 \section{Future Work}
