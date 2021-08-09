@@ -74,7 +74,7 @@ def choseSoloGame(validBids, hand):
 
     if chosenSolo != (0, 0):
         trumpsInHand = trumpsInHandByGamemode(hand, chosenSolo)
-        if len(trumpsInHand) >= 6:
+        if len(trumpsInHand) >= 5:
             return chosenSolo
         elif len(trumpsInHand) == 5:
             reversedSuits = dict(list(zip(list(SUITS.values()), list(SUITS.keys()))))

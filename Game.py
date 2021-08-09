@@ -76,7 +76,7 @@ class Game:
             self.currentTrick = None
             self.currentTrick = Trick(self.getGameDict(), self.leadingPlayer)
             self.currentTrick.history = gameDict['trickHistory']
-            a = 0
+            self.setPositions()
 
     def getGameDict(self):
         trickHistory = []
@@ -128,6 +128,10 @@ class Game:
             player.setHand(cards)
             player.setPosition(position)
             # print(cards)
+
+    def setPositions(self):
+        for position, player in enumerate(self.players):
+            player.setPosition(position)
 
     # Bidding phase
     def playBidding(self):
