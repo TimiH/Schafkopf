@@ -1,5 +1,4 @@
 % Encoding: UTF-8
-
 @Article{Schulman2017,
   author        = {John Schulman and Filip Wolski and Prafulla Dhariwal and Alec Radford and Oleg Klimov},
   title         = {Proximal Policy Optimization Algorithms},
@@ -26,17 +25,18 @@
   primaryclass = {cs.LG},
 }
 
-@Article{,
-title = {https://medium.com/aureliantactics/ppo-hyperparameters-and-ranges-6fc2d29bccbe},
+
+@Article{ppo,
+  title = {https://medium.com/aureliantactics/ppo-hyperparameters-and-ranges-6fc2d29bccbe},
 }
 
 @Article{Bansal2017,
-author = {Trapit Bansal and Jakub Pachocki and Szymon Sidor and Ilya Sutskever and Igor Mordatch},
-title = {Emergent Complexity via Multi-Agent Competition},
-year = {2017},
-month = oct,
-abstract = {Reinforcement learning algorithms can train agents that solve problems in complex, interesting environments. Normally, the complexity of the trained agent is closely related to the complexity of the environment. This suggests that a highly capable agent requires a complex environment for training. In this paper, we point out that a competitive multi-agent environment trained with self-play can produce behaviors that are far more complex than the environment itself. We also point out that such environments come with a natural curriculum, because for any skill level, an environment full of agents of this level will have the right level of difficulty. This work introduces several competitive multi-agent environments where agents compete in a 3D world with simulated physics. The trained agents learn a wide variety of complex and interesting skills, even though the environment themselves are relatively simple. The skills include behaviors such as running, blocking, ducking, tackling, fooling opponents, kicking, and defending using both arms and legs. A highlight of the learned behaviors can be found here: https://goo.gl/eR7fbX},
-archiveprefix = {arXiv},
+  author = {Trapit Bansal and Jakub Pachocki and Szymon Sidor and Ilya Sutskever and Igor Mordatch},
+  title = {Emergent Complexity via Multi-Agent Competition},
+  year = {2017},
+  month = oct,
+  abstract = {Reinforcement learning algorithms can train agents that solve problems in complex, interesting environments. Normally, the complexity of the trained agent is closely related to the complexity of the environment. This suggests that a highly capable agent requires a complex environment for training. In this paper, we point out that a competitive multi-agent environment trained with self-play can produce behaviors that are far more complex than the environment itself. We also point out that such environments come with a natural curriculum, because for any skill level, an environment full of agents of this level will have the right level of difficulty. This work introduces several competitive multi-agent environments where agents compete in a 3D world with simulated physics. The trained agents learn a wide variety of complex and interesting skills, even though the environment themselves are relatively simple. The skills include behaviors such as running, blocking, ducking, tackling, fooling opponents, kicking, and defending using both arms and legs. A highlight of the learned behaviors can be found here: https://goo.gl/eR7fbX},
+  archiveprefix = {arXiv},
 eprint = {1710.03748},
 file = {:http\://arxiv.org/pdf/1710.03748v3:PDF},
 keywords = {cs.AI},
@@ -56,106 +56,136 @@ keywords = {cs.LG, cs.CV, cs.NE, stat.ML},
 primaryclass = {cs.LG},
 }
 
-@Article{krizhevsky2012imagenet,
-author = {Krizhevsky, Alex and Sutskever, Ilya and Hinton, Geoffrey E},
-journal = {Advances in neural information processing systems},
-title = {Imagenet classification with deep convolutional neural networks},
-year = {2012},
-pages = {1097--1105},
-volume = {25},
+@article{krizhevsky2012imagenet,
+  author = {Krizhevsky, Alex and Sutskever, Ilya and Hinton, Geoffrey E},
+  journal = {Advances in neural information processing systems},
+  title = {Imagenet classification with deep convolutional neural networks},
+  year = {2012},
+  pages = {1097--1105},
+  volume = {25},
 }
 
-@Article{Ilyas2018,
-author = {Andrew Ilyas and Logan Engstrom and Shibani Santurkar and Dimitris Tsipras and Firdaus Janoos and Larry Rudolph and Aleksander Madry},
-title = {A Closer Look at Deep Policy Gradients},
-year = {2018},
-month = nov,
-abstract = {We study how the behavior of deep policy gradient algorithms reflects the conceptual framework motivating their development. To this end, we propose a fine-grained analysis of state-of-the-art methods based on key elements of this framework: gradient estimation, value prediction, and optimization landscapes. Our results show that the behavior of deep policy gradient algorithms often deviates from what their motivating framework would predict: the surrogate objective does not match the true reward landscape, learned value estimators fail to fit the true value function, and gradient estimates poorly correlate with the "true" gradient. The mismatch between predicted and empirical behavior we uncover highlights our poor understanding of current methods, and indicates the need to move beyond current benchmark-centric evaluation methods.},
-archiveprefix = {arXiv},
-eprint = {1811.02553},
-file = {:http\://arxiv.org/pdf/1811.02553v4:PDF},
-keywords = {cs.LG, cs.NE, cs.RO, stat.ML},
-primaryclass = {cs.LG},
+@article{Ilyas2018,
+  author = {Andrew Ilyas and Logan Engstrom and Shibani Santurkar and Dimitris Tsipras and Firdaus Janoos and Larry Rudolph and Aleksander Madry},
+  title = {A Closer Look at Deep Policy Gradients},
+  year = {2018},
+  month = nov,
+  abstract = {We study how the behavior of deep policy gradient algorithms reflects the conceptual framework motivating their development. To this end, we propose a fine-grained analysis of state-of-the-art methods based on key elements of this framework: gradient estimation, value prediction, and optimization landscapes. Our results show that the behavior of deep policy gradient algorithms often deviates from what their motivating framework would predict: the surrogate objective does not match the true reward landscape, learned value estimators fail to fit the true value function, and gradient estimates poorly correlate with the "true" gradient. The mismatch between predicted and empirical behavior we uncover highlights our poor understanding of current methods, and indicates the need to move beyond current benchmark-centric evaluation methods.},
+  archiveprefix = {arXiv},
+  eprint = {1811.02553},
+  file = {:http\://arxiv.org/pdf/1811.02553v4:PDF},
+  keywords = {cs.LG, cs.NE, cs.RO, stat.ML},
+  primaryclass = {cs.LG},
 }
-
 
 @article{gib,
-author = {Matthew L. Ginsberg},
-title = {{GIB:} Imperfect Information in a Computationally Challenging Game},
-journal = {CoRR},
-volume = {abs/1106.0669},
-year = {2011},
-url = {http://arxiv.org/abs/1106.0669},
-archivePrefix = {arXiv},
-eprint = {1106.0669},
-timestamp = {Mon, 13 Aug 2018 16:48:00 +0200},
-biburl = {https://dblp.org/rec/journals/corr/abs-1106-0669.bib},
-bibsource = {dblp computer science bibliography, https://dblp.org}
+  author = {Matthew L. Ginsberg},
+  title = {{GIB:} Imperfect Information in a Computationally Challenging Game},
+  journal = {CoRR},
+  volume = {abs/1106.0669},
+  year = {2011},
+  url = {http://arxiv.org/abs/1106.0669},
+  archivePrefix = {arXiv},
+  eprint = {1106.0669},
+  timestamp = {Mon, 13 Aug 2018 16:48:00 +0200},
+  biburl = {https://dblp.org/rec/journals/corr/abs-1106-0669.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
-@Article{hanabi,
-author = {Bergh, Mark and Hommelberg, Anne and Kosters, Walter and Spieksma, Flora},
-year = {2017},
-month = {09},
-pages = {93-105},
-title = {Aspects of the Cooperative Card Game Hanabi},
-isbn = {978-3-319-67467-4},
-doi = {10.1007/978-3-319-67468-1_7}
+
+@article{hanabi,
+  author = {Bergh, Mark and Hommelberg, Anne and Kosters, Walter and Spieksma, Flora},
+  title = {Aspects of the Cooperative Card Game Hanabi},
+  year = {2017},
+  month = {09},
+  pages = {93-105},
+  doi = {10.1007/978-3-319-67468-1_7},
+  isbn = {978-3-319-67467-4},
 }
-@Article{hearts,
-author = {Sturtevant, Nathan and White, Adam},
-year = {2006},
-month = {05},
-pages = {122-134},
-title = {Feature Construction for Reinforcement Learning in Hearts},
-volume = {4630},
-journal = {Computers and Games},
-doi = {10.1007/978-3-540-75538-8_11}
+
+@article{hearts,
+  author = {Sturtevant, Nathan and White, Adam},
+  journal = {Computers and Games},
+  title = {Feature Construction for Reinforcement Learning in Hearts},
+  year = {2006},
+  month = {05},
+  pages = {122-134},
+  volume = {4630},
+  doi = {10.1007/978-3-540-75538-8_11},
 }
+
 @Article{Doppelkopf,
-author = "Sievers, Silvan
-and Helmert, Malte",
-editor ="H{\"o}lldobler, Steffen
-and Pe{\~{n}}aloza, Rafael
-and Rudolph, Sebastian",
-title = "A Doppelkopf Player Based on UCT",
-booktitle = "KI 2015: Advances in Artificial Intelligence",
-year = "2015",
-publisher = "Springer International Publishing",
-address ="Cham",
-pages = "151--165",
-abstract = "We propose doppelkopf, a trick-taking card game with similarities to skat, as a benchmark problem for AI research. While skat has been extensively studied by the AI community in recent years, this is not true for doppelkopf. However, it has a substantially larger state space than skat and a unique key feature which distinguishes it from skat and other card games: players usually do not know with whom they play at the start of a game, figuring out the parties only in the process of playing.",
-isbn = "978-3-319-24489-1"
+  author = {Sievers, Silvan and Helmert, Malte},
+  title = {A Doppelkopf Player Based on UCT},
+  year = {2015},
+  pages = {151--165},
+  abstract = {We propose doppelkopf, a trick-taking card game with similarities to skat, as a benchmark problem for AI research. While skat has been extensively studied by the AI community in recent years, this is not true for doppelkopf. However, it has a substantially larger state space than skat and a unique key feature which distinguishes it from skat and other card games: players usually do not know with whom they play at the start of a game, figuring out the parties only in the process of playing.},
+  address = {Cham},
+  booktitle = {KI 2015: Advances in Artificial Intelligence},
+  editor = {H{\"o}lldobler, Steffen and Pe{\~{n}}aloza, Rafael and Rudolph, Sebastian},
+  isbn = {978-3-319-24489-1},
+  publisher = {Springer International Publishing},
 }
 
+@Article{mahjong,
+  author = {Mizukami, Naoki and Tsuruoka, Yoshimasa},
+  title = {Building a computer Mahjong player based on Monte Carlo simulation and opponent models},
+  year = {2015},
+  pages = {275-283},
+  booktitle = {2015 IEEE Conference on Computational Intelligence and Games (CIG)},
+  doi = {10.1109/CIG.2015.7317929},
+}
 
-@Article{mahjong,  author ={Mizukami, Naoki and Tsuruoka, Yoshimasa},  booktitle ={2015 IEEE Conference on
-Computational Intelligence and Games (CIG)},   title ={Building a computer Mahjong player based on Monte Carlo simulation and opponent models},   year ={2015},  volume ={},  number ={},  pages ={275-283},  doi ={10.1109/CIG.2015.7317929}}
 @Article{niklaus2019survey,
-title ={Survey of Artificial Intelligence for Card Games and Its Application to the Swiss Game Jass},
-author ={Joel Niklaus and Michele Alberti and Vinaychandran Pondenkandath and Rolf Ingold and Marcus Liwicki},
-year ={2019},
-eprint ={1906.04439},
-archivePrefix ={arXiv},
-primaryClass ={cs.AI}
+  author = {Joel Niklaus and Michele Alberti and Vinaychandran Pondenkandath and Rolf Ingold and Marcus Liwicki},
+  title = {Survey of Artificial Intelligence for Card Games and Its Application to the Swiss Game Jass},
+  year = {2019},
+  archiveprefix = {arXiv},
+  eprint = {1906.04439},
+  primaryclass = {cs.AI},
 }
 
 @Article{Vinyals2019,
-author = {Oriol Vinyals and Igor Babuschkin and Wojciech M. Czarnecki and Michaël Mathieu and Andrew Dudzik and Junyoung Chung and David H. Choi and Richard Powell and Timo Ewalds and Petko Georgiev and Junhyuk Oh and Dan Horgan and Manuel Kroiss and Ivo Danihelka and Aja Huang and Laurent Sifre and Trevor Cai and John P. Agapiou and Max Jaderberg and Alexander S. Vezhnevets and R{\'{e}}mi Leblond and Tobias Pohlen and Valentin Dalibard and David Budden and Yury Sulsky and James Molloy and Tom L. Paine and Caglar Gulcehre and Ziyu Wang and Tobias Pfaff and Yuhuai Wu and Roman Ring and Dani Yogatama and Dario Wünsch and Katrina McKinney and Oliver Smith and Tom Schaul and Timothy Lillicrap and Koray Kavukcuoglu and Demis Hassabis and Chris Apps and David Silver},
-journal = {Nature},
-title = {Grandmaster level in {StarCraft} {II} using multi-agent reinforcement learning},
-year = {2019},
-month = {oct},
-number = {7782},
-pages = {350--354},
-volume = {575},
-doi = {10.1038/s41586-019-1724-z},
-publisher = {Springer Science and Business Media {LLC}},
+  author = {Oriol Vinyals and Igor Babuschkin and Wojciech M. Czarnecki and Michaël Mathieu and Andrew Dudzik and Junyoung Chung and David H. Choi and Richard Powell and Timo Ewalds and Petko Georgiev and Junhyuk Oh and Dan Horgan and Manuel Kroiss and Ivo Danihelka and Aja Huang and Laurent Sifre and Trevor Cai and John P. Agapiou and Max Jaderberg and Alexander S. Vezhnevets and R{\'{e}}mi Leblond and Tobias Pohlen and Valentin Dalibard and David Budden and Yury Sulsky and James Molloy and Tom L. Paine and Caglar Gulcehre and Ziyu Wang and Tobias Pfaff and Yuhuai Wu and Roman Ring and Dani Yogatama and Dario Wünsch and Katrina McKinney and Oliver Smith and Tom Schaul and Timothy Lillicrap and Koray Kavukcuoglu and Demis Hassabis and Chris Apps and David Silver},
+  journal = {Nature},
+  title = {Grandmaster level in {StarCraft} {II} using multi-agent reinforcement learning},
+  year = {2019},
+  month = {oct},
+  number = {7782},
+  pages = {350--354},
+  volume = {575},
+  doi = {10.1038/s41586-019-1724-z},
+  publisher = {Springer Science and Business Media {LLC}},
 }
 @MISC{actorcritic,
-author = {{Mark Lee}},
+author = {Richard S. Sutton},
 title = {The actor-critic architecture},
 year = {},
 note = {[Online; accessed August 5, 2021]},
 url = {http://incompleteideas.net/book/first/ebook/figtmp34.png}
+
+@MISC{PPOalgo,
+ author = {Jonathan Hui},
+ title = {L — Proximal Policy Optimization (PPO) Explained},
+    year = {2018},
+ note = {[Online; accessed August 8, 2021]},
+ url = {https://miro.medium.com/max/700/1*7gu7oT4N0HOm_jA0335lVA.png}
+}
+@MISC{PPOpseudo,
+ author = {Spinningup-OpenAI-Docs,
+ title = {Proximal Policy Optimization},
+ year = {},
+ note = {[Online; accessed August 8, 2021]},
+ url = {https://spinningup.openai.com/en/latest/_images/math/e62a8971472597f4b014c2da064f636ffe365ba3.svg}
+}
+
+@misc{emerich,
+ author = {Tobias Emerich},
+ title = {Project Title},
+ year = {2013},
+ publisher = {GitHub},
+ journal = {GitHub repository},
+ howpublished = {\url{https://github.com/tobiasemrich/SchafkopfRL}},
+  commit = {4f57d6a0e4c030202a07a60bc1bb1ed1544bf679}
+}
 
 @Comment{jabref-meta: databaseType:bibtex;}

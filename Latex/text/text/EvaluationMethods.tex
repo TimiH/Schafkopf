@@ -1,14 +1,12 @@
 \chapter{Evaluation Methods}
-To get an overview over the domain and to help make decisions about future evaluations we looked at the domain overall.
-We first define concepts used, explain metrics for the evaluations used, look into the domain of Schafkopf followed by
-some interesting findings.
-\section{Key Concepts}
-In order to have clear references in the following sections, we will define and discuss the concepts, methods and
-metrics that will help to understand the experiments conducted.
+In this chapter we will explain the metrics we use for evaluating our agents, then present our baseline agents.
 
-\subsection{Evaluating Player Strength}
-The goal of this work is to evaluate an agents playing strength for Schafkopf.
+
+\section{Evaluating Player Strength}
+The goal of this work is to make test the viability of reinforcement learning for Schafkopf, which requires methods
+of evaluation to test our agents playing strength.
 We will outline three main strategies for this, that are reward earned overall, win percentage and expected value.
+
 \subsubsection{Rewards Overall}
 After each hand players are awarded a reward (See \ref{scoringphase}).
 The total reward earned can be plotted on as Cumulative Sum for all players.
@@ -16,8 +14,8 @@ The Cumulative sum after N hands is calculated with:
 \newline
 \begin{center}
     Let r\textsubscript{i} be the reward earned in hand i then
-\begin{equation}
-    \text{Reward after N Hands} = \sum_{i=1}^{N} r_{i}
+    \begin{equation}
+        \text{Reward after N Hands} = \sum_{i=1}^{N} r_{i}
 \end{equation}
 \newline
 \begin{figure}[h]
@@ -30,7 +28,8 @@ The Cumulative sum after N hands is calculated with:
 See Figure \ref{fig:exampleCumSum} for an example of this.\newline
 This metric can be useful to get an initial idea of who is winning, but is susceptible to variance.\newline
 Repeated trials often produce different results for players of equal strength.
-\subsubsection{Win Percentage}
+
+\subsection{Win Percentage}
 Firstly one can look at the overall win percentages across a sample of hands.
 The win percentage can be calculated with the following formula.
 \[\text{Win \%} = \frac{\# \text{ Hands Won}}{\# \text{ Hands Played}}\]
@@ -71,7 +70,7 @@ Win percentages are useful and would be sufficient if it were not for extra rewa
 \textit{Schwarz}.
 Two agents may have the same \textbf{winning percentage}, but one agent accumulates more rewards.
 
-\subsubsection{Expected Value}
+\subsection{Expected Value}
 To address this we use \textbf{Expected Value(EV)}.
 This concept is common in gambling games to express how much a certain bet or action, in our case hand, returns over
 a large sample.
@@ -79,7 +78,8 @@ The formula used is the arithmetic mean:
 \[ \text{EV} = \frac{1}{n} \sum_{i=1}^{n}a_{i} = \frac{a_{1} + a_{2} + ...+a_{n}}{n} \]
 There are two hand metrics we can use for \textit{a\textsubscript{i}} of achieving this: \textbf{Points Scored} and
 \textbf{Reward Earned}.
-\subsubsection{Points Scored}
+
+\subsection{Points Scored}
 To calculate \textbf{EV\textsubscript{Points Scored}} of the hand sample we record the points scored and use the
 above \textbf{EV} formula to calculate the metric.
 \newline
@@ -109,7 +109,7 @@ It may certainly be useful but is not suitable to clearly evaluate an agent's pl
 Additionally one might also split up \textbf{EV\textsubscript{Points Scored}} further into the seven game role
 categories, but this approach seems equally flawed.
 
-\subsubsection{Rewards Earned}
+\subsection{Rewards Earned}
 To calculate \textbf{EV\textsubscript{Rewards Earned}} of the hand sample we record the rewards earned and use the
 above \textbf{EV} formula to calculate the metric.
 \newline
@@ -152,7 +152,8 @@ looking at the \textbf{Winning Percentages}, or while also taking into account t
 \newline
 \textbf{EV\textsubscript{Rewards Earned}} will be the main tool when considering playing strength.
 
-\subsection{Hand Seeding \& Fairness}
+
+\section{Hand Seeding \& Fairness}
 To evaluate player strength we introduced seeding as it is a way to reduce variance in the game.
 This concept is for example used in competitive Bridge and Scrabble[REF] as a means for fairness, since card games
 often have a high degree of variance.
@@ -195,5 +196,124 @@ played four times.
 96 hands per seed would be more fair, but seems in the scope of this work unnecessary and due to the above
 potentially still not sufficient.
 
+In order to test our networks we designed baseline agents to play against, to measure playing strength.
+The agents all use same \textit{makebid()} method to establish an even playing field, on which we can compare pure
+playing strength.
+Each agent's strategy will be briefly explained and statistics from a fair tournament, which is played between four
+instances of the respective player,will be given to get an idea of their perfomance.
+\newline
+See Table \ref{tab:baselinevs} for an inbetween comparison of three baseline agents, each playing 10000 hands
+against each other.
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{lccc}
+        \toprule
+        Player    & Random & Greedy & Heuristic \\
+        \midrule
+        Random    & -      & -4.55  & -5.48     \\
+        Greedy    & 4.55   & -      & -1.35     \\
+        Heuristic & 5.48   & 1.35   & -         \\
+        \bottomrule
+    \end{tabular}
+    \caption{Baseline agent tournament that shows the order of strenght in accending order: Random, Greedy, Heuristic}
+    \label{tab:baselinevs}
+\end{table}
 
-\section{Situational Evaluation}
+
+\section{Static Bidding}
+Table \ref{tab:distributionBidding} shows the distribution of contracts.
+We can see that the majority of hands are Team contracts, whilst the remaining 15\% of games are envenly distributed
+over the remaining Solo contracts.\\
+The bidding heuristic used here is by no means expert play but overall reasonable for what we are trying to achieve.
+Human players are likely to play a somewhat higher percentage of Solo games, although that frequency is heavily
+affected of one's one playing strength, and ideally varied according to one's opponents abilities.
+To find a balance between win rate and winning frequency is major part in contract card games such as Bridge and
+Schafkopf.
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{lc}
+        \toprule
+        Contract    & Distribution \\
+        \midrule
+        Team        & 85,3         \\
+        Wenz        & 6,6          \\
+        Colour-Solo & 8,1          \\
+        No Game     & 0,0          \\
+        \bottomrule
+    \end{tabular}
+    \caption{Distribution of contracts}
+    \label{tab:distributionBidding}
+\end{table}
+
+
+\section{Baseline Agents}
+The following table shows the baseline comparison between the three baseline agents, each playing 10000 hands against
+one another.
+
+\subsection{Random Agent}
+The Random agent plays like the name suggests a random valid card.
+It makes no use of the passed games state, has no understanding of team composition and performs expectantly bad.
+This strategy is terrible for all contracts, although some hands can still be played near optimal, due to holding good
+cards, having competent teammates, or having little choice.
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{ccccccc}
+        \toprule
+        Team  & Wenz  & Solo  & Team-Partner & Sauspiel-Opp & Wenz-Opp & Solo-Opp \\
+        \midrule
+        0.616 & 0.539 & 0.843 & 0.616        & 0.384        & 0.461    & 0.157    \\
+        \bottomrule
+    \end{tabular}
+    \caption{Average win rates of Random agent against itself over 10000 hands}
+    \label{tab:winratesRan}
+\end{table}
+
+\subsection{Greedy Agent}
+The Greedy agent will always try to win every trick possible.
+It understands trumps, tricking, point values, but has no understanding of team composition.
+When he has the lead it chooses to play the highest rank that is not trump, or the highest trump if it only holds trump.
+When not in the lead it will test if it can beat the cards in the current trick, even if one of his partner currently
+is the trick winner.
+If it holds more than one winning card it will choose the card with the highest point value.
+Vice Versa if it holds no winning card it will choose the lowest point value card, if possible not trump, even if
+that means playing an Ace.\\
+In summary,Greedy agent values winning tricks and not giving up trump if possible.
+This strategy can certainly be viable for Solo contracts where itself is the bid winner, but will fail when it is
+part of the opposition, because trumps are sparse and over-tricking teammates is major error.
+For team contracts it [LOOK at stats, might be ok for]
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{ccccccc}
+        \toprule
+        Team  & Wenz  & Solo  & Team-Partner & Sauspiel-Opp & Wenz-Opp & Solo-Opp \\
+        \midrule
+        0.604 & 0.646 & 0.757 & 0.604        & 0.396        & 0.354    & 0.243    \\
+        \bottomrule
+    \end{tabular}
+    \caption{Average win rates of Greedy agent against itself over 10000 hands}
+    \label{tab:winratesGre}
+\end{table}
+
+\subsection{Heuristic Agent}
+The Heuristic agent is a lot more nuanced than the above agents.
+It employs a separate strategy for each of seven game positions and uses the game state to infer the team composition
+,if possible, and uses the strategies from \ref{basicstrategy} to some extent.\\
+Furthermore it understands everything Greedy agent knows, about points, trump and tricking.
+Its limitations are its use of the trick history, which is only used when it plays in the offensive or team partner
+role to infer how many trumps are still with the others, but misses strategies, such as leading a suit where a
+teammate is known to be, or similar.
+The decision process is mostly deterministic, but there are situations where two cards are equally playable and one is
+randomly chosen.\\
+Heuristic agent is certainly a decent opponent that follows good practice play a novice might bring to the table.
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{ccccccc}
+        \toprule
+        Team  & Wenz  & Solo  & Team-Partner & Sauspiel-Opp & Wenz-Opp & Solo-Opp \\
+        \midrule
+        0.485 & 0.588 & 0.695 & 0.485        & 0.515        & 0.412    & 0.305    \\
+        \bottomrule
+    \end{tabular}
+    \caption{Average win rates of Heuristic agent against itself over 10000 hands}
+    \label{tab:win ratesHeu}
+\end{table}

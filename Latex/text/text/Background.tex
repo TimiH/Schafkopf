@@ -1,6 +1,5 @@
 \chapter{Background}
 
-
 \section{Related Work}
 A common approach to treating imperfect information games (IIG) is to create a rule based player, also known as a
 heuristic player.
@@ -196,6 +195,38 @@ modern chess engines and humans alike did not know about.\cite{Silver2017}
 
 
 \section{Proximal Policy Optimisation}
-\textbf{Proximal Policy Optimisation(PPO)} is a state of the art learning algorithm by OpenAI
-.\cite{schulman2017proximal}
-The idea is
+\textbf{Proximal Policy Optimisation(PPO)} is a state of the art policy learning algorithm by OpenAI
+.\cite{schulman2017proximal}\\
+With previous algorithms it was sometimes hard to get good results due to the fact, that there were a lot of
+moving parts in terms of parameter tuning of stepsizes.
+If the stepsize is too low no progress is made, and vice versa one runs the risk of drowning the model in noise or
+large policy updates result in a loss of progress.
+Additionally, this problem is compounded by the need of tuning two cost functions for both \textit{actor} and
+\textit{critic}.
+\textit{PPO} solves this by introducing a trust region, that dynamically hinders the policy to make to large of a
+step in either direction.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale = 0.5]{ppopseude}
+    \caption{PPO-Pseudocode \cite{actorcritic}}
+    \label{Pseudocode}
+\end{figure}
+\\
+In Fig. \ref{Pseudocode} we can see in step 6 the function \textit{g}, also called the clipping function.
+\begin{center}
+    \begin{math}
+        \boxed{
+            g(\varepsilon,A) = \left\{\begin{matrix}
+            (1+\varepsilon)
+                                          & A \geq 0 \\
+                                          (1-\varepsilon) & A < 0
+            \end{matrix}\right.
+        }
+    \end{math}
+\end{center}
+If the advantage of an state-action pair is positive our policy will favour this action in the future, however only
+to the extend of $\epsilon.$\\
+Similary, if the advantage is negative, an action will fall out of favour in the future, but by how much is agian
+limitied by $\epsilon$.
+This stops our policy of making to big of change in one update step, and helps deal with noise, of which there is a
+lot in stochastic games, since good decisions will not lead to good outcomes everytime.

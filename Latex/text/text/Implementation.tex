@@ -1,12 +1,13 @@
 \chapter{Implementation}
-In this chapter I will briefly outline the approach we took for the implementation of the Schafkopf environment and
+In this chapter we will briefly outline the approach we took for the implementation of the Schafkopf environment and
 the training pipeline.
 
 
 \section{Enviroment}
 The environment was programmed in Python for its fast development and integration of current Reinforcement libraries
 such as PyTorch, and follows the traditional Model-View-Controller(\textbf{MVC}) paradigm.
-The \textbf{MVC} is a proven concept for game environments as it cleanly separates the game logic held in the model
+\textbf{MVC} is an established concept for game environments as it cleanly separates the game logic held in the
+model
 with the decision process making of the controller in our case the agents interacting with the environment.
 In our implementation there are two main components necessary to play a hand of Schafkopf:
 \begin{description}
@@ -106,8 +107,7 @@ environments or turn-based game types, so we decided on implementing the learnin
 The actual training was performed on Google Colab, even though our training was not very GPU intensive, it proved
 useful to avoid crashing local machines on long training runs with large batch sizes.
 \subsection{PPO}
-The \textbf{PPO} implementation used was taken and adapted from a similar project on GitHub[REF https://github
-.com/tobiasemrich/SchafkopfRL].
+The \textbf{PPO} implementation used was taken and adapted from a similar project on GitHub \cite{emerich}
 This allowed to set hyper-paramaters, such as learning rate, clipping values, decay, batch size.
 \subsection{One-Hot Encoding}
 To encode the game state into a vector we encoded all necessary information using One-hot encoding.
@@ -154,3 +154,97 @@ The training pipe line always follows the same procedure for each episode:
 \item Log results for evaluation and for update
 \item Save the updated network
 \end{enumerate}
+
+
+
+\section{Reinforcement Learning Agents}
+The models we trained are simple {\textbf{feed forward NN} that receive a game state, which is processed and then fed
+through the Network to produce two outputs: 32x1 vector that gives us our probabilities of all the valid
+actions (\textit{actor}), and 1x1 vector which describes our state-value function (\textit{critic}). (See Fig
+.\ref{fig:layerchart})\\
+All inner layers use 48 hidden \textbf{ReLÚ} neurons
+Overall we trained two agents, \textbf{CompleteRL} and \textbf{SeperatedRL}, that both use the same actor-critc network
+design.
+\begin{figure}[!h]
+\centering
+\includegraphics[width=\textwidth]{layerchart.png}
+\caption{Network layer flow used the Actor-Critic Models}
+\label{fig:layerchart}
+\end{figure}
+\end{center}
+\subsubsection{CompleteRL}
+The CompleteRL agent uses the same network for all three game modes.
+This was our initial approach, to see if one network can do it all.
+The input vector (See Tab. \ref{tab:CompleteRLinput}), derived from the game state, uses \textit{one hot encoding}
+for all cards, positions and information and is always rotated so the acting player is in position zero, to keep the
+vector representation
+consistent.\\
+\begin{table}[!h]
+\centering
+\begin{tabular}{lll}
+\toprule
+Name          & Size     & Description                                           \\
+\midrule
+Hand          & 32       & Hand of the player                                    \\
+Cards Played  & 32       & All cards in previous tricks                          \\
+Lead          & 4        & Position that started the trick                       \\
+Game Mode     & 7        & 3 contracts + 4 colours                               \\
+Ran Away      & 1        & If partner ran away (Bool)                            \\
+Searched      & 1        & If the ace has been searched (Bool)                   \\
+Bid Winner    & 4        & Position that won the bidding                         \\
+Own Team      & 4        & Position of own Team (1000 if unknown)                \\
+Scores        & 4*1      & Scores for each position (Normalised using Score/120) \\
+Trick History & (32+4)*4 & Cards played by each position                        \\
+\midrule
+Sum & 233 & Total size of the input Vector\\
+\bottomrule
+\end{tabular}
+\caption{Input vector for the CompleteRL model}
+\label{tab:CompleteRLinput}
+\end{table}
+
+\section{SeperatedRL}
+As an experiment we also trained \textbf{SeperatedRL} that has a different model for each of the three contracts
+(Team,Wenz,Solo).
+The idea is to reduce the variance in the training data, whilst also only including the relevant information and thus
+slimming the input vector.
+The major drawback of this is naturally training time, but we reduced the batch size during training compared to
+\textbf{SeperatedRL} but tried to keep learning steps when evaluation the two.
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{lllll}
+\toprule
+Name          & \multicolumn{3}{c}{Size}                                               & Description
+\\
+\midrule
+& Team     & Wenz                      & Colour-Solo                     &
+\\
+\midrule
+Hand          & 32       & 32                        & 32                              & Hand of the player
+\\
+Cards Played  & 32       & 32                        & 32                              & All cards in previous tricks
+\\
+Lead          & 4        & 4                         & 4                               & Position that started the
+trick                       \\
+Game Mode     & 4        & 0 & 4                               & 4 colours
+\\
+Ran Away      & 1        & 0 & 0       & If partner ran away (Bool)                            \\
+Searched      & 1        & 0 & 0       & If the ace has been searched (Bool)                   \\
+Bid Winner    & 4        & 4                         & 4                               & Position that won the
+bidding                         \\
+Own Team      & 4        & 4                         & 4                               & Position of own Team (1000
+if unknown)                \\
+Scores        & 4*1      & 4*1                       & 4*1                             & Scores for each position
+(Normalised) \\
+Trick History & (32+4)*4 & (32+4)*4                  & (32+4)*4} & Cards played by each position
+\\
+\midrule
+Sum           & 214      & 208                       & 212                             & Total size of the input
+Vector\\
+\bottomrule
+\end{tabular}
+\caption{Input vector for each sub model of the SeperateRL agent}
+\label{tab:Seperatedinput}
+\end{table}
+

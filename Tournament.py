@@ -6,7 +6,9 @@ from PlayerModels.SeperatedModelPlayer import SeperatedModelPlayer
 from PlayerModels.PPO.LinearPolicy import LinearModel
 from PlayerModels.RandomPlayer import RandomPlayer
 from PlayerModels.HeuristicPlayer import HeuristicPlayer
+from PlayerModels.GreedyPlayer import GreedyPlayer
 from random import randint
+
 from math import floor
 
 
@@ -82,6 +84,13 @@ def playEvalTournament(policy, rounds, mode=0):
     evOverallPerRan = statsRandom.getWinPentagesTotalPlayer().iloc[0, [0, 2]].mean()
     evPlayerPerRan = statsRandom.getWinPercentagesPlayer().iloc[[0, 2],].mean()
 
+    # greedy
+    p2, p4 = GreedyPlayer('2'), GreedyPlayer('4')
+    statsGreedy = playFairTournament([p1, p2, p3, p4], rounds, mode=mode, laufendeBool=False, verbose=False)
+    evOverallGre = statsGreedy.getEVOverall().iloc[0, [0, 2]].mean()
+    evPlayerGre = statsGreedy.getEVGameModePlayers().iloc[[0, 2],].mean()
+    evOverallPerGre = statsGreedy.getWinPentagesTotalPlayer().iloc[0, [0, 2]].mean()
+    evPlayerPerGre = statsGreedy.getWinPercentagesPlayer().iloc[[0, 2],].mean()
     statsDict = {
         'evOverallHeu': evOverallHeu,
         'evPlayerHeu': evPlayerHeu,
@@ -90,7 +99,11 @@ def playEvalTournament(policy, rounds, mode=0):
         'evOverallRan': evOverallRan,
         'evPlayerRan': evPlayerRan,
         'evOverallPerRan': evOverallPerRan,
-        'evPlayerPerRan': evPlayerPerRan
+        'evPlayerPerRan': evPlayerPerRan,
+        'evOverallGre': evOverallGre,
+        'evPlayerGre': evPlayerGre,
+        'evOverallPerGre': evOverallPerGre,
+        'evPlayerPerGre': evPlayerPerGre
     }
     return statsDict
 
@@ -131,5 +144,52 @@ def playEvalTournamentSeperated(policy, rounds, mode=0):
         'evPlayerRan': evPlayerRan,
         'evOverallPerRan': evOverallPerRan,
         'evPlayerPerRan': evPlayerPerRan
+    }
+    return statsDict
+
+
+def playBaseLineTournament(players, rounds, mode=0):
+    p1, p3 = players[0], players[1]
+    # heuristic
+    p2, p4 = HeuristicPlayer('2'), HeuristicPlayer('4')
+    print('Heuristic')
+    statsHeuristc = playFairTournament([p1, p2, p3, p4], rounds, mode=mode, laufendeBool=False, verbose=False)
+    evOverallHeu = statsHeuristc.getEVOverall().iloc[0, [0, 2]].mean()
+    evPlayerHeu = statsHeuristc.getEVGameModePlayers().iloc[[0, 2],].mean()
+    evOverallPerHeu = statsHeuristc.getWinPentagesTotalPlayer().iloc[0, [0, 2]].mean()
+    evPlayerPerHeu = statsHeuristc.getWinPercentagesPlayer().iloc[[0, 2],].mean()
+
+    # random
+    print('Random')
+
+    p2, p4 = RandomPlayer('2'), RandomPlayer('4')
+    statsRandom = playFairTournament([p1, p2, p3, p4], rounds, mode=mode, laufendeBool=False, verbose=False)
+    evOverallRan = statsRandom.getEVOverall().iloc[0, [0, 2]].mean()
+    evPlayerRan = statsRandom.getEVGameModePlayers().iloc[[0, 2],].mean()
+    evOverallPerRan = statsRandom.getWinPentagesTotalPlayer().iloc[0, [0, 2]].mean()
+    evPlayerPerRan = statsRandom.getWinPercentagesPlayer().iloc[[0, 2],].mean()
+
+    # greedy
+    print('Greedy')
+
+    p2, p4 = GreedyPlayer('2'), GreedyPlayer('4')
+    statsGreedy = playFairTournament([p1, p2, p3, p4], rounds, mode=mode, laufendeBool=False, verbose=False)
+    evOverallGre = statsGreedy.getEVOverall().iloc[0, [0, 2]].mean()
+    evPlayerGre = statsGreedy.getEVGameModePlayers().iloc[[0, 2],].mean()
+    evOverallPerGre = statsGreedy.getWinPentagesTotalPlayer().iloc[0, [0, 2]].mean()
+    evPlayerPerGre = statsGreedy.getWinPercentagesPlayer().iloc[[0, 2],].mean()
+    statsDict = {
+        'evOverallHeu': evOverallHeu,
+        'evPlayerHeu': evPlayerHeu,
+        'evOverallPerHeu': evOverallPerHeu,
+        'evPlayerPerHeu': evPlayerPerHeu,
+        'evOverallRan': evOverallRan,
+        'evPlayerRan': evPlayerRan,
+        'evOverallPerRan': evOverallPerRan,
+        'evPlayerPerRan': evPlayerPerRan,
+        'evOverallGre': evOverallGre,
+        'evPlayerGre': evPlayerGre,
+        'evOverallPerGre': evOverallPerGre,
+        'evPlayerPerGre': evPlayerPerGre
     }
     return statsDict
