@@ -49,8 +49,6 @@ vital to allow for correct deduction of valid cards that can be played.
 \newline
 Once all eight tricks have been played successfully the \textbf{Scoring phase} commences and a winner and resulting
 reward is calculated and the hand is concluded.
-
-[pseudocode]
 \subsection{Game State}
 The game state holds all information that define a hand at any moment and is held and passed as dictionary throughout
 the environment.
@@ -102,7 +100,57 @@ return random.choice(validBids)
 def playCard(self, validCards, gameState, trickHistory):
 return random.choice(validCards)
 \end{lstlisting}
-\section{Reinforcment Learning Setup}
+\section{Reinforcement Learning Setup}
+The common reinforcement learning libraries(OpenAI and RLlib) either did either not support multi-agent learning
+environments or turn-based game types, so we decided on implementing the learning setup in PyTorch.
+The actual training was performed on Google Colab, even though our training was not very GPU intensive, it proved
+useful to avoid crashing local machines on long training runs with large batch sizes.
 \subsection{PPO}
-\subsection{One-Hot-Encoding}
-\subsection{Py}
+The \textbf{PPO} implementation used was taken and adapted from a similar project on GitHub[REF https://github
+.com/tobiasemrich/SchafkopfRL].
+This allowed to set hyper-paramaters, such as learning rate, clipping values, decay, batch size.
+\subsection{One-Hot Encoding}
+To encode the game state into a vector we encoded all necessary information using One-hot encoding.
+Cards and hands were encoded using a 32 bit vector, where each index represents a unique card.\\
+The index of a card can be calculated using \[index(card) = Suit * 8 + rank\].
+When positions are passed they are always a 4 bit vector where index 0 is the player.
+This way all information, like bid winner and current lead, is always from the ego perspective.
+\subsection{Player experiences}
+To update our network we need to collect the experiences of each player during their exploration of the game
+environment.
+We collect at each step in the hand:
+\begin{description}
+\item[Action] The sampled action that was taken
+\item[Log Probabilities] The probability distribution of our action space
+\item[State] The input state
+\item[Terminal] True if the action was terminal (last trick), otherwise False
+\item[Reward] Final Reward of the hand
+\end{description}
+Due to the nature of Schafkopf, rewards are only received at the end of each episode.
+We use reward discounting to assign rewards to non-terminal states as well by multiplying the terminal reward with a
+discount factor (0.99 was used). See the code below for the method used.
+\begin{lstlisting}[!h][language=Python,label={lst:rewards},caption={Reward calculation for non-terminal steps}]
+rewards = []
+gamma = 0.99
+discountedReward = 0
+for reward, isTerminal in zip(rewards), terminal)):
+if isTerminal:
+discountedReward = 0
+discountedReward = reward + (self.gamma * discountedReward)
+rewards.append(discountedReward)
+\end{lstlisting}
+With this we can create for each hand eight Markov decision tuples: \[(S,A,P_{a},R_{a})\]\\
+These make up our training data for our PPO update.
+Since we use self play with four identical agents we actually get 32 tuples for each hand we play during self-play.
+
+\subsection{Training Pipeline}
+The training pipe line always follows the same procedure for each episode:
+\begin{enumerate}
+\item Load the latest model
+\item Play hands with
+\item Collect Experiences from each player
+\item Update the network using PPO
+\item Run evaluation against baseline agents
+\item Log results for evaluation and for update
+\item Save the updated network
+\end{enumerate}

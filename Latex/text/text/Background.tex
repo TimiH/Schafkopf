@@ -1,4 +1,41 @@
-\chapter{Reinforcement Learning}
+\chapter{Background}
+
+
+\section{Related Work}
+A common approach to treating imperfect information games (IIG) is to create a rule based player, also known as a
+heuristic player.
+These players often do not perform very well, even when domain experts give their insight and are often used as
+baselines for evaluation.
+If they are however paired with Monte-Carlo-Tree-Search(MCTS) to find strategies they can reach par-human level as
+shown by Bergh et al. in 2017 for the game of Hanabi\cite{hanabi} for the game of Hanabi.\\
+Monte-Carlo(MC) methods however have been the gold standard for many years.
+Ginsberg used traditional Monte-Carlo sampling to build an expert Bridge player back in 2001, which shows the power
+of the method \cite{gib}.\\
+However even basic MC-Simulation can produce decent results with little computing power as shown by Mizukami et al.
+with the popular game of Majong \cite{mahjong}.
+When MCTS is extended with \textit{Upper confidence bounds} as tree policy, which is the most common approach,
+human-par play can be achieved Doppelkopf \cite{Doppelkopf}, similar in many regards to Schafkopf.\\
+%[ISMCTS]
+For more examples and a general overview see the review from Niklaus et al. \cite{niklaus2019survey}
+\newline
+In terms of reinforcement learning approaches there are the results from DeepMind's Alpha Star, a self-play learning
+agent for the real time strategy computer game Starcraft.
+They showed how imitation learning, a method of training an initial network with games of expert players, can even find
+winning strategies in an action space of 10\textsuperscript{26}. \cite{Vinyals2019}\\
+Imitation learning is certainly a viable strategy, but often the data is not readily available or the quality is
+lacking.
+\newline
+The most relevant findings to this work is the agent of Charlesworth for the game Big2, a four player card game
+.\cite{Charlesworth2018}
+He trained an agent using self play and the recent Proximal Policy Algorithm by OpenAI \cite{Schulman2017} and
+achieved human-par play.
+Interestingly he achieved his results with a significant smaller batch size compared to Bansal et al.
+\cite{Bansal2017}, which trained a variety of multi-agent environments in 3D, but whether this is due to
+difference in environments or other factors is unclear.
+It shows at least the robustness of Proximal Policy Optimisation.
+
+
+\section{Neural Networks}
 Machine learning consists of three approaches to problem-solving: Supervised learning, unsupervised learning and
 reinforcement learning.
 We will focus on the latter one, as reinforcement learning enables agents to learn complex behaviour through
@@ -7,8 +44,7 @@ In this chapter I will briefly explain the key concepts and methods of reinforce
 learn the game of Schafkopf.
 For this we will explain neural networks, their components and internal mechanisms, the reinforcement learning approach,
 Proximal Policy Optimisation, which is the training algorithm used in our experiments, and Actor-Critic models.
-
-\section{Neural Networks}
+\newline
 A \textbf{Neural Network (NN)} is an attempt to imitate the complex behaviour of the human brain that
 enables us as humans to learn complex skills.
 The human brain consists of billions of neurons, the basic building block inside the nervous system, that are
@@ -103,18 +139,63 @@ The strategy for an agent to use inside an environment is called a \textbf{Polic
 The environment in our case is the game of Schafkopf, where an agent receives information about the current game
 state(\textit{s}) at the time of his action that, which we use as input in our NN to make a decision on what action
 (\textit{a}), in our case an action in the form of a valid card from our hand, to take.
-At the end of each a hand we collect a reward(\textit{r}), which our policy over time tries to maximise.\\
-We can define our policy as a function that takes a state and returns the probability of an action:\\
-\[\pi(s)\rightarrow P(a)\]\\
+At the end of each a hand we collect a reward(\textit{r}), which our policy over time tries to maximise.
+\newline
+An environment like ours can be described as \textbf{Markov Decision Process}, for which we define a four-tuple
+consisting of a set states \textit{S}, a set of actions \textit{A}, a probability of our action \textit{a} as
+\textit{P\textsubscript{a}} and a reward that results of that action \textit{R\textsubscript{a}}.\\
+Set \textit{A} includes all the valid cards we can play in state \textit{s}.
+Thus, we can define our policy as a function that takes a state and returns the probability of an action a value
+function that predicts our reward \textit{r} for action \textit{a}:
+\begin{center}
+    \begin{math}
+        \boxed{
+            \begin{aligned}
+                \pi(s)&\rightarrow P(a)\\
+                f(s,a)&\rightarrow r_{a}\\
+            \end{aligned}}
+    \end{math}
+\end{center}
 Ideally we would want our policy to be optimal, for which we require a method of updating our NN using the
 experiences and rewards we gained through interaction with the environment.
-By optimal we understand, that from any given state \textit{s\textsubscript{i}} we maximise the reward \textit{r}.
+By optimal we understand, that from all states \textit{s\textsubscript{i}} we maximise the reward \textit{r}.
+\newline
+The process of updating a NN is called \textbf{Backpropagation}.\\
+The idea is to adjust the weights of the networks neurons using a loss function, which calculates the error of our
+predicted reward and our actual received reward.
+Commonly used is the \textbf{Mean Square Error(MSE)}:
+\begin{center}
+    \begin{math}
+        \boxed{
+            MSE = \frac{1}{n} \sum_{i=1}^n(Y_{i}-\hat Y)^2
+        }
+    \end{math}
+\end{center}
+Ideally the \textbf{MSE} is zero, indicating that our predicted rewards are equal to the received rewards.
+If not we use \textbf{Backpropagation}, which calculates the partial derivative of the total error and adjusts the
+weights by traversing backwards through the NN.
 
 
 \section{Actor-Critic}
+The \textbf{Actor-critic} is a method of designing NNs that has a policy structure, known as the \textit{actor}
+and a value structure, known as the \textit{critic}.
+The \textit{actor} chooses an action for a given state, whilst the \textit{critic} evaluates the action taken.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=0.5]{actorcritic}
+    \caption{Representation of an Actor-Critic model interacting with an enviroment \cite{actorcritic}}
+\end{figure}
+
+
+\section{Self-Play Learning}
+\textbf{Self Play} learning describes the process of an agent that collects the training data itself by playing
+himself, unlike in supervised learning, for which a labeled dataset needs to be provided.
+The agent can figure out what works, and what does not, by stochastic exploration.
+This way of generating experiences is what propelled Google's Alpha Zero to new heights and produced new strategies
+modern chess engines and humans alike did not know about.\cite{Silver2017}
 
 
 \section{Proximal Policy Optimisation}
-
-
-\section{Self Play Learning}
+\textbf{Proximal Policy Optimisation(PPO)} is a state of the art learning algorithm by OpenAI
+.\cite{schulman2017proximal}
+The idea is

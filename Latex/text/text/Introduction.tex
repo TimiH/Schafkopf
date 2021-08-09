@@ -2,25 +2,38 @@
 The application of machine learning to seemingly any problem is a constant in current literature spanning many
 fields.
 Improvements in processing power as well as in the algorithms used for training produced impressive results in image
-recognition, protein folding, self-driving cars or robotics.
-One domain that always lends itself to exp
-Google's DeepMind showed that reinforcment learning can produce super human play in games such as Go,Chess and Shogi.
-Before that
+recognition, protein folding, self-driving cars or robotics.\\
+One domain that always lends itself to experimentation are games, since they are an enclosed domain that allow for
+good evaluation and clear defined rules, and many real world problems can often be reduced and formulated as games.
+\newline
+Google's DeepMind showed that reinforcement learning can produce super human play in games such as Go, Chess and
+Shogi.[REF]\\
+These games can be classed as perfect information games as the complete state of the game is observable.
+In the case of Go the possible number of game states,calculated to be around 10\textsuperscript{170} is practically
+infinite[ref?], yet self play reinforcement learning algorithms in combination with Monte-Carlo-Tree-Search managed
+to achieve super human play, which is a remarkable achievement in
+modern times.\\
+When the game state is not fully observable we speak of imperfect information games.
+Card games, such as Bridge or Skat, are examples of this.
+The problem is that exhaustive exploration of future possible states is of little use, since the actual game play is
+heavily dependent on the cards that are dealt to each player.\\
+Reinforcement learning might offer a way of through the thick fog that is imperfect information.
 
-imperfect information vs perfect information
-self play
 
-
-\section{Goal}
-try to create playing strenght by self play
-
-
-\section{Related Work}
-current goldstandard MCTS
-Skat
-big2
-charlesworth
+\section{Motivation}
+Imperfect information is present in virtually every real world problem we attempt to solve with computers, so it
+seems natural to test proven methods in more complex environments.
+We therefore want to explore the limits of current reinforcement learning approaches for imperfect information games, as
+we see this as the next achievable milestone in research.
+For this we chose the bavarian card game Schafkopf to see if any reasonable playing strength can be achieved using
+self-play learning and the state of the art Proximal Policy Optimisation.
+It is simple enough to allow us a chance at producing good results, whilst we also have good domain knowledge, which
+is beneficial for tackling hard problems such as this.
+We will build an environment, baseline agents to play against and attempt at training a reasonable strong agent.
 
 
 \section{Structure}
-After outlining the my motivation
+In the chapter 2[REF] we will give an overview of other people's work the field of imperfect information games, give
+some background on the algorithms used.
+In chapter 3 we will explain the rules of Schafkopf and show some basic strategy human players use.
+Chapter 4 will explain our approach to problem. TODO
