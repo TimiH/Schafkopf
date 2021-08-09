@@ -2,6 +2,7 @@ from PlayerModels.RandomPlayer import RandomPlayer
 from PlayerModels.HeuristicPlayer import HeuristicPlayer
 # from PlayerModels.RandomSample import RandomSample
 from PlayerModels.Player import Player
+from PlayerModels.GreedyPlayer import GreedyPlayer
 from Tournament import playFairTournament, playRandomTournament
 from PlayerModels.PPO.LinearPolicy import LinearModel
 from PlayerModels.PPO.SoloPolicy import SoloModel
@@ -12,10 +13,10 @@ import torch
 
 # p1 = RandomPlayer("RandomPlayer")
 # # 2
-# p1 = HeuristicPlayer("HeuristicPlayer0")
-# p3= RandomPlayer("RandomPlayer0")
-# p2 = HeuristicPlayer("HeuristicPlayer1")
-# p4 = RandomPlayer("RandomPlayer1")
+p1 = HeuristicPlayer("HeuristicPlayer0")
+p3 = GreedyPlayer("RandomPlayer0")
+p2 = HeuristicPlayer("HeuristicPlayer1")
+p4 = GreedyPlayer("RandomPlayer1")
 # 3v1
 # p1 = HeuristicPlayer("HeuristicPlayer0")
 # p2 = HeuristicPlayer("HeuristicPlayer1")
@@ -38,10 +39,10 @@ import torch
 # p3 = HeuristicPlayer("HeuristicPlayer3")
 # p4 = HeuristicPlayer("HeuristicPlayer4")
 
-p1 = RandomPlayer("RandomPlayer0")
-p2 = RandomPlayer("RandomPlayer1")
-p3 = RandomPlayer("RandomPlayer2")
-p4 = RandomPlayer("RandomPlayer3")
+# p1 = GreedyPlayer("greedy")
+# p2 = RandomPlayer("RandomPlayer1")
+# p3 = RandomPlayer("RandomPlayer2")
+# p4 = RandomPlayer("RandomPlayer3")
 
 # soloModel = SoloModel()
 # soloModel.load_state_dict(torch.load('PlayerModels/PPO/checkpoints/runSample/873.pt',map_location=torch.device('cpu')))
@@ -50,7 +51,7 @@ p4 = RandomPlayer("RandomPlayer3")
 # p3 = SeperatedModelPlayer('Solo3',policySolo=soloModel,eval=True)
 players = [p1, p2, p3, p4]
 start = time.time()
-# stats = playFairTournament(players, 1000,mode=3,verbose=True, laufendeBool=False)
-stats = playRandomTournament(players, 20, mode=3, laufendeBool=False)
+stats = playFairTournament(players, 2500, mode=0, verbose=True, laufendeBool=False)
+# stats = playRandomTournament(players, 200, mode=3, laufendeBool=False)
 end = time.time()
 print(("Time:", end - start))

@@ -20,3 +20,5 @@ p2 = RandomPlayer('rand1')
 p4 = RandomPlayer('rand2')
 df1 = playFairTournament([p1, p2, p3, p4], rounds, laufendeBool=False, verbose=False)
 print(f'Random: {df1.getEVOverall()}')
+
+# Greedy
