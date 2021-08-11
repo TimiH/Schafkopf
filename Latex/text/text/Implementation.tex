@@ -83,23 +83,23 @@ These are called by the environment and make the agent the controller in the \te
 \begin{lstlisting}[language=Python,label={lst:playerclass}]
 import random
 class Player():
-def __init__(self, name):
-self.name = name
-self.hand = []
-self.position = None
+    def __init__(self, name):
+        self.name = name
+        self.hand = []
+        self.position = None
 
-def setHand(self, cards):
-self.hand = []
-self.hand = cards
+    def setHand(self, cards):
+        self.hand = []
+        self.hand = cards
 
-def setPosition(self, postion):
-self.position = postion
+    def setPosition(self, postion):
+        self.position = postion
 
-def makeBid(self, validBids):
-return random.choice(validBids)
+    def makeBid(self, validBids):
+        return random.choice(validBids)
 
-def playCard(self, validCards, gameState, trickHistory):
-return random.choice(validCards)
+    def playCard(self, validCards, gameState, trickHistory):
+        return random.choice(validCards)
 \end{lstlisting}
 \section{Reinforcement Learning Setup}
 The common reinforcement learning libraries(OpenAI and RLlib) either did either not support multi-agent learning
@@ -209,17 +209,17 @@ As an experiment we also trained \textbf{SeperatedRL} that has a different model
 The idea is to reduce the variance in the training data, whilst also only including the relevant information and thus
 slimming the input vector.
 The major drawback of this is naturally training time, but we reduced the batch size during training compared to
-\textbf{SeperatedRL} but tried to keep learning steps when evaluation the two.
+\textbf{SeperatedRL}.
 
 \begin{table}[!h]
-\centering
-\begin{tabular}{lllll}
-\toprule
-Name          & \multicolumn{3}{c}{Size}                                               & Description
-\\
-\midrule
-& Team     & Wenz                      & Colour-Solo                     &
-\\
+    \centering
+    \begin{tabular}{lllll}
+        \toprule
+        Name & \multicolumn{3}{c}{Size} & Description
+        \\
+        \midrule
+        & Team & Wenz & Colour-Solo &
+        \\
 \midrule
 Hand          & 32       & 32                        & 32                              & Hand of the player
 \\

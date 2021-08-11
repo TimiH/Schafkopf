@@ -11,11 +11,11 @@ An overview of the general parameters used can be seen in Table \ref{tab:hyper}.
         Name & Value Used & Method & Description
         \\
         \midrule
-        Hands Played & {[}5000,10000,15000{]} & Varied & The number of data points that go into each
+        Hands Played & {[}500,15000{]} & Varied & The number of data points that go into each
         episode. Hands * 4 * 8 \\
         Batch Size & 80\% of the data & Fixed & The absolute size is dependent on the number of
         hands played \\
-        Epochs & {[}8,12,16{]} & Varied & Number of Epochs(K) per episode
+        Epochs & {[}8,16{]} & Varied & Number of Epochs(K) per episode
         \\
         Learning Rate & 0.0002 & Fixed & Used for Adams Optimiser
         \\
@@ -63,7 +63,7 @@ CompleteRL for example only sees around 6\% Colo-Solos per episode, so the netwo
 600 hands, that might get lost in the noise of all the other hands.
 We therefore trained SeperatedRL with only 500 hands per episode (batch size =16000,K=8) and still managed to
 reach convergence over 100 episodes.
-\begin{figure}[!ht]
+\begin{figure}[!h]
     \centering
     \subfloat[][Policy Loss]{\includegraphics[width=.4\textwidth]{500sad/Loss_policy_loss}}\quad
     \subfloat[][Entropy]{\includegraphics[width=.4\textwidth]{500sad/Loss_value_loss}}\\
@@ -74,17 +74,15 @@ reach convergence over 100 episodes.
 \end{figure}
 
 
-\section{Playing strength}
+\section{Results against Baselines}
 We now show the data of the latest episode in play against our baselines.
 For each agent we played 10000 hands in a fair tournament that controls for the seeding, to ensure minimal variance.
 
 \subsection{CompleteRL}
 When we look at Table \ref{tab:evCompleteRL} we can see that CompleteRL was only able to beat the Random agent,
-whilst losing against the other two by a good margin.
+convincingly, while losing against the other two by a good margin.\\
 \newline
-
-
-\begin{table}[]
+\begin{table}[!h]
     \centering
     \begin{tabular}{lccc}
         \toprule
@@ -109,7 +107,7 @@ whilst losing against the other two by a good margin.
         \bottomrule
     \end{tabular}
     \caption{Winrates: CompleteRL against Heuristic agent}
-    \label{tab:table}
+    \label{tab:heuCom}
 \end{table}
 
 \begin{table}
@@ -139,11 +137,11 @@ whilst losing against the other two by a good margin.
         \bottomrule
     \end{tabular}
     \caption{Winrates: CompleteRL against Random agent}
-    \label{tab:ranRL}
+    \label{tab:rancom}
 \end{table}
 
 \subsection{SeperatedRL}
-\begin{table}[]
+\begin{table}[!h]
     \centering
     \begin{tabular}{lccc}
         \toprule
@@ -156,3 +154,98 @@ whilst losing against the other two by a good margin.
     \label{tab:evSeperateRL}
 \end{table}
 
+\begin{table}
+    \begin{tabular}{lrrrrrrr}
+        \toprule
+        {}          & Team & Wenz & Solo & Team-Partmer & Sauspiel-Opp & Wenz-Opp & Solo-Opp \\
+        \midrule
+        SeperateRL1 & 0.73 & 0.44 & 0.68 & 0.74         & 0.21         & 0.29     & 0.15     \\
+        Heuristic1  & 0.80 & 0.86 & 0.92 & 0.79         & 0.26         & 0.43     & 0.23     \\
+        SeperateRL2 & 0.74 & 0.41 & 0.69 & 0.74         & 0.21         & 0.28     & 0.16     \\
+        Heuristic2  & 0.80 & 0.86 & 0.93 & 0.79         & 0.26         & 0.43     & 0.24     \\
+        \bottomrule
+    \end{tabular}
+
+    \caption{Winrates: SeperateRL against Heuristic agent}
+    \label{tab:heusep}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{lrrrrrrr}
+        \toprule
+        {}          & Team & Wenz & Solo & Team-Partner & Sauspiel-Opp & Wenz-Opp & Solo-Opp \\
+        \midrule
+        SeperateRL1 & 0.73 & 0.54 & 0.71 & 0.75         & 0.19         & 0.26     & 0.16     \\
+        Greedy1     & 0.82 & 0.84 & 0.91 & 0.80         & 0.26         & 0.36     & 0.22     \\
+        SeperateRL2 & 0.73 & 0.54 & 0.71 & 0.75         & 0.19         & 0.26     & 0.16     \\
+        Greedy2     & 0.82 & 0.84 & 0.91 & 0.80         & 0.26         & 0.36     & 0.22     \\
+        \bottomrule
+    \end{tabular}
+    \caption{Winrates: SeperateRL against Greedy agent}
+    \label{tab:greedysep}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{lrrrrrrr}
+        \toprule
+        {}          & Team & Wenz & Solo & Team-Partner & Sauspiel-Opp & Wenz-Opp & Solo-Opp \\
+        \midrule
+        SeperateRL1 & 0.80 & 0.66 & 0.86 & 0.79         & 0.24         & 0.45     & 0.16     \\
+        Random1     & 0.77 & 0.49 & 0.80 & 0.76         & 0.21         & 0.39     & 0.14     \\
+        SeperateRL2 & 0.78 & 0.73 & 0.88 & 0.80         & 0.23         & 0.47     & 0.17     \\
+        Random2     & 0.76 & 0.42 & 0.84 & 0.76         & 0.20         & 0.37     & 0.15     \\
+        \bottomrule
+    \end{tabular}
+    \caption{Winrates: SeperateRL against Random agent}
+    \label{tab:ransep}
+\end{table}
+
+\subsection{CompleteRL against SeperateRL}
+At last we pitted our two RL agents against each other.
+The results are little surprising after the previous play versus the baselines.\\
+More surprising is the fact, that SeperateRL is not performing well in at least the Solo contracts, which it should
+have an advantage in terms of seen games.
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        SeperateRL1 & ComleteRL1 & SeperateRL2 & ComleteRL2 \\\\
+        \midrule
+        -2.17 & 2.17 & -2.17 & 2.17 \\\\
+        \bottomrule
+    \end{tabular}
+    \caption{EV Overall: CompleteRL against SeperatedRL}
+    \label{tab:comRlwin}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{lrrrrrrr}
+        \toprule
+        {}          & Team & Wenz  & Solo  & Team-Partner & Sauspiel-Opp & Wenz-Opp & Solo-Opp \\
+        \midrule
+        SeperateRL1 & 2.32 & 8.90  & 40.18 & 2.37         & -4.00        & -15.21   & -21.58   \\
+        CompleteRL1 & 4.03 & 38.46 & 46.53 & 3.97         & -2.35        & -0.57    & -7.33    \\
+        SeperateRL2 & 2.32 & 8.90  & 40.18 & 2.37         & -4.00        & -15.21   & -21.58   \\
+        CompleteRL2 & 4.03 & 38.46 & 46.53 & 3.97         & -2.35        & -0.57    & -7.33    \\
+        \bottomrule
+    \end{tabular}
+    \begin{tabular}{lrrrrrrr}
+        \toprule
+        {}          & Team & Wenz & Solo & Team-Partner & Sauspiel-Opp & Wenz-Opp & Solo-Opp \\
+        \midrule
+        SeperateRL1 & 0.75 & 0.66 & 0.84 & 0.78         & 0.20         & 0.23     & 0.09     \\
+        CompleteRL1 & 0.82 & 0.83 & 0.94 & 0.79         & 0.23         & 0.28     & 0.12     \\
+        SeperateRL2 & 0.75 & 0.66 & 0.84 & 0.78         & 0.20         & 0.23     & 0.09     \\
+        CompleteRL2 & 0.82 & 0.83 & 0.94 & 0.79         & 0.23         & 0.28     & 0.12     \\
+        \bottomrule
+    \end{tabular}
+    \caption{EV: CompleteRL against SeperatedRL}
+    \label{tab:comRlev}
+\end{table}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\textwicumsums.png.png}
+\caption{Points after 10000 hands for ComleteRL vs SeperateRL}
+\label{fig:cumsums}
+\end{figure}

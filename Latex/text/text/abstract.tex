@@ -19,15 +19,12 @@
 \vspace*{1cm}
 
 \noindent In recent years reinforcement learning(RL) showed substantial improvement in perfect information games such
-as Chess or Go compared to traditional heuristic based approaches.
-The aim of this study was to explore the capabilities of RL in games that do not feature perfect information.
+as Chess or Go compared to traditional heuristic based approaches.\\
+The aim of this work was to explore the capabilities of RL in games that do not feature perfect information.
 As a case study we chose the bavarian card game Schafkopf, which is a 4 player trick game that features contract
-bidding, including solo and team play. S
-I outlined the implementation for Schafkopf using Python and range of Computer players that use varying strategies
-for move Selection. Statistical analysis was then used to explore the domain.
-Following were players implemened: Random Player, Heuristic, QLearining Player, Simulation Player, Improved
-Simulation Player
-Reinforcement learning was then applied to all game phases such as bidding and consequent move selection.
-Computer strength was compared for a bootstrapping approach, using a collection of human games, versus as a zero
-knowledge approach.
-Furthermore a GUI allowed playing the Computer.
+bidding, including solo and team play.
+We employed the well established \textbf{Proximal Policy Optimisation} algorithm to train two agents, that use two
+different approaches generating training data, to play against our own baselines(Random, Greedy, Heuristic) in a custom
+\textbf{multi-agent} environment using \textbf{Python}.
+By fixing the contract bidding, we were able to accurately evaluate the playing strength of our agents.
+We were able to beat the Random baseline convincingly, while failing to beat the two stronger rule based players.
